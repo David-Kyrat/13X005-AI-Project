@@ -1,0 +1,14 @@
+
+
+# latex compilation
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.gz
+
+# biblatex auto-generated files
+*-blx.bib
+*.run.xml
+*.bbl
+*.blg

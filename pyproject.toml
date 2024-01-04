@@ -1,0 +1,167 @@
+[tool.poetry]
+name = "ai-13x005-project"
+version = "0.1.0"
+description = "End of semester artificial intelligence project"
+authors = ["David Kyrat <33601938+David-Kyrat@users.noreply.github.com>"]
+readme = "../README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.26.3"
+ruff = "^0.1.11"
+pyink = "^23.10.0"
+pytest = "^7.4.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+select = ["E", "F", "C", "B", "W"]
+
+ignore = [
+    "B905",
+    "C901",
+    "E501",
+    "E211",
+    "E401",
+    "E402",
+    "E701",
+    "E741",
+    "W293",
+    "W191",
+    "RET505",
+]
+
+line-length = 140
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.black]
+line-length = 120
+
+[tool.pyink]
+line-length = 124
+# use-majority-quotes = true
+
+[tool.pyright]
+# https://github.com/microsoft/pyright/blob/main/docs/configuration.md#sample-pyprojecttoml-file
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "src/experimental",
+    "src/typestubs",
+]
+typeCheckingMode = "basic"
+# pyright is only used as a type checker. all other linting should be *disabled*
+reportMissingImports = false
+enableExperimentalFeatures = false
+reportMissingModuleSource = false
+reportUnusedImport = false
+reportUnusedClass = false
+reportUnusedFunction = false
+reportUnusedVariable = false
+reportUnusedDuplicateImport = false
+reportUndefinedVariable = false
+reportWildcardImportFromLibrary = false
+reportConstantRedefinition = false
+strictParameterNoneValue = false
+reportMissingTypeStubs = true
+
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = [
+    "B905",
+    "C901",
+    "E501",
+    "E211",
+    "E401",
+    "E402",
+    "E701",
+    "E704",
+    "W293",
+    "W191",
+    "RET505",
+    "E0211",
+    "E0401",
+    "C0103",
+    "C0111",
+    "C0112",
+    "C0114",
+    "C0115",
+    "C0116",
+    "C0301",
+    "C0302",
+    "C0303",
+    "C0321",
+    "C0326",
+    "C0330",
+    "C0411",
+    "C0413",
+    "R0022",
+    "W0105",
+    "W0611",
+    "W0621",
+    "W0622",
+    "W0401",
+    "format",
+    "R0903",
+    "R1710",
+]
+
+[tool.mypy]
+warn_return_any = false
+warn_unused_configs = true
+exclude = [
+    '^file1\.py$',  # TOML literal string (single-quotes, no escaping necessary)
+    "^file2\\.py$",  # TOML basic string (double-quotes, backslash and other characters need escaping)
+]
+ignore_missing_imports = true
+ignore_errors = true
+
+[tool.pylint.'BASIC']
+argument-naming-style = "any"    # Naming style matching correct argument names.
+class-const-naming-style = "any" # Naming style matching correct class constant names.
+# class-const-rgx = ""  # Regular expression matching correct class constant names.
+# Overrides class-const-naming-style. If left empty, class constant names will be checked with the set naming style.
+class-naming-style = "any"     # Naming style matching correct class names.
+const-naming-style = "any"     # Naming style matching correct constant names.
+inlinevar-naming-style = "any" # Naming style matching correct inline iteration names.
+method-naming-style = "any"    # Naming style matching correct method names.
+variable-naming-style = "any"  # Naming style matching correct variable names.
+
+[tool.pylint.'FORMAT']
+ignore-long-lines = ".*"       # Regexp for a line that is allowed to be longer than the limit.
+max-line-length = 0            # Maximum number of characters on a single line.
+max-module-lines = 0           # Maximum number of lines in a module.
+single-line-class-stmt = "yes" # Allow the body of a class to be on the same line as the declaration if body contains a single statement.
+single-line-if-stmt = "yes"    # Allow the body of an if to be on the same line as the test if there is no else.
+
