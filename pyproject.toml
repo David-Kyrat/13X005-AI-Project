@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "ai-13x005-project"
+# name = "ai_13x005_project"
+name = "src"
 version = "0.1.0"
 description = "End of semester artificial intelligence project"
-authors = ["David Kyrat <33601938+David-Kyrat@users.noreply.github.com>"]
-readme = "../README.md"
+authors = ["."]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
