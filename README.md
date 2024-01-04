@@ -6,6 +6,12 @@ Assignement Pdf:
 
 [regressionLogistique.pdf](regressionLogistique.pdf)
 
+## Todo
+
+Link to trello used to manage todos:  
+[https://trello.com/b/xhglaB3g/13x005-ai-project](https://trello.com/b/xhglaB3g/13x005-ai-project)
+
+
 ## Building & Runing
 
 ### Running the Project
