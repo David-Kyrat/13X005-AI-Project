@@ -18,7 +18,7 @@ i.e. avoid problems related to python/package versions as well as the _"It works
   run `poetry install` to install them (if you don't have poetry, you can install it with `pip install poetry`).
 
 - **Run:** To run it just use `make`.  
-    or manually poetry run python src/main.py
+    or manually "poetry run python src/main.py"
 
 ### Editing the report
 
