@@ -17,7 +17,7 @@ i.e. avoid problems related to python/package versions as well as the _"It works
   If you don't already have the requiered dependencies (numpy, sklearn ...),  
   run `poetry install` to install them (if you don't have poetry, you can install it with `pip install poetry`).
 
-- **Run:** To run it just use `make`  
+- **Run:** To run it just use `make`.  
     or manually poetry run python src/main.py
 
 ### Editing the report
