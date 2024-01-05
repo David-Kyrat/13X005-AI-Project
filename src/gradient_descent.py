@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.testing
+import plot_util
+from numpy import cos, pi, sin
 from numpy.typing import NDArray
-from numpy import pi, sin, cos
 
 
 def gradient_descent(df, params: NDArray, alpha: float, num_iters: int) -> NDArray:
@@ -29,7 +31,8 @@ def gradient_descent(df, params: NDArray, alpha: float, num_iters: int) -> NDArr
 
 # def test_gradient_descent(f, df, MyVector: NDArray, alpha: float, num_iters: int):
 def test_gradient_descent():
-    """This function test the gradient descent implemented for `f(x) = x * cos(pi * (x + 1))` with 1000 iterations."""
+    """This function test the gradient descent implemented for `f(x) = x * cos(pi * (x + 1))` with 10000 iterations.
+    and tests that it is close enough of `scipy.optimize.fmin`"""
 
     def f(x):
         return x * cos(pi * (x + 1))
@@ -37,15 +40,32 @@ def test_gradient_descent():
     def df(x):
         return cos(pi * (x + 1)) - x * pi * sin(pi * (x + 1))
 
-    x = np.linspace(0, 2 * pi, 100)
-    plt.figure()
-    plt.plot(x, f(x))
-    params = np.random.rand(1)
-    alpha, num_iters = 1, 1000
+    x = np.linspace(-2 * pi, 2 * pi, 100)
+    params = np.array([-pi, 0.0, pi])
+    alpha, num_iters = 0.01, 10000
     optimal_x = gradient_descent(df, params, alpha, num_iters)
-    plt.plot(optimal_x, f(optimal_x), "ro")
+
+    from scipy.optimize import fmin  # to test the result
+
+    expected_optimal_x = np.array([fmin(f, param, disp=False) for param in params])
+    plot_util.plot_vs(
+        x,
+        f(x),
+        plot_x2=optimal_x,
+        plot_f2=f(optimal_x),
+        title=f"local minima search with Gradient descent. {num_iters} iterations.",
+        f1label=r"$f(x) = x * \cos(\pi  (x + 1))$",
+        f2label="local minima",
+        f1style="-k",
+        f2style="ro",
+        show=False,
+    )
+    plt.plot(expected_optimal_x, f(expected_optimal_x), "co", label="optimal x found by scipy.optimize.fmin", alpha=0.4)
+    plt.legend()
+    plt.savefig("res/3.1_gradient_descent_minima.png")
     plt.show()
-
-    # for test
-    from scipy.optimize import fmin
-
+    # to ensure test does not fail due to dimension mismatch
+    expected_optimal_x = expected_optimal_x.reshape(optimal_x.shape)
+    np.testing.assert_allclose(optimal_x, expected_optimal_x, atol=1e-4)
+    # delta = abs(expected_optimal_x - optimal_x)
+    # print(f"Local minima found with precision delta: {delta} (compared to scipy.optimize.fmin)")
