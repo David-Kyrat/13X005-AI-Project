@@ -1,5 +1,7 @@
-\contentsline {section}{1 -- Introduction}{1}{section*.2}%
-\contentsline {section}{2 -- Méthodologie}{1}{section*.3}%
-\contentsline {subsection}{2.1 -- Gradient Descent}{1}{section*.4}%
-\contentsline {section}{3 -- Résultats}{2}{section*.5}%
-\contentsline {section}{Références}{2}{section*.6}%
+\contentsline {section}{1 -- Introduction \& Rappels théoriques}{1}{section*.2}%
+\contentsline {subsection}{1.1 -- Régression Logistique}{1}{section*.3}%
+\contentsline {subsection}{1.2 -- Naive Bayes}{1}{section*.4}%
+\contentsline {section}{2 -- Méthodologie}{2}{section*.5}%
+\contentsline {subsection}{2.1 -- Gradient Descent}{2}{section*.6}%
+\contentsline {section}{3 -- Résultats}{3}{section*.7}%
+\contentsline {section}{Références}{3}{section*.8}%

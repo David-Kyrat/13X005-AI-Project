@@ -78,11 +78,82 @@
 
 \intro{}
 
-\hypertarget{introduction}{%
-\section{1 -- Introduction}\label{introduction}}
+\hypertarget{introduction-rappels-thuxe9oriques}{%
+\section{1 -- Introduction \& Rappels
+théoriques}\label{introduction-rappels-thuxe9oriques}}
 
 Dans ce document, nous approfondirons des techniques de regression
 logistique et ``Naive Bayes'' comme outils d'apprentissage superivisés.
+
+Dans le cadre de l'intelligence artificielle et de l'apprentissage
+supervisé, la compréhension et la classification précises des données
+revêtent une importance capitale. Parmi les diverses méthodologies
+existantes, la Régression Logistique et ``Naive Bayes'' se distinguent
+par leur efficacité et leur applicabilité dans de nombreux contextes. Ce
+document se propose d'étudier ces deux techniques, en mettant l'accent
+sur leur mise en œuvre pratique, et leur efficacité comparative dans
+divers scénarios.
+
+\hypertarget{ruxe9gression-logistique}{%
+\subsection{1.1 -- Régression
+Logistique}\label{ruxe9gression-logistique}}
+
+En statistiques, la régression logistique, s'inscrit dans le cadre des
+modèles de régression pour les variables binaires.
+
+Ce type de modèle vise à expliquer de manière optimale une variable
+binaire, qui représente la présence ou l'absence d'une caractéristique
+spécifique, à l'aide d'un ensemble conséquent de données réelles et d'un
+modèle mathématique.
+
+Autrement dit, il s'agit de relier une variable aléatoire de Bernoulli,
+généralement notée \(y\), aussi appelé ``label'' à un vecteur constitué
+de plusieurs variables aléatoires, \((x_1, \ldots, x_K)\), aussi appelés
+``features''. \cite{RegressionLogistique2023}.
+
+La régression logistique s'appuie sur un classifeur linéaire
+\cite{ClassifieurLineaire2022} i.e.~un classifieur dont la sortie (pour
+un vecteur de feature \(x \in \R^n\)) est donnée par:
+
+\[
+g(x) = f(\scalproduct{w}{x} + b)
+\] où \(w \in \R^n\) est le vecteur de poids, \(b \in \R\) le biais et
+\(\scalproduct{.}{.}\) le produit scalair usuel. \(f\) est une fonction
+dite de seuillage qui va séparer nos résultats. Un choix commun pour
+\(f\) est la sigmoide ou la fonction signe
+\cite{ClassifieurLineaire2022}.
+
+Par exemple, dans notre cas, on suppose le modèle suivant: \[
+y_i \sim Bernoulli(p_i),\quad p_i = \sigma(\scalproduct{w}{x_i} + b),\quad \sigma(z) = \frac{1}{1 + e^{-z}}
+\] où \(x_i\) représente un vecteur (ligne) de \(K\) valeurs pour les
+\(K\) features, et \(y_i\) la variable aléatoire qui représente le label
+qui leur est associé.
+
+\hypertarget{naive-bayes}{%
+\subsection{1.2 -- Naive Bayes}\label{naive-bayes}}
+
+``Naive Bayes'' se présente comme une méthode de classification
+probabiliste basée sur le
+\href{https://en.wikipedia.org/wiki/Bayes\%27_theorem}{théorème de
+Bayes}, caractérisée par l'adoption d'une hypothèse d'indépendance forte
+entre les features (attributs), qualifiée de ``naïve''.\\
+Plus simplement, le classifieur est classifié de ``naïf'' car il part du
+principe que chaque feature (attribut) est indépendante des autres et a
+un poid égal quant à la probabilité qu'un point appartienne à une
+classe.
+
+Ce model est dit génératif contrairement à la regression logistique
+étant considéré comme ``méthode discriminante''
+\cite{ClassifieurLineaire2022} et consiste à modéliser les probabilités
+conditionnelles \(P(X | classe)\) pour chaque classe \(y\) et vecteur de
+features \(X\) afin de trouver celle qui maximise cette probabilité.
+
+En d'autres termes, le problème revient à trouver, pour des attributs
+\(X_1, \ldots, X_k\), la classe \(\tilde{y}\) telle que:
+
+\[
+\tilde{y} = \text{arg}\max_{Y \in \mathcal{Y}} \left[\  P(Y) \prod_{k = 1}^K{P(X_k | Y)}\  \right]
+\]
 
 Citation Test: \cite{LinearModels}
 
