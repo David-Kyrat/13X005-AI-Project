@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import numpy.testing
 import plot_util
 from numpy import cos, pi, sin
 from numpy.typing import NDArray
@@ -67,5 +66,3 @@ def test_gradient_descent():
     # to ensure test does not fail due to dimension mismatch
     expected_optimal_x = expected_optimal_x.reshape(optimal_x.shape)
     np.testing.assert_allclose(optimal_x, expected_optimal_x, atol=1e-4)
-    # delta = abs(expected_optimal_x - optimal_x)
-    # print(f"Local minima found with precision delta: {delta} (compared to scipy.optimize.fmin)")

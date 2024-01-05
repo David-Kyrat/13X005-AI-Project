@@ -1,5 +1,5 @@
 \contentsline {section}{1 -- Introduction}{1}{section*.2}%
 \contentsline {section}{2 -- Méthodologie}{1}{section*.3}%
-\contentsline {section}{3 -- Implémentation}{1}{section*.4}%
-\contentsline {section}{4 -- Résultats}{1}{section*.5}%
-\contentsline {section}{Références}{1}{section*.6}%
+\contentsline {subsection}{2.1 -- Gradient Descent}{1}{section*.4}%
+\contentsline {section}{3 -- Résultats}{2}{section*.5}%
+\contentsline {section}{Références}{2}{section*.6}%
