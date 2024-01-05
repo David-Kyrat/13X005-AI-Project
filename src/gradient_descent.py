@@ -8,15 +8,15 @@ def gradient_function(x: float):
     return np.cos(np.pi * (x + 1)) - x * np.pi * np.sin(np.pi * (x + 1))
 
 
-def gradient_descent(gradient, MyVector, alpha: float, num_iters: int):
+def gradient_descent(df: function, MyVector: np.ndarray, alpha: float, num_iters: int):
     """
     This function implements the gradient descent. It compute the optimal parameters MyVector.
 
     Parameters
     ----------
-    gradient:
+    df: function
         derivate function
-    MyVector:
+    MyVector: np.ndarray
         Initial vector of parameters to optimize
     alpha: float
         define how the function will converge. Too big values give bad results and too smal values not converge or converge too slowly
@@ -27,11 +27,11 @@ def gradient_descent(gradient, MyVector, alpha: float, num_iters: int):
     Optimal vector for the initial configuration and parameters
     """
     for i in range(num_iters):
-        MyVector -= alpha * gradient(MyVector)
+        MyVector -= alpha * df(MyVector)
     return MyVector
 
 
-def test_gradient_descent(f, df, MyVector, alpha: float, num_iters: int):
+def test_gradient_descent(f: function, df: function, MyVector: np.ndarray, alpha: float, num_iters: int):
     """
     This function test the gradient descent implemented
     """
