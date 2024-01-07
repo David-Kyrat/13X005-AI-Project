@@ -32,9 +32,12 @@ Link to trello used to manage todos:  [https://trello.com/b/xhglaB3g/13x005-ai-p
 Poetry was used to simplify the project & dependencies setup, 
 i.e. avoid problems related to python/package versions as well as the _"It works on my machine"_ problem.
 
-- **Dependencies:**
-  If you don't already have the requiered dependencies (numpy, sklearn ...),  
-  run `poetry install` to install them (if you don't have poetry, you can install it with `pip install poetry`).
+- **Dependencies:**  
+    This project manages depency with [poetry](https://python-poetry.org) (installable with `pip install poetry`).  
+    To install the required dependencies, simply run `poetry install`.  
+
+    If for some reason you don't want to use poetry, you can see a list of dependencies from [here](pyproject.toml),  
+
 
 - **Run:** To run it just use `make`.  
     or manually "poetry run python src/main.py"
