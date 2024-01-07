@@ -40,5 +40,5 @@ i.e. avoid problems related to python/package versions as well as the _"It works
 - [Gregory Sedykh](https://github.com/gregorysedykh)
 - [Arkanthara](https://github.com/Arkanthara)
 - [CTGN](https://github.com/CTGN)
+- [Aviel20002](https://github.com/Aviel20002)
 - [Noah Munz (Me)](https://github.com/David-Kyrat)
-- [-](#)
