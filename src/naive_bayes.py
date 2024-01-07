@@ -4,7 +4,7 @@ from typing import Any
 import matplotlib.pyplot as plt  # noqa: F401
 import numpy as np
 from numpy import int32 as i32  # noqa: F401
-from numpy import float64 as f64, floating as fl
+from numpy import float64 as f64, float32 as f32, floating as fl
 
 import pandas as pd  # noqa: F401
 import plot_util  # noqa: F401
@@ -43,7 +43,7 @@ def normal_pdf(mean: NDArray, std: NDArray):
     return lambda x: (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-((x - mean) ** 2) / (2 * std**2))
 
 
-def get_normal_parameters(data: DataFrame, feature_names: list[str], labels: DataFrame) -> dict[Any, list[tuple[fl, fl]]]:
+def get_distrib_parameters(data: DataFrame, feature_names: list[str], labels: DataFrame) -> dict[Any, list[tuple[fl, fl]]]:
     """
     Parameters
     ----------
@@ -52,8 +52,8 @@ def get_normal_parameters(data: DataFrame, feature_names: list[str], labels: Dat
     labels : Labels to extract the different values from (will be the keys of the return dict)
     Returns
     -------
-    A dictionary {class: [(mean_i, std_i), ...]} for each feature i in the dataset."""
-
+    Parameters for each distribution of each feature feature for each class.
+    i.e. a dictionary {class: [(mean_i, std_i), ...]} for each feature i."""
     classes = labels.unique()
     out: dict[Any, list[tuple[fl, fl]]] = {}
     for classv in classes:
@@ -63,10 +63,16 @@ def get_normal_parameters(data: DataFrame, feature_names: list[str], labels: Dat
         for feature in feature_names:
             feat = data_c[feature]
             mean, std = feat.mean(), feat.std()
-            out[classv].append((f64(mean), f64(std)))
+            out[classv].append((f32(mean), f32(std)))
 
     return out
 
 
+def test_get_normal_parameters():
+    params_by_class = get_distrib_parameters(FEAT, COL_NAMES, LABELS)
+    print("Format: (mean_i, std_i), ...,  for each class")
+    pprint(params_by_class)
+
+
 def main():
-    _a = get_normal_parameters(FEAT, COL_NAMES, LABELS)
+    test_get_normal_parameters()

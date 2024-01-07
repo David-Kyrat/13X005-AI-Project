@@ -2,8 +2,7 @@
 # import pandas as pd
 import naive_bayes
 from gradient_descent import gradient_descent, test_gradient_descent
-from naive_bayes import *  # noqa: F403, F401
-from pandas import DataFrame, Series
+from pandas import DataFrame
 from ucimlrepo import fetch_ucirepo
 
 # Iris dataset
@@ -16,13 +15,10 @@ DATA: DataFrame = iris.data.original
 
 FEAT: DataFrame = iris.data.features
 LAB_NAME: str = iris.data["headers"][-1]
-LABELS = DATA[LAB_NAME]
+LABELS: DataFrame = DATA[LAB_NAME]  # type: ignore
 COL_NAMES = list(FEAT.columns)
 
 
 if __name__ == "__main__":
-    print(LAB_NAME)
-    exit(0)
-    # pass
     # test_gradient_descent()
     naive_bayes.main()
