@@ -12,11 +12,10 @@ Link to trello used to manage todos:  [https://trello.com/b/xhglaB3g/13x005-ai-p
 
 **Preview:** 
 
-![Trello Board Screenshot](res/todo_img.png | width=100)  
 
-
-![Trello Board Screenshot](res/todo_img.png){width=50%}
-
+<div align="center">
+<a href="res/todo_img.png"><img src="res/todo_img.png" alt="Trello Board Screenshot" align="center" width="45%"></a>
+</div>
 
 
 ## Building & Runing
