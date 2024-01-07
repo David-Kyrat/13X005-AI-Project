@@ -28,13 +28,13 @@ def test_ucml_repo():
     # pprint(_y)
 
 
-def normal_pdf(mean: NDArray, std: NDArray):
+def normal_pdf(mean: fl, std: fl):
     """
     Parameters
     ----------
-    mean : NDArray, (mostly a float, i.e. N=0)
+    mean : float or NDArray of float
         The mean (μ) of the normal distribution.
-    std : NDArray, (mostly a float, i.e. N=0)
+    std : float or NDArray of float
         The standard deviation (σ) of the normal distribution.
     Returns
     -------
@@ -66,6 +66,25 @@ def get_distrib_parameters(data: DataFrame, feature_names: list[str], labels: Da
             out[classv].append((f32(mean), f32(std)))
 
     return out
+
+
+def predict_bayes(x: NDArray, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
+    """
+    Parameters
+    ----------
+    x : The sample to predict.
+    params_by_class : The parameters of the normal distribution of each feature for each class.
+    Returns
+    -------
+    The predicted class for the sample x."""
+    probs = {}
+    for class_value, params in params_by_class.items():
+        probs[class_value] = 1
+        for feature_idx, (mean, std) in enumerate(params):
+            x_i = x[feature_idx]
+            probs[class_value] *= normal_pdf(mean, std)(x_i)  # computes P(X_i | y) for current y = class_value
+    # get the class that maximize the conditional probability
+    return max(probs, key=lambda class_value: probs[class_value])
 
 
 def test_get_normal_parameters():

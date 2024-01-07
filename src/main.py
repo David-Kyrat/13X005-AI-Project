@@ -21,4 +21,6 @@ COL_NAMES = list(FEAT.columns)
 
 if __name__ == "__main__":
     # test_gradient_descent()
-    naive_bayes.main()
+    # naive_bayes.main()
+    pass
+
