@@ -1,4 +1,4 @@
-# 13X005 AI Project
+# 13X005 AI Project -- Logistic Regression & Naive Bayes
 
 End of semester AI Project on Logistic Regression and Naive Bayes using the famous ["Iris"](https://archive.ics.uci.edu/dataset/53/iris) dataset.
 
