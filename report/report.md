@@ -132,11 +132,14 @@ dépend fortement de la valeur initiale et ce pour les deux fonctions.
 ## 2.3 -- Naive Bayes
 
 Dans section, une implémentation d'un classifieur bayesien (naive bayes) a été réalisée. 
-Les fonctions respectivement d'entrainement et de prédictition ont la signature suivante:
+La fonction de prédictition a la signature suivante:
 
 \begin{lstlisting}
     #  TODO
 \end{lstlisting}
+
+et calcule la classe qui maximise la probabilité conditionnelle définie en section \href{#naive-bayes}{1.2}.
+
 
 Dans cette impléntation, étant données que toutes nos features sont continues, nous avons considéré que _sepal length_, _sepal width_, _petal length_ et _petal width_ seront représenté comme 4 variables aléatoires $X_0, \cdots, X_3$ suivant 4 lois normales normales de paramètre $(\mu_k, \sigma_k)$.
 
