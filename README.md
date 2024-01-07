@@ -1,10 +1,19 @@
 # 13X005 AI Project
 
-End of semester AI Project on Logistic Regression and Naive Bayes.
+End of semester AI Project on Logistic Regression and Naive Bayes using the famous ["Iris"](https://archive.ics.uci.edu/dataset/53/iris) dataset.
 
 Assignement Pdf:
 
 [regressionLogistique.pdf](regressionLogistique.pdf)
+
+<br />
+
+**DataSet Used:**
+
+<div align="center">
+<a href="https://archive.ics.uci.edu/dataset/53/iris"><img src="res/iris_img.png" alt="Iris header image" align="center" width="80%"></a>
+<a href="https://archive.ics.uci.edu/dataset/53/iris"><img src="res/iris_table.png" alt="Iris descriptive table" align="center" width="80%"></a>
+</div>
 
 ## Todo
 
@@ -14,7 +23,7 @@ Link to trello used to manage todos:  [https://trello.com/b/xhglaB3g/13x005-ai-p
 
 
 <div align="center">
-<a href="res/todo_img.png"><img src="res/todo_img.png" alt="Trello Board Screenshot" align="center" width="45%"></a>
+<a href="res/todo_img.png"><img src="res/todo_img.png" alt="Trello Board Screenshot" align="center" width="50%"></a>
 </div>
 
 
