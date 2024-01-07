@@ -14,8 +14,6 @@ Link to trello used to manage todos:
 
 ## Building & Runing
 
-### Running the Project
-
 Poetry was used to simplify the project & dependencies setup, 
 i.e. avoid problems related to python/package versions as well as the _"It works on my machine"_ problem.
 
@@ -35,3 +33,12 @@ i.e. avoid problems related to python/package versions as well as the _"It works
 [pdf-report](./report/report.pdf)
 
 - The citations are in the file [report/references.bib](report/references.bib) and can be called with `\cite{citation-key}`.
+
+
+## Authors
+
+- [Gregory Sedykh](https://github.com/gregorysedykh)
+- [Arkanthara](https://github.com/Arkanthara)
+- [CTGN](https://github.com/CTGN)
+- [Noah Munz (Me)](https://github.com/David-Kyrat)
+- [-](#)
