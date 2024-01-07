@@ -11,15 +11,14 @@ from ucimlrepo import fetch_ucirepo
 
 
 def test_ucml_repo():
-    # fetch dataset
-    iris = fetch_ucirepo(id=DATASET_ID)
+    iris = fetch_ucirepo(id=DATASET_ID)  # fetch dataset
     assert iris.data is not None
 
-    data: DataFrame = iris.data.original  # type: dataframe
+    data: DataFrame = iris.data.original
 
     _X: DataFrame = iris.data.features
     _y: DataFrame = iris.data.targets
 
-    print(data)
-    # print(X)
-    # print(y)
+    pprint(data)
+    # pprint(_X)
+    # pprint(_y)
