@@ -8,8 +8,15 @@ Assignement Pdf:
 
 ## Todo
 
-Link to trello used to manage todos:  
-[https://trello.com/b/xhglaB3g/13x005-ai-project](https://trello.com/b/xhglaB3g/13x005-ai-project)
+Link to trello used to manage todos:  [https://trello.com/b/xhglaB3g/13x005-ai-project](https://trello.com/b/xhglaB3g/13x005-ai-project)
+
+**Preview:** 
+
+![Trello Board Screenshot](res/todo_img.png | width=100)  
+
+
+![Trello Board Screenshot](res/todo_img.png){width=50%}
+
 
 
 ## Building & Runing
