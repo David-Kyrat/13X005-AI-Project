@@ -92,6 +92,17 @@ def test_get_normal_parameters():
     print("Format: (mean_i, std_i), ...,  for each class")
     pprint(params_by_class)
 
+def test_predict_bayes():
+    params_by_class = get_distrib_parameters(FEAT, COL_NAMES, LABELS)
+    # test sample
+    x = FEAT.iloc[0].to_numpy()
+    print("Sample to predict: ", x)
+    pred = predict_bayes(x, params_by_class)
+    print("Predicted class: ", pred)
+    print("Actual class: ", LABELS.iloc[0])
+
 
 def main():
     test_get_normal_parameters()
+    print(" ")
+    test_predict_bayes()
