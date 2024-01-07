@@ -68,16 +68,38 @@ Citation Test: \cite{LinearModels}
 
 # 2 -- Méthodologie  
 
+## 2.0 -- Choix du dataset & outils utilisés
+
 Pour la suite de ce projet les outils suivants ont été utilisés dans chaque parties:
 
 - [python](https://www.python.org/)
 - [numpy](https://numpy.org/)
 - [sklearn](https://scikit-learn.org/stable/)
 - [matplotlib](https://matplotlib.org/)
+- [ucmilrepo](https://github.com/uci-ml-repo/ucimlrepo)
+
+
+Le package `ucmilrepo` a été utilisé pour charger les données de notre dataset depuis la base de donnée du [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/ml/index).  
+
+Le dataset que nous avons choisi est le fameux dataset "Iris" \cite{r.a.fisherIris1936}, un des plus anciens et connus dataset de classification. Il contient 150 observations de 3 espèces différentes d'iris (Iris setosa, Iris virginica et Iris versicolor) avec 4 features (longueur et largeur des sépales et pétales).  
+
+Voici un aperçu des points-clés du dataset:
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth,height=\textheight]{../res/iris_img.png}
+\includegraphics[width=0.8\textwidth,height=\textheight]{../res/iris_table.png}
+\caption{Iris descriptive table}
+\end{figure}
+
+Le label que nous allons prédire sera donc _class_, i.e. l'espèce de l'iris.
+
+\newpage
+
 
 ## 2.1 -- Gradient Descent
 
-Dans cette section, une implémentation de la "descente en gradient" a été réalisée. la fonction a la signature suivante 
+Dans cette section, une implémentation de la "descente en gradient" a été réalisée. La fonction a la signature suivante 
 
 \begin{lstlisting}
   def gradient_descent(df, params: NDArray, alpha: float, num_iters: int) -> NDArray:  
@@ -94,13 +116,39 @@ avec différents $x_0 \in \{-\pi, 0, \pi\}$ (valeur initiale de \code{params}, i
 
 Les minimas locaux trouvés par les deux fonctions sont les suivants:
 
-![minimas locaux_gradient descent](../res/3.1_gradient_descent_minima.png){width=71%} 
+![minimas locaux_gradient descent](../res/3.1_gradient_descent_minima.png){width=100%} 
 
-\newpage{}
 
 Ce résultat illustre bien 2 choses: la première est que l'implémentation de la descente en gradient fonctionne correctement puisque pour chaque points trouvé par notre fonction est confondu avec celui trouvé par la fonction de scipy (c'est ce qui donne cette teinte "grise"). La deuxième est que la "qualité" du minima local (i.e. la distance avec le minima globale) 
 dépend fortement de la valeur initiale et ce pour les deux fonctions.
 
+\newpage{}
+
+## 2.2 -- Régression Logistique
+
+---
+
+
+## 2.3 -- Naive Bayes
+
+Dans section, une implémentation d'un classifieur bayesien (naive bayes) a été réalisée. 
+Les fonctions respectivement d'entrainement et de prédictition ont la signature suivante:
+
+\begin{lstlisting}
+    #  TODO
+\end{lstlisting}
+
+Dans cette impléntation, étant données que toutes nos features sont continues, nous avons considéré que _sepal length_, _sepal width_, _petal length_ et _petal width_ seront représenté comme 4 variables aléatoires $X_0, \cdots, X_3$ suivant 4 lois normales normales de paramètre $(\mu_k, \sigma_k)$.
+
+C'est à dire:
+$$
+X_k \sim \mathcal{N}( \mu_k, \sigma_k) \qquad \qquad k \in \iitv{0, 3}
+$$
+
+
+
+
+\newpage{}
 
 # 3 -- Résultats 
 

@@ -2,6 +2,9 @@
 \contentsline {subsection}{1.1 -- Régression Logistique}{1}{section*.3}%
 \contentsline {subsection}{1.2 -- Naive Bayes}{1}{section*.4}%
 \contentsline {section}{2 -- Méthodologie}{2}{section*.5}%
-\contentsline {subsection}{2.1 -- Gradient Descent}{2}{section*.6}%
-\contentsline {section}{3 -- Résultats}{3}{section*.7}%
-\contentsline {section}{Références}{3}{section*.8}%
+\contentsline {subsection}{2.0 -- Choix du dataset \& outils utilisés}{2}{section*.6}%
+\contentsline {subsection}{2.1 -- Gradient Descent}{3}{section*.7}%
+\contentsline {subsection}{2.2 -- Régression Logistique}{4}{section*.8}%
+\contentsline {subsection}{2.3 -- Naive Bayes}{4}{section*.9}%
+\contentsline {section}{3 -- Résultats}{5}{section*.10}%
+\contentsline {section}{Références}{5}{section*.11}%
