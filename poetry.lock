@@ -835,7 +835,18 @@ files = [
     {file = "typing_extensions-4.9.0.tar.gz", hash = "sha256:23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"},
 ]
 
+[[package]]
+name = "ucimlrepo"
+version = "0.0.3"
+description = "Package to easily import datasets from the UC Irvine Machine Learning Repository into scripts and notebooks."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "ucimlrepo-0.0.3-py3-none-any.whl", hash = "sha256:935860c7a796b2e3419407bb2026b446898815e806da87f95614019e42d3d153"},
+    {file = "ucimlrepo-0.0.3.tar.gz", hash = "sha256:0ed682c4f6727f410a1dcfdb48bf58015945ad3a059bd00aa55b5f24680c63d2"},
+]
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "96ed9728ec66ee1c5a537d7ec0b02fefa5ce629d11c45367f71b0980687cd2ed"
+content-hash = "a06f4704851eccc7cd465b6763728a83be1ffebbe0c6a59d668c603c94f4ada0"
