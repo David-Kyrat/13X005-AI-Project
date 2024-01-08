@@ -6,25 +6,9 @@ import numpy as np
 # NB: floating is any (numpy) floating type NDArray or not
 from numpy import float32 as f32, floating as fl
 
-from main import DATASET_ID, FEAT, LABELS, COL_NAMES
+# from main import DATASET_ID, FEAT, LABELS, COL_NAMES
 from numpy.typing import NDArray
 from pandas import DataFrame
-from ucimlrepo import fetch_ucirepo
-
-
-def test_ucml_repo():
-    iris = fetch_ucirepo(id=DATASET_ID)  # fetch dataset
-    assert iris.data is not None
-
-    data: DataFrame = iris.data.original
-
-    _X: DataFrame = iris.data.features
-    _y: DataFrame = iris.data.targets
-
-    pprint(data)
-    # pprint(_X)
-    # pprint(_y)
-
 
 def normal_pdf(mean: fl, std: fl):
     """
