@@ -13,7 +13,6 @@ def z(X: NDArray, w: NDArray, b: fl) -> fl:
     Returns
     -------
     ``np.dot(X, w) + b``: `float` or `NDArray[float]` (i.e. `floating`)
-
     Notes
     -----
     `w` and `X` can be interchanged e.g. `z(w, X, b)`, it won't give

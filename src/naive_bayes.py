@@ -2,6 +2,7 @@ from pprint import pprint
 from typing import Any
 
 import numpy as np
+
 # NB: floating is any (numpy) floating type NDArray or not
 from numpy import float32 as f32, floating as fl
 
@@ -75,6 +76,9 @@ def predict_bayes(x: NDArray, params_by_class: dict[Any, list[tuple[fl, fl]]]) -
     -------
     The predicted class for the sample x."""
     probs = {}
+    if type(x) is not np.ndarray:
+        x = np.asarray(x)
+
     for class_value, params in params_by_class.items():
         probs[class_value] = 1
         for feature_idx, (mean, std) in enumerate(params):
@@ -82,7 +86,6 @@ def predict_bayes(x: NDArray, params_by_class: dict[Any, list[tuple[fl, fl]]]) -
             probs[class_value] *= normal_pdf(mean, std)(x_i)  # computes P(X_i | y) for current y = class_value
     # get the class that maximize the conditional probability
     return max(probs, key=lambda class_value: probs[class_value])
-
 
 
 # ================================================================
