@@ -26,11 +26,15 @@ Donc notre MSE nous donnerait:
 
 $$MSE = \frac{1}{n}\sum_i^n (\frac{1}{1 + e^{-z_i}} - y_i)^2$$
 
-Pour simplifier les choses, je vais considérer dans la suite que n = 1.
-Ce qui nous donne:
-$$MSE = (\frac{1}{1 + e^{-z}} - y)^2$$
+Cependant, nous pouvons remarquer que la fonction $\sigma(z)$ n'est pas linéaire.
 
-Cette fonction n'est pas une fonction convexe, c'est pourquoi la descente en gradient sera difficile: on risquera de trouver des minimums locaux, alors que l'on cherche un minimum global.
+En effet, on a $\sigma(z) = \frac{1}{1 + e^{-z}}$, ce qui n'est pas une fonction linéaire.
 
-Le graphe de cette fonction me donne le résultat suivant:
+Cela a pour conséquence que la MSE n'est pas convexe.
 
+La descente en gradient ne pourra donc pas fonctionnner correctement, car on pourra trouver des minimum locaux à la place du minimum global, et si on trouve un minimum local, on ne va pas trouver les paramètres optimaux pour la régression logistique.
+
+C'est pourquoi, on utilise plutôt la log loss fonction.
+
+
+Rapport de vraissemblance.....
