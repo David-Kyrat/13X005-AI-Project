@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.typing import NDArray
 # import pandas as pd
-import naive_bayes
+# import naive_bayes
 from pandas import DataFrame
 from ucimlrepo import fetch_ucirepo
 
@@ -27,4 +27,6 @@ COL_NAMES = list(FEAT.columns)
 
 if __name__ == "__main__":
     # test_gradient_descent()
-    naive_bayes.main()
+    # naive_bayes.main()
+    # naive_bayes.main()
+    pass

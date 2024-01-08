@@ -6,7 +6,6 @@ import numpy as np
 # NB: floating is any (numpy) floating type NDArray or not
 from numpy import float32 as f32, floating as fl
 
-# from main import DATASET_ID, FEAT, LABELS, COL_NAMES
 from numpy.typing import NDArray
 from pandas import DataFrame
 
@@ -78,20 +77,22 @@ def predict_bayes(x: NDArray, params_by_class: dict[Any, list[tuple[fl, fl]]]) -
 
 
 def test_get_normal_parameters():
-    params_by_class = get_distrib_parameters(FEAT, COL_NAMES, LABELS)
+    from main import FEAT, COL_NAMES, LABELS_STR
+    params_by_class = get_distrib_parameters(FEAT, COL_NAMES, LABELS_STR)
     print("Format: (mean_i, std_i), ...,  for each class")
     pprint(params_by_class)
 
 
 def test_predict_bayes():
-    params_by_class = get_distrib_parameters(FEAT, COL_NAMES, LABELS)
+    from main import FEAT, COL_NAMES, LABELS_STR
+    params_by_class = get_distrib_parameters(FEAT, COL_NAMES, LABELS_STR)
     # test sample
     idx = np.random.randint(0, len(FEAT))
     x = FEAT.iloc[idx]
     print("Sample to predict:\n", x, "\n ")
     pred = predict_bayes(x, params_by_class)
     print("Predicted class: ", pred)
-    print("Actual class: ", LABELS.iloc[idx])
+    print("Actual class: ", LABELS_STR.iloc[idx])
 
 
 def main():

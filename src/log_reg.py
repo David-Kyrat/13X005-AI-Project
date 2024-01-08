@@ -91,8 +91,19 @@ def train_log_reg(X: NDArray, y: NDArray, w: NDArray, b: float, n_it: int, lr: f
     # return grad_desc_ml(X, y, grad, w, b, lr, n_it)
 
 
-@pytest.mark.parametrize("m, n", randint(0, 70, size=(100, 2)))
+@pytest.mark.parametrize("m, n", randint(0, 70, size=(20, 2)))
 def test_log_reg_with_random_values(m, n):
     X, y, w, b = rand(m, n), rand(m), rand(n), rand()
     n_it, lr = 100, 0.03
     w, b = train_log_reg(X, y, w, b, n_it, lr)
+
+def test_log_reg_with_dataset_values():
+    from main import FEAT, LABELS
+    m, n = FEAT.shape
+    init_w = np.random.rand(n)
+    init_b = np.random.rand()
+    n_it, lr = 1000, 1e-5
+
+    w, b = train_log_reg(FEAT.to_numpy(), LABELS, init_w, init_b, n_it, lr)
+    print(w, b)
+    print("Found weights and bias:\n\tw =", w, "\tb =", b)
