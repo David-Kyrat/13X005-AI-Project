@@ -23,8 +23,6 @@ Enonce-notes:
 > [!DANGER]
 > Ne jamais écrire une formule qu'on ne sait pas expliquer (redflag pour le prof)
 
-# TODO
-
-
-- [ ] Make project report template 
-- [ ] Make readme avec makefile genre "a makefile was added to simply latex rendering, just do `make report` to compile the markdown into LaTeX and then PDF, (report follows the template stlyed defined in `preamble_ai_project.sty`)"
+## TODO
+- [x] Make project report template 
+- [x] Make readme avec makefile genre "a makefile was added to simply latex rendering, just do `make report` to compile the markdown into LaTeX and then PDF, (report follows the template stlyed defined in `preamble_ai_project.sty`)"
