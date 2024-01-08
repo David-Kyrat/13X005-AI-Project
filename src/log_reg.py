@@ -1,27 +1,31 @@
-from pprint import pprint
-from typing import Any
-
 import numpy as np
-from main import COL_NAMES, DATASET_ID, FEAT, LABELS  # noqa: F401
+
+# from main import COL_NAMES, DATASET_ID, FEAT, LABELS  # noqa: F401
 from gradient_descent import grad_desc_ml
-from numpy import float32 as f32
 
 # NB: floating is any (numpy) floating type NDArray or not
 from numpy import floating as fl
 from numpy.typing import NDArray
-from pandas import DataFrame
 
 
 def z(X: NDArray, w: NDArray, b: fl) -> fl:
-    """:return: ``np.dot(X, w) + b``.
-    float or NDArray[float] (i.e. `fl`)
-    NOTE: `w` and `X` can be interchanged e.g. (`z(X, w, b)), it won't give
+    """
+    Returns
+    -------
+    ``np.dot(X, w) + b``: `float` or `NDArray[float]` (i.e. `floating`)
+
+    Notes
+    -----
+    `w` and `X` can be interchanged e.g. `z(w, X, b)`, it won't give
     the same result (in general) but as long as matrix multiplication dimensions
     are respected, it will work."""
     return np.dot(X, w) + b
 
 
-def sigmoid(z: fl):
+def sigmoid(z: fl) -> fl:
+    """ Returns
+    -----------
+    1 / (1 + exp(-z))"""
     return 1 / (1 + np.exp(-z))
 
 
@@ -76,5 +80,5 @@ def train_log_reg(X: NDArray, y: NDArray, w: NDArray, b: fl, n_it: int, lr: floa
         learning rate
     Returns
     -------
-    Trained (weight vector, bias) with gradient descent that minimize the log loss function."""
+        Trained (weight vector, bias) with gradient descent that minimize the log loss function."""
     return grad_desc_ml(X, y, grad, w, b, lr, n_it)
