@@ -158,6 +158,9 @@ C'est pourquoi, on utilise plutôt la log loss fonction.
 ---
 
 
+
+---
+
 ## 2.3 -- Naive Bayes
 
 Dans cette section, une implémentation d'un classifieur linéaire bayesien (naive bayes) a été réalisée. 
