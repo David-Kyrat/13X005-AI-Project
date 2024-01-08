@@ -46,7 +46,7 @@ Par exemple, dans notre cas, on suppose le modèle suivant:
 $$
 y_i \sim Bernoulli(p_i),\quad p_i = \sigma(\scalproduct{w}{x_i} + b),\quad \sigma(z) = \frac{1}{1 + e^{-z}}
 $$
-où $x_i$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ features, et $y_i$ la variable aléatoire qui représente le label qui leur est associé.
+où $x_i$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ features (aussi appelé un *sample*), et $y_i$ la variable aléatoire qui représente le label qui leur est associé.
 
 
 ## 1.2 -- Naive Bayes
@@ -68,7 +68,7 @@ Citation Test: \cite{LinearModels}
 
 # 2 -- Méthodologie  
 
-## 2.0 -- Choix du dataset & outils utilisés
+# 2.0 -- Choix du dataset & outils utilisés
 
 Pour la suite de ce projet les outils suivants ont été utilisés dans chaque parties:
 
