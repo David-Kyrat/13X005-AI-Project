@@ -31,6 +31,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python tests.Python tests for naive_bayes.test_get_normal_parameters.executor": "Run",
+    "Python tests.Python tests for training_test.test_get_normal_parameters.executor": "Run",
     "Python tests.Python tests in naive_bayes.py.executor": "Run",
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -61,6 +63,36 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Python tests for naive_bayes.test_get_normal_parameters" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="project" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;naive_bayes.test_get_normal_parameters&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for training_test.test_get_normal_parameters" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="project" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;training_test.test_get_normal_parameters&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="Python tests in naive_bayes.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="project" />
       <option name="ENV_FILES" value="" />
@@ -79,6 +111,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.Python tests in naive_bayes.py" />
+        <item itemvalue="Python tests.Python tests for naive_bayes.test_get_normal_parameters" />
+        <item itemvalue="Python tests.Python tests for training_test.test_get_normal_parameters" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
