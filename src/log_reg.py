@@ -42,7 +42,6 @@ def grad(X: NDArray, y: NDArray, w: NDArray, b: fl):
         weights vector.
     `b` : fl (float or NDArray[float])
         bias
-
     Returns
     -------
     (dw, db) :
@@ -76,7 +75,7 @@ def train_log_reg(X: NDArray, y: NDArray, w: NDArray, b: fl, n_it: int, lr: floa
         learning rate
     Returns
     -------
-    Trained (weight vector, bias) to minimize by gradient descent. """
+    Trained (weight vector, bias) with gradient descent that minimize the log loss function."""
     for _ in range(n_it):
         grad_w, grad_b = grad(X, y, w, b)
         w -= lr * grad_w
