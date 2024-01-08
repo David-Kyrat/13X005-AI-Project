@@ -140,10 +140,7 @@ L'objectif est donc de minimiser la MSE afin de minimiser l'erreur entre les val
 Ce qui nous donnerait
 $$MSE = \frac{1}{n}\sum_i^n (\sigma(z_i) - y_i)^2$$
 
-avec $\sigma$ la fonction sigmoïde utilisée pour la régression logistique, définie comme suit:
-$$\sigma(z) = \frac{1}{1 + e^{-z}}$$.
-
-Donc notre MSE nous donnerait:
+avec $\sigma$ la fonction sigmoïde utilisée pour la régression logistique, définie comme en section \href{#ruxe9gression-logistique}{1.1} notre MSE nous donnerait:
 
 $$MSE = \frac{1}{n}\sum_i^n (\frac{1}{1 + e^{-z_i}} - y_i)^2$$
 
@@ -173,7 +170,7 @@ La fonction de prédictition a la signature suivante:
 et calcule la classe qui maximise la probabilité conditionnelle définie en section \href{#naive-bayes}{1.2}.
 
 
-Dans cette impléntation, étant données que toutes nos features sont continues, nous avons considéré que _sepal length_, _sepal width_, _petal length_ et _petal width_ seront représenté comme 4 variables aléatoires $X_0, \cdots, X_3$ suivant 4 lois normales normales de paramètre $(\mu_k, \sigma_k)$.
+Dans cette implémentation, étant données que toutes nos features sont continues, nous avons considéré que _sepal length_, _sepal width_, _petal length_ et _petal width_ seront représenté comme 4 variables aléatoires $X_0, \cdots, X_3$ suivant 4 lois normales normales de paramètre $(\mu_k, \sigma_k)$.
 
 C'est à dire:
 $$

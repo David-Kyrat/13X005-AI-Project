@@ -274,9 +274,8 @@ Ce qui nous donnerait
 \[MSE = \frac{1}{n}\sum_i^n (\sigma(z_i) - y_i)^2\]
 
 avec \(\sigma\) la fonction sigmoïde utilisée pour la régression
-logistique, définie comme suit: \[\sigma(z) = \frac{1}{1 + e^{-z}}\].
-
-Donc notre MSE nous donnerait:
+logistique, définie comme en section
+\href{#ruxe9gression-logistique}{1.1} notre MSE nous donnerait:
 
 \[MSE = \frac{1}{n}\sum_i^n (\frac{1}{1 + e^{-z_i}} - y_i)^2\]
 
@@ -311,7 +310,7 @@ signature suivante:
 et calcule la classe qui maximise la probabilité conditionnelle définie
 en section \href{#naive-bayes}{1.2}.
 
-Dans cette impléntation, étant données que toutes nos features sont
+Dans cette implémentation, étant données que toutes nos features sont
 continues, nous avons considéré que \emph{sepal length}, \emph{sepal
 width}, \emph{petal length} et \emph{petal width} seront représenté
 comme 4 variables aléatoires \(X_0, \cdots, X_3\) suivant 4 lois
