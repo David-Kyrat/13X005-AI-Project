@@ -3,6 +3,7 @@ from typing import Any
 
 import numpy as np
 from main import COL_NAMES, DATASET_ID, FEAT, LABELS  # noqa: F401
+from gradient_descent import grad_desc_ml
 from numpy import float32 as f32
 
 # NB: floating is any (numpy) floating type NDArray or not
@@ -76,8 +77,4 @@ def train_log_reg(X: NDArray, y: NDArray, w: NDArray, b: fl, n_it: int, lr: floa
     Returns
     -------
     Trained (weight vector, bias) with gradient descent that minimize the log loss function."""
-    for _ in range(n_it):
-        grad_w, grad_b = grad(X, y, w, b)
-        w -= lr * grad_w
-        b -= lr * grad_b
-    return w, b
+    return grad_desc_ml(X, y, grad, w, b, lr, n_it)
