@@ -13,8 +13,6 @@ iris = fetch_ucirepo(id=DATASET_ID)  # fetch dataset
 assert iris.data is not None
 
 DATA: DataFrame = iris.data.original
-
-FEAT: DataFrame = iris.data.features
 LAB_NAME: str = iris.data["headers"][-1]
 
 from sklearn.model_selection import train_test_split

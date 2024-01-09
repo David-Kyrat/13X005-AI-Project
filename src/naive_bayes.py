@@ -25,12 +25,12 @@ def normal_pdf(mean: fl, std: fl):
     return lambda x: (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-((x - mean) ** 2) / (2 * std**2))
 
 
-def get_distrib_parameters(data: DataFrame, labels: DataFrame) -> dict[Any, list[tuple[fl, fl]]]:
+def get_distrib_parameters(features: DataFrame, labels: DataFrame) -> dict[Any, list[tuple[fl, fl]]]:
     """
     Parameters
     ----------
-    `data` : The dataset.
-    `labels` : Labels to extract the different values from (will be the keys of the return dict)
+    `features` : Features training dataset (only the features, i.e. `main.FEAT`).
+    `labels` : Labels to extract the different values from (will be the keys of the returned dict)
     Returns
     -------
     Parameters for each distribution of each feature feature for each class.
@@ -41,7 +41,7 @@ def get_distrib_parameters(data: DataFrame, labels: DataFrame) -> dict[Any, list
     out: dict[Any, list[tuple[fl, fl]]] = {}
     for classv in classes:
         out_classv = []  # list of (mean, std) for each feature by class value
-        data_c = data[labels == classv]  # data for current class
+        data_c = features[labels == classv]  # data for current class
         for feature in data_c:
             feat = data_c[feature]
             mean, std = feat.mean(), feat.std()
@@ -68,6 +68,7 @@ def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
         probs[class_value] = np.prod([normal_pdf(mean, std)(x_i) for (mean, std), x_i in zip(params, x)])
     # get the class that maximize the conditional probability
     return max(probs, key=lambda class_value: probs[class_value])
+
 
 #
 # def predict_bayes_all(X) -> NDArray:
@@ -116,7 +117,7 @@ def test_predict_bayes_runs():
 
 
 def test_predict_bayes_f1score():
-    from main import FEAT, FEAT_test, LABELS_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS
+    from main import FEAT, FEAT_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS
     import pandas as pd  # noqa: F401
 
     correct_classes = DATA_train[LAB_NAME]
