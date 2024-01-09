@@ -25,21 +25,21 @@ def normal_pdf(mean: fl, std: fl):
     return lambda x: (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-((x - mean) ** 2) / (2 * std**2))
 
 
-def get_distrib_parameters(features: DataFrame, labels: DataFrame) -> dict[Any, list[tuple[fl, fl]]]:
+def get_distrib_parameters(features: DataFrame, labels) -> dict[Any, list[tuple[fl, fl]]]:
     """
     Parameters
     ----------
-    `features` : Features training dataset (only the features, i.e. `main.FEAT`).
-    `labels` : Labels to extract the different values from (will be the keys of the returned dict)
+    `features` : Features from training dataset (only the features, i.e. `main.FEAT`).
+    `labels` : `Series` or `DataFrame` (i.e. a column, `main.LABELS_STR_train`)
+        Labels (from training dataset) to extract the different values from (will be the keys of the returned dict)
     Returns
     -------
     Parameters for each distribution of each feature feature for each class.
     i.e. a dictionary {class: [(mean_i, std_i), ...]} for each feature i."""
-    from main import lab_values as classes
+    from main import CLASSES
 
-    # classes = labels.unique()
     out: dict[Any, list[tuple[fl, fl]]] = {}
-    for classv in classes:
+    for classv in CLASSES:
         out_classv = []  # list of (mean, std) for each feature by class value
         data_c = features[labels == classv]  # data for current class
         for feature in data_c:
@@ -70,25 +70,29 @@ def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
     return max(probs, key=lambda class_value: probs[class_value])
 
 
-#
-# def predict_bayes_all(X) -> NDArray:
-#     """
-#     Parameters
-#     ----------
-#     `X` : NDArray, Feature matrix
-#         All samples to predict.
-#     `params_by_class` : The parameters of the normal distribution of each feature for each class.
-#     Returns
-#     -------
-#     The predicted classes for each sample in X."""
-#     from concurrent.futures import ThreadPoolExecutor
-#
-#     MAX_WORKERS = 2**8
-#     executor = ThreadPoolExecutor(MAX_WORKERS)
-#     futures = []
-#     for x in X:
-#         futures.append(executor.submit(predict_bayes, x, None))
-#     return np.array([f.result() for f in futures])
+def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> NDArray:
+    """
+    Parameters
+    ----------
+    `X` : NDArray, Feature matrix
+        All samples to predict.
+    `params_by_class` : The parameters of the normal distribution of each feature for each class.
+    Returns
+    -------
+    The predicted classes for each sample in X."""
+    from main import FEAT, LABELS_STR_train
+
+    if params_by_class is None:
+        params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)
+
+    from concurrent.futures import ThreadPoolExecutor
+
+    executor = ThreadPoolExecutor(len(X))
+    futures = []
+    for x in X:
+        futures.append(executor.submit(predict_bayes, x, params_by_class))
+    return np.array([f.result() for f in futures])
+
 
 # ================================================================
 # ======================= TEST:==================================
@@ -96,39 +100,34 @@ def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
 
 
 def test_get_normal_parameters():
-    from main import FEAT, LABELS_STR
+    from main import FEAT, LABELS_STR_train
 
-    params_by_class = get_distrib_parameters(FEAT, LABELS_STR)  # type: ignore
+    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
     print("Format: (mean_i, std_i), ...,  for each class")
     pprint(params_by_class)
 
 
 def test_predict_bayes_runs():
-    from main import FEAT, LABELS_STR
+    from main import FEAT, LABELS_STR_train
 
-    params_by_class = get_distrib_parameters(FEAT, LABELS_STR)  # type: ignore
-    # test sample
-    idx = np.random.randint(0, len(FEAT))
+    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
+    idx = np.random.randint(0, len(FEAT))  # test sample
     x = FEAT.iloc[idx]  # type: ignore
     print("Sample to predict:\n", x, "\n ")
-    pred = predict_bayes(x, params_by_class)
-    print("Predicted class: ", pred)
-    print("Actual class: ", LABELS_STR.iloc[idx])
+    _ = predict_bayes(x, params_by_class)  # just tests that it runs
 
 
 def test_predict_bayes_f1score():
-    from main import FEAT, FEAT_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS
-    import pandas as pd  # noqa: F401
+    from main import FEAT, FEAT_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS, LABELS_STR_test, LABELS_STR_train  # noqa: F401
 
-    correct_classes = DATA_train[LAB_NAME]
-    params_by_class = get_distrib_parameters(FEAT, correct_classes)  # type: ignore
-    # params_by_class = get_distrib_parameters(FEAT, COL_NAMES, pd.Series(LABELS))  # type: ignore
+    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
     print("-------------------------------")
+    predict_bayes_all(FEAT)
     # test sample
     mistake = 0
     # for i, sample in enumerate(FEAT_test.itertuples()):
-    for sample, correct_class in zip(FEAT_test.itertuples(), correct_classes):
-        pred = predict_bayes(sample, params_by_class)
+    for sample, correct_class in zip(FEAT_test.itertuples(), LABELS_STR_test):
+        pred = predict_bayes(sample[1:], params_by_class)  # remove index from sample
         print("Predicted class: ", pred)
         print("Actual class: ", correct_class)
         if pred != correct_class:
