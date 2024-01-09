@@ -131,49 +131,41 @@ from pandas import DataFrame
 import numpy as np
 
 def test_metrics():
-    from main import FEAT, LAB_NAME, DATA_train, LABELS_STR_train
-    from naive_bayes import get_distrib_parameters, predict_bayes
+    from main import FEAT_test, LABELS_STR_test
+    from naive_bayes import predict_bayes_all
 
-    # Extracting data :
-    # labels_train: DataFrame = DATA_train[LAB_NAME]  # type: ignore
-    # labels_test: DataFrame = DATA_test[LAB_NAME]  # type: ignore
-
-    # "TRAIN" :
-    parameters = get_distrib_parameters(FEAT, LABELS_STR_train)
-
-    # predicitons = [predict_bayes(FEAT.iloc[idx], parameters) for idx in range(len(FEAT))]
-    predicitons = [predict_bayes(sample[1:], parameters) for sample in FEAT.itertuples()]
-    # print("predictions : ", predicitons
+    predictions = predict_bayes_all(FEAT_test)
+    # print("predictions : ", predictions
     # print("\n")
 
     # TEST :
 
-    true_labels = list(LABELS_STR_train)
+    true_labels = list(LABELS_STR_test)
     # print("Reality :", true_labels)
-    # print("\nevals :", [evaluation(true_labels, predicitons, label) for label in labels_train.unique()])
+    # print("\nevals :", [evaluation(true_labels, predictions, label) for label in labels_train.unique()])
 
-    obtained = accuracy(true_labels, predicitons)
-    expected = sk_metrics.accuracy_score(true_labels, predicitons)
+    obtained = accuracy(true_labels, predictions)
+    expected = sk_metrics.accuracy_score(true_labels, predictions)
     decimal = 2
 
     print("\nAccuracy : ", obtained)
     print("sklearn accuracy : ", expected)
     assert_almost_equal(obtained, expected, decimal=decimal)
 
-    obtained = precision(true_labels, predicitons)
-    expected = sk_metrics.precision_score(true_labels, predicitons, average="macro")
+    obtained = precision(true_labels, predictions)
+    expected = sk_metrics.precision_score(true_labels, predictions, average="macro")
     print("\nPrecision : ", obtained)
     print("sklearn precision : ", expected)
     assert_almost_equal(obtained, expected, decimal=decimal)
 
-    obtained = recall(true_labels, predicitons)
-    expected = sk_metrics.recall_score(true_labels, predicitons, average="macro")
+    obtained = recall(true_labels, predictions)
+    expected = sk_metrics.recall_score(true_labels, predictions, average="macro")
     print("\nRecall : ", obtained)
     print("sklearn recall : ", expected)
     assert_almost_equal(obtained, expected, decimal=decimal)
 
-    obtained = f1_score(true_labels, predicitons)
-    expected = sk_metrics.f1_score(true_labels, predicitons, average="macro")
+    obtained = f1_score(true_labels, predictions)
+    expected = sk_metrics.f1_score(true_labels, predictions, average="macro")
     print("\nF1 Score : ", obtained)
     print("sklearn F1 Score :", expected)
     assert_almost_equal(obtained, expected, decimal=decimal)
