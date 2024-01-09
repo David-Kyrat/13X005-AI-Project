@@ -122,35 +122,37 @@ def f1_score(true_labels, predict_labels):
 # ================================================================
 
 
-def test_metrics():
-    # Extracting data :
-    import sklearn.metrics as sk_metrics
-    from main import FEAT, LAB_NAME, DATA_test, DATA_train
-    from naive_bayes import get_distrib_parameters, predict_bayes
-    from pandas import DataFrame
-    from numpy.testing import assert_almost_equal
+import sklearn.metrics as sk_metrics
+from numpy.testing import assert_almost_equal
+from pandas import DataFrame
+import numpy as np
 
-    labels_train: DataFrame = DATA_train[LAB_NAME]  # type: ignore
+def test_metrics():
+    from main import FEAT, LAB_NAME, DATA_train, LABELS_STR_train
+    from naive_bayes import get_distrib_parameters, predict_bayes
+
+    # Extracting data :
+    # labels_train: DataFrame = DATA_train[LAB_NAME]  # type: ignore
     # labels_test: DataFrame = DATA_test[LAB_NAME]  # type: ignore
 
     # "TRAIN" :
-    parameters = get_distrib_parameters(FEAT, labels_train)
+    parameters = get_distrib_parameters(FEAT, LABELS_STR_train)
 
-    predicitons = [predict_bayes(FEAT.iloc[idx], parameters) for idx in range(len(FEAT))]
-    # print("predictions : ", predicitons)
+    # predicitons = [predict_bayes(FEAT.iloc[idx], parameters) for idx in range(len(FEAT))]
+    predicitons = [predict_bayes(sample[1:], parameters) for sample in FEAT.itertuples()]
+    # print("predictions : ", predicitons
     # print("\n")
 
     # TEST :
 
-    true_labels = list(labels_train)
+    true_labels = list(LABELS_STR_train)
     # print("Reality :", true_labels)
-
     # print("\nevals :", [evaluation(true_labels, predicitons, label) for label in labels_train.unique()])
 
     obtained = accuracy(true_labels, predicitons)
     expected = sk_metrics.accuracy_score(true_labels, predicitons)
     decimal = 2
-    
+
     print("\nAccuracy : ", obtained)
     print("sklearn accuracy : ", expected)
     assert_almost_equal(obtained, expected, decimal=decimal)

@@ -22,18 +22,19 @@ tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[L
 
 FEAT, FEAT_test = pd.DataFrame(tmp_x), pd.DataFrame(tmp_x_test)
 DATA_train = FEAT.copy(deep=True)
-DATA_train["class"] = y_train
+DATA_train[LAB_NAME] = y_train
 
 DATA_test = FEAT_test.copy(deep=True)
-DATA_test["class"] = y_test
+DATA_test[LAB_NAME] = y_test
 
 LABELS_STR = DATA[LAB_NAME]  # class value as string
-# LABELS_STR_test: DataFrame = DATA_test[LAB_NAME]  # type: ignore
+LABELS_STR_train = y_train  # non-serialized class value of test dataset
+LABELS_STR_test: DataFrame = y_test  # type: ignore
 
-lab_values = LABELS_STR.unique()
+CLASSES = LABELS_STR.unique()
 
-LAB_IDX_VAL: dict[int, str] = dict(zip(range(len(lab_values)), lab_values))
-LAB_VAL_IDX: dict[str, int] = dict(zip(lab_values, range(len(lab_values))))
+LAB_IDX_VAL: dict[int, str] = dict(zip(range(len(CLASSES)), CLASSES))
+LAB_VAL_IDX: dict[str, int] = dict(zip(CLASSES, range(len(CLASSES))))
 
 LABELS: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_train])
 LABELS_test: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_test])

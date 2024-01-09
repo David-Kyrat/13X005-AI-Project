@@ -5,7 +5,7 @@ from pprint import pprint
 from gradient_descent import grad_desc_ml
 
 # NB: floating is any (numpy) floating type NDArray or not
-from numpy import floating as fl
+from numpy import floating as fl, int32 as i32
 from numpy.random import rand, randint
 from numpy.typing import NDArray
 from pandas import DataFrame

@@ -2,7 +2,7 @@ from pprint import pprint
 from typing import Any
 
 import numpy as np
-
+from metrics import f1_score
 # NB: floating is any (numpy) floating type NDArray or not
 from numpy import float32 as f32, floating as fl
 
@@ -87,7 +87,7 @@ def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl
 
     from concurrent.futures import ThreadPoolExecutor
 
-    executor = ThreadPoolExecutor(len(X))
+    executor = ThreadPoolExecutor(1)
     futures = []
     for x in X:
         futures.append(executor.submit(predict_bayes, x, params_by_class))
@@ -121,25 +121,16 @@ def test_predict_bayes_f1score():
     from main import FEAT, FEAT_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS, LABELS_STR_test, LABELS_STR_train  # noqa: F401
 
     params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
-    print("-------------------------------")
-    predict_bayes_all(FEAT)
-    # test sample
-    mistake = 0
-    # for i, sample in enumerate(FEAT_test.itertuples()):
-    for sample, correct_class in zip(FEAT_test.itertuples(), LABELS_STR_test):
-        pred = predict_bayes(sample[1:], params_by_class)  # remove index from sample
-        print("Predicted class: ", pred)
-        print("Actual class: ", correct_class)
-        if pred != correct_class:
-            mistake += 1
-        print()
-    precision = 1 - (mistake / len(FEAT_test))
-    print("Precision: ", len(FEAT_test) - mistake, f"/ {len(FEAT_test)}", " (", precision * 100, "%)")
-    # idx = np.random.randint(0, len(FEAT))
-    # x = FEAT.iloc[idx]  # type: ignore
-    # print("Sample to predict:\n", x, "\n ")
-    # pred = predict_bayes(x, params_by_class)
+    predicted = [predict_bayes(sample[1:], params_by_class) for sample in FEAT.itertuples()]
+    score = f1_score(LABELS_STR_test, predicted)
+    print("F1 score for Naive Bayes:", score)
 
+def test_predict_bayes_f1score_all():
+    from main import FEAT, FEAT_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS, LABELS_STR_test, LABELS_STR_train  # noqa: F401
+    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
+    predicted = predict_bayes_all(FEAT_test, params_by_class)
+    score = f1_score(LABELS_STR_test, predicted)
+    print("F1 score for Naive Bayes:", score)
 
 def main():
     # test_get_normal_parameters()
