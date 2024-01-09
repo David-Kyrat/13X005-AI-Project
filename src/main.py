@@ -18,7 +18,7 @@ LAB_NAME: str = iris.data["headers"][-1]
 from sklearn.model_selection import train_test_split
 
 # tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=np.random.randint(0, 100))
-tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=27)
+tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=42)
 
 FEAT, FEAT_test = pd.DataFrame(tmp_x), pd.DataFrame(tmp_x_test)
 DATA_train = FEAT.copy(deep=True)
@@ -28,11 +28,12 @@ DATA_test = FEAT_test.copy(deep=True)
 DATA_test[LAB_NAME] = y_test
 
 LABELS_STR = DATA[LAB_NAME]  # class value as string
-LABELS_STR_train = y_train  # non-serialized class value of test dataset
-LABELS_STR_test: DataFrame = y_test  # type: ignore
+# LABELS_STR_train = y_train  # non-serialized class value of test dataset
+# LABELS_STR_test: DataFrame = y_test  # type: ignore
 
 CLASSES = LABELS_STR.unique()
 
+# seriliazation of class value from string to int (we just take the indices)
 LAB_IDX_VAL: dict[int, str] = dict(zip(range(len(CLASSES)), CLASSES))
 LAB_VAL_IDX: dict[str, int] = dict(zip(CLASSES, range(len(CLASSES))))
 

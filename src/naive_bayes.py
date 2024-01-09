@@ -31,16 +31,16 @@ def get_distrib_parameters(features: DataFrame, labels) -> dict[Any, list[tuple[
     Parameters
     ----------
     `features` : Features from training dataset (only the features, i.e. `main.FEAT`).
-    `labels` : `Series` or `DataFrame` (i.e. a column, `main.LABELS_STR_train`)
+    `labels` : `Series` or `DataFrame` (i.e. a column, `main.LABELS`)
         Labels (from training dataset) to extract the different values from (will be the keys of the returned dict)
     Returns
     -------
     Parameters for each distribution of each feature feature for each class.
     i.e. a dictionary {class: [(mean_i, std_i), ...]} for each feature i."""
-    from main import CLASSES
+    from main import LAB_IDX_VAL
 
     out: dict[Any, list[tuple[fl, fl]]] = {}
-    for classv in CLASSES:
+    for classv in LAB_IDX_VAL.keys():
         out_classv = []  # list of (mean, std) for each feature by class value
         data_c = features[labels == classv]  # data for current class
         for feature in data_c:
@@ -72,7 +72,7 @@ def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
 
 
 def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> list[Any]:
-    """ Computes concurrently predictions for all samples in X. (1 thread per sample)
+    """Computes concurrently predictions for all samples in X. (1 thread per sample)
     Parameters
     ----------
     `X` : Features / All samples to predict (`main.FEAT`).
@@ -80,16 +80,16 @@ def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl
     Returns
     -------
     The predicted classes for each sample in X."""
-    from main import FEAT, LABELS_STR_train
+    from main import FEAT, LABELS
 
     if params_by_class is None:
-        params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)
+        params_by_class = get_distrib_parameters(FEAT, LABELS)
 
     from concurrent.futures import ThreadPoolExecutor
+
     executor = ThreadPoolExecutor(len(X))
     futures = [executor.submit(predict_bayes, x[1:], params_by_class) for x in X.itertuples()]
     return [f.result() for f in futures]
-    
 
 
 # ================================================================
@@ -98,17 +98,17 @@ def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl
 
 
 def test_get_normal_parameters():
-    from main import FEAT, LABELS_STR_train
+    from main import FEAT, LABELS
 
-    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
+    params_by_class = get_distrib_parameters(FEAT, LABELS)  # type: ignore
     print("Format: (mean_i, std_i), ...,  for each class")
     pprint(params_by_class)
 
 
 def test_predict_bayes_runs():
-    from main import FEAT, LABELS_STR_train
+    from main import FEAT, LABELS
 
-    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
+    params_by_class = get_distrib_parameters(FEAT, LABELS)  # type: ignore
     idx = np.random.randint(0, len(FEAT))  # test sample
     x = FEAT.iloc[idx]  # type: ignore
     print("Sample to predict:\n", x, "\n ")
@@ -116,17 +116,19 @@ def test_predict_bayes_runs():
 
 
 def test_predict_bayes_f1score():
-    from main import FEAT, FEAT_test, LABELS_STR_test, LABELS_STR_train  # noqa: F401
-    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
+    from main import FEAT, FEAT_test, LABELS_test, LABELS  # noqa: F401
+
+    params_by_class = get_distrib_parameters(FEAT, LABELS)
     predicted = [predict_bayes(sample[1:], params_by_class) for sample in FEAT_test.itertuples()]
-    score = f1_score(LABELS_STR_test, predicted)
+    score = f1_score(LABELS_test, predicted)
     print("F1 score for Naive Bayes:", score)
 
 
 def test_predict_bayes_f1score_all():
-    from main import FEAT_test, LABELS_STR_test, LABELS_STR_train  # noqa: F401
+    from main import FEAT_test, LABELS_test
+
     predicted = predict_bayes_all(FEAT_test)
-    score = f1_score(LABELS_STR_test, predicted)
+    score = f1_score(LABELS_test, predicted)
     print("F1 score for Naive Bayes:", score)
 
 
