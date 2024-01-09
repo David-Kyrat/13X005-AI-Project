@@ -131,16 +131,18 @@ from pandas import DataFrame
 import numpy as np
 
 def test_metrics():
-    from main import FEAT_test, LABELS_STR_test
+    from main import FEAT_test, LABELS_test
     from naive_bayes import predict_bayes_all
+    from log_reg import predict_log_reg, best_w, best_b
 
-    predictions = predict_bayes_all(FEAT_test)
+    # predictions = predict_bayes_all(FEAT_test)
+    predictions = predict_log_reg(FEAT_test.to_numpy(), best_w, best_b)
     # print("predictions : ", predictions
     # print("\n")
 
     # TEST :
 
-    true_labels = list(LABELS_STR_test)
+    true_labels = LABELS_test
     # print("Reality :", true_labels)
     # print("\nevals :", [evaluation(true_labels, predictions, label) for label in labels_train.unique()])
 
