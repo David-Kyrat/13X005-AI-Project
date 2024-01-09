@@ -19,6 +19,10 @@ run:
 test:
 	poetry run pytest -sv $(SRC)/*.py -k test  --disable-warnings  # warnings are very verbose and not always relevant 
 
+# test f1 score of each model
+test_model:
+	poetry run pytest -sv $(SRC)/*.py -k test -k f1  --disable-warnings  # warnings are very verbose and not always relevant 
+
 report:
 	cd $(REPORT_DIR) && \
 	pandoc $(REPORT).md -so $(REPORT).tex &&\

@@ -18,7 +18,7 @@ LAB_NAME: str = iris.data["headers"][-1]
 from sklearn.model_selection import train_test_split
 
 # tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=np.random.randint(0, 100))
-tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=42)
+tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=27)
 
 FEAT, FEAT_test = pd.DataFrame(tmp_x), pd.DataFrame(tmp_x_test)
 DATA_train = FEAT.copy(deep=True)

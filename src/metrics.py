@@ -132,11 +132,11 @@ import numpy as np
 
 def test_metrics():
     from main import FEAT_test, LABELS_test
-    from naive_bayes import predict_bayes_all
-    from log_reg import predict_log_reg, best_w, best_b
+    import naive_bayes as nb
+    import log_reg as lr
 
-    # predictions = predict_bayes_all(FEAT_test)
-    predictions = predict_log_reg(FEAT_test.to_numpy(), best_w, best_b)
+    predictions = nb.predict_bayes_all(FEAT_test)
+    predictions = lr.predict_log_reg(FEAT_test.to_numpy(), lr.best_w, lr.best_b)
     # print("predictions : ", predictions
     # print("\n")
 

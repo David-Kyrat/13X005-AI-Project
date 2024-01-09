@@ -115,7 +115,7 @@ def test_predict_bayes_runs():
     _ = predict_bayes(x, params_by_class)  # just tests that it runs
 
 
-def test_predict_bayes_f1score():
+def test_predict_bayes_seq_score():
     from main import FEAT, FEAT_test, LABELS_test, LABELS  # noqa: F401
 
     params_by_class = get_distrib_parameters(FEAT, LABELS)
@@ -135,4 +135,4 @@ def test_predict_bayes_f1score_all():
 def main():
     # test_get_normal_parameters()
     print(" ")
-    test_predict_bayes_f1score()
+    test_predict_bayes_f1score_all()

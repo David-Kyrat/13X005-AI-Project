@@ -152,20 +152,13 @@ def test_log_reg_with_dataset_values():
 def test_log_reg_f1score():
     """Test the efficiency of logistic regression with optimally chosen (before) parameters"""
     from main import FEAT_test, LABELS_test
-
-    # NOTE: parameters found after testing with different values, see branch "gpu-training" for more details
-    w, b = np.array([0.53452349, 0.36463584, 1.16132476, 1.08204578]), 0.45146791
     # pred_compute(FEAT_test, LABELS_test, w, b)
 
-    predicted_val_logreg = predict_log_reg(np.asarray(FEAT_test), w, b)
-    # TODO: replace with our impl of f1_score
-    from sklearn.metrics import f1_score
+    predicted_val_logreg = predict_log_reg(np.asarray(FEAT_test), best_w, best_b)
 
-    score = metrics.f1_score(pd.DataFrame(LABELS_test), predicted_val_logreg)
-    score2 = f1_score((LABELS_test), predicted_val_logreg, average="micro")
-    print("weights:", w, "\nbias:", b, "\n")
-    print("F1 score:", score, "\n")
-    print("F1 score:", score2, "\n")
+    score = metrics.f1_score(LABELS_test, predicted_val_logreg)
+    # print("weights:", best_w, "\nbias:", best_w, "\n")
+    print("F1 score:", score)
 
 
 def main():
