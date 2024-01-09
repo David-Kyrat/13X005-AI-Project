@@ -17,7 +17,7 @@ run:
 	poetry run python $(SRC)/$(MAIN)
 
 test:
-	poetry run pytest -sv $(SRC)/*.py -k test
+	poetry run pytest -sv $(SRC)/*.py -k test  --disable-warnings  # warnings are very verbose and not always relevant 
 
 report:
 	cd $(REPORT_DIR) && \
