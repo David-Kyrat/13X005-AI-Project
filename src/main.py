@@ -13,6 +13,8 @@ iris = fetch_ucirepo(id=DATASET_ID)  # fetch dataset
 assert iris.data is not None
 
 DATA: DataFrame = iris.data.original
+
+FEAT: DataFrame = iris.data.features
 LAB_NAME: str = iris.data["headers"][-1]
 
 from sklearn.model_selection import train_test_split
@@ -31,14 +33,13 @@ LABELS_STR = DATA[LAB_NAME]  # class value as string
 # LABELS_STR_test: DataFrame = DATA_test[LAB_NAME]  # type: ignore
 
 lab_values = LABELS_STR.unique()
-# lab_values_test = LLAB_IDX_VALABELS_STR_test.unique()
 
-LAB_IDX_VAL: dict[int, str] = dict(zip(range(len(lab_values)), lab_values))  # class index, class value
-LAB_VAL_IDX: dict[str, int] = {v: k for k, v in LAB_IDX_VAL.items()}  # class value, class index
+LAB_IDX_VAL: dict[int, str] = dict(zip(range(len(lab_values)), lab_values))
+LAB_VAL_IDX: dict[str, int] = dict(zip(lab_values, range(len(lab_values))))
 
-LABELS: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_train])
-LABELS_test: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_test])
+LABELS: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in LABELS_STR])
 COL_NAMES = list(FEAT.columns)
+
 
 if __name__ == "__main__":
     import naive_bayes

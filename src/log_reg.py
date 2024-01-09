@@ -5,7 +5,7 @@ from pprint import pprint
 from gradient_descent import grad_desc_ml
 
 # NB: floating is any (numpy) floating type NDArray or not
-from numpy import floating as fl, int32 as i32
+from numpy import floating as fl
 from numpy.random import rand, randint
 from numpy.typing import NDArray
 from pandas import DataFrame
@@ -64,6 +64,7 @@ def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
 
     X_sum_over_rows = np.sum(X, axis=1)  # Sum over rows of X
     dw = -np.sum(X_sum_over_rows * errors)  # Vectorized computation of dw component
+
     return dw, db
 
 
@@ -127,13 +128,12 @@ def predict_compute_metrics(X_test, Y_test, w, b):
 
 
 @pytest.mark.parametrize("m, n", randint(0, 70, size=(20, 2)))
-def test_log_reg_runs_with_random_values(m, n):
+def test_log_reg_with_random_values(m, n):
     X, y, w, b = rand(m, n), rand(m), rand(n), rand()
     n_it, lr = 100, 0.03
     w, b = train_log_reg(X, y, w, b, n_it, lr)
 
-
-def test_log_reg_runs_with_dataset_values():
+def test_log_reg_with_dataset_values():
     from main import FEAT, LABELS
 
     X = np.asarray(FEAT)
