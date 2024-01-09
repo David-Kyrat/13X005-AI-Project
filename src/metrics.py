@@ -48,7 +48,7 @@ def accuracy(true_labels, predicted_labels):
 
 def precision(true_labels,predict_labels):
     """
-    This function implements the precision metric wich measure the proportion of false positive predictions considering every positive predictions
+    This function implements the precision metric wich measure the proportion of false positive predictions considering every positive predictions for each label, and returns the average precision
 
     Parameters
     ----------
@@ -73,7 +73,7 @@ def precision(true_labels,predict_labels):
 
 def recall(true_labels,predict_labels):
     """
-    This function implements the precision metric wich measure the proportion of uncorrect negatives predictions (recall of 1 means the number of fale negatives is null)
+    This function implements the precision metric wich measure the proportion of uncorrect negatives predictions (recall of 1 means the number of fale negatives is null) for each label, and returns the average recall
 
     Parameters
     ----------
@@ -122,7 +122,8 @@ def f1_score(true_labels,predict_labels):
 # ======================= TEST:==================================
 # ================================================================
 
-#TODO : utiliser le dataset test pour ensuite appliquer les métriques
+#Extracting data :
+
 from main import DATA, LAB_NAME, iris, COL_NAMES
 from sklearn.model_selection import train_test_split
 from pandas import DataFrame
@@ -130,21 +131,17 @@ from pandas import DataFrame
 FEAT, FEAT_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=42)
 
 DATA_train = FEAT.copy(deep=True)
-print(DATA_train)
 DATA_train["class"] = y_train
-print(DATA_train)
 
 DATA_test = FEAT_test.copy(deep=True)
 DATA_test["class"] = y_test
-
-# FEAT: DataFrame = X_train
-# FEAT_test: DataFrame = X_test
 
 LABELS_STR: DataFrame = DATA_train[LAB_NAME]  # type: ignore
 LABELS_STR_test: DataFrame = DATA_test[LAB_NAME]  # type: ignore
 
 from naive_bayes import predict_bayes, get_distrib_parameters
 import sklearn.metrics
+
 
 #TRAIN :
 
@@ -153,6 +150,10 @@ parameters=get_distrib_parameters(DATA_train,COL_NAMES,LABELS_STR)
 predicitons=[predict_bayes(FEAT.iloc[idx], parameters) for idx in range(len(FEAT))]
 print("predictions : ",predicitons)
 print("\n")
+
+
+#TEST :
+
 
 true_labels=[label for label in LABELS_STR]
 print("Reality :",true_labels)
@@ -170,8 +171,3 @@ print("sklearn recall : ",sklearn.metrics.recall_score(true_labels,predicitons,a
 
 print("\nF1 Score : ",f1_score(true_labels,predicitons))
 print("sklearn F1 Score :",sklearn.metrics.f1_score(true_labels,predicitons,average="macro"))
-
-
-
-
-#TEST :
