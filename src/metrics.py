@@ -66,7 +66,8 @@ def precision(true_labels, predict_labels):
     precisions = []
     for label in labels_names:
         true_positive, false_positive, _, _ = evaluation(true_labels, predict_labels, label)
-        precisions.append(true_positive / (true_positive + false_positive))
+        tp_fp = true_positive + false_positive
+        precisions.append(0 if tp_fp == 0 else true_positive / tp_fp)
 
     return sum(precisions) / len(labels_names)
 
@@ -91,7 +92,8 @@ def recall(true_labels, predict_labels):
     recalls = []
     for label in labels_names:
         true_positive, _, _, false_negative = evaluation(true_labels, predict_labels, label)
-        recalls.append(true_positive / (true_positive + false_negative))
+        tp_fn = true_positive + false_negative
+        recalls.append(0 if tp_fn == 0 else true_positive / tp_fn)
 
     return sum(recalls) / len(labels_names)
 
@@ -114,7 +116,8 @@ def f1_score(true_labels, predict_labels):
 
     prec = precision(true_labels, predict_labels)
     rec = recall(true_labels, predict_labels)
-    return 2 * (prec * rec) / (prec + rec)
+    prec_rec = prec + rec
+    return 0 if prec_rec == 0 else 2 * (prec * rec) / (prec + rec)
 
 
 # ================================================================

@@ -3,9 +3,10 @@ from typing import Any
 
 import numpy as np
 from metrics import f1_score
-# NB: floating is any (numpy) floating type NDArray or not
-from numpy import float32 as f32, floating as fl
 
+# NB: floating is any (numpy) floating type NDArray or not
+from numpy import float32 as f32
+from numpy import floating as fl
 from numpy.typing import NDArray
 from pandas import DataFrame
 
@@ -70,12 +71,11 @@ def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
     return max(probs, key=lambda class_value: probs[class_value])
 
 
-def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> NDArray:
-    """
+def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> list[Any]:
+    """ Computes concurrently predictions for all samples in X. (1 thread per sample)
     Parameters
     ----------
-    `X` : NDArray, Feature matrix
-        All samples to predict.
+    `X` : Features / All samples to predict (`main.FEAT`).
     `params_by_class` : The parameters of the normal distribution of each feature for each class.
     Returns
     -------
@@ -86,16 +86,14 @@ def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl
         params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)
 
     from concurrent.futures import ThreadPoolExecutor
-
-    executor = ThreadPoolExecutor(1)
-    futures = []
-    for x in X:
-        futures.append(executor.submit(predict_bayes, x, params_by_class))
-    return np.array([f.result() for f in futures])
+    executor = ThreadPoolExecutor(len(X))
+    futures = [executor.submit(predict_bayes, x[1:], params_by_class) for x in X.itertuples()]
+    return [f.result() for f in futures]
+    
 
 
 # ================================================================
-# ======================= TEST:==================================
+# ======================= TEST:===================================
 # ================================================================
 
 
@@ -118,19 +116,19 @@ def test_predict_bayes_runs():
 
 
 def test_predict_bayes_f1score():
-    from main import FEAT, FEAT_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS, LABELS_STR_test, LABELS_STR_train  # noqa: F401
-
+    from main import FEAT, FEAT_test, LABELS_STR_test, LABELS_STR_train  # noqa: F401
     params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
-    predicted = [predict_bayes(sample[1:], params_by_class) for sample in FEAT.itertuples()]
+    predicted = [predict_bayes(sample[1:], params_by_class) for sample in FEAT_test.itertuples()]
     score = f1_score(LABELS_STR_test, predicted)
     print("F1 score for Naive Bayes:", score)
+
 
 def test_predict_bayes_f1score_all():
-    from main import FEAT, FEAT_test, DATA_train, LAB_NAME, LAB_IDX_VAL, LABELS, LABELS_STR_test, LABELS_STR_train  # noqa: F401
-    params_by_class = get_distrib_parameters(FEAT, LABELS_STR_train)  # type: ignore
-    predicted = predict_bayes_all(FEAT_test, params_by_class)
+    from main import FEAT_test, LABELS_STR_test, LABELS_STR_train  # noqa: F401
+    predicted = predict_bayes_all(FEAT_test)
     score = f1_score(LABELS_STR_test, predicted)
     print("F1 score for Naive Bayes:", score)
+
 
 def main():
     # test_get_normal_parameters()
