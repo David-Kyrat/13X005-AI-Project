@@ -17,7 +17,7 @@ run:
 	poetry run python $(SRC)/$(MAIN)
 
 test:
-	poetry run pytest -v $(SRC)/*.py -k test
+	poetry run pytest -sv $(SRC)/*.py -k test
 
 report:
 	cd $(REPORT_DIR) && \

@@ -669,6 +669,16 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "prettyprint"
+version = "0.1.5"
+description = "prettyprint print list/dict/tuple object prettily"
+optional = false
+python-versions = "*"
+files = [
+    {file = "prettyprint-0.1.5.tar.gz", hash = "sha256:7423210b62adfb3777677914cd25db4919f1c2b0afba0454365ffbfa3f7e3731"},
+]
+
+[[package]]
 name = "pyink"
 version = "23.10.0"
 description = "Pyink is a python formatter, forked from Black with slightly different behavior."
@@ -939,4 +949,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "3cc236148abfe2c949a9f6d796c54511845f2629416223c5d3d335386a635764"
+content-hash = "8d7c60e4a0f315f5ba5ab9caa9eca4bb2be21be2df0fde22f3ea307f5100a686"
