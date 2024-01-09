@@ -35,14 +35,16 @@ lab_values = LABELS_STR.unique()
 LAB_IDX_VAL: dict[int, str] = dict(zip(range(len(lab_values)), lab_values))
 LAB_VAL_IDX: dict[str, int] = dict(zip(lab_values, range(len(lab_values))))
 
-LABELS: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in LABELS_STR])
-COL_NAMES = list(FEAT.columns)
+LABELS: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_train])
+LABELS_test: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_test])
+# COL_NAMES = list(FEAT.columns)
 
 
 if __name__ == "__main__":
-    import naive_bayes
+    import naive_bayes, log_reg  # noqa: F401
 
     # test_gradient_descent()
     # naive_bayes.main()
     naive_bayes.main()
+    # log_reg.main()
     # pass

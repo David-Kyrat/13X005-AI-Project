@@ -96,9 +96,9 @@ def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
 
 
 def test_get_normal_parameters():
-    from main import FEAT, COL_NAMES, LABELS_STR
+    from main import FEAT, LABELS_STR
 
-    params_by_class = get_distrib_parameters(FEAT, COL_NAMES, LABELS_STR)  # type: ignore
+    params_by_class = get_distrib_parameters(FEAT, LABELS_STR)  # type: ignore
     print("Format: (mean_i, std_i), ...,  for each class")
     pprint(params_by_class)
 

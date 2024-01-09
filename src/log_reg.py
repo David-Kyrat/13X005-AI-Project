@@ -166,3 +166,8 @@ def test_log_reg_f1score():
     print("weights:", w, "\nbias:", b, "\n")
     print("F1 score:", score, "\n")
     print("F1 score:", score2, "\n")
+
+
+def main():
+    # test_log_reg_with_dataset_values()
+    test_log_reg_f1score()
