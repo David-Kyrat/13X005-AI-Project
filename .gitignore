@@ -9,6 +9,7 @@ project-infos.md
 *.fls
 *.log
 *.gz
+*.toc
 
 # biblatex auto-generated files
 *-blx.bib

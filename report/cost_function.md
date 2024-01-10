@@ -2,6 +2,8 @@
 title: Cost function
 author: Michel Donnet
 date: \today
+header-includes:
+    - \DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
 ---
 
 
@@ -22,13 +24,15 @@ Autrement dit, la fonction sigmoïde est la fonction de répartition de la régr
 Soit $Y \in \{0, 1\}$ les différents labels que peut prendre l'élément que l'on considère et soit $X$ l'ensemble des caractéristiques connues de l'élément, dont on cherche à déterminer dans quelle classe le mettre, donc quel label on doit lui attribuer.
 Soit $\theta$ le vecteur des poids des covariables, indiquant à quel point les covariables influencent sur la décision du label. On a donc:
 
-$$P(Y = 1 | X) = \frac{1}{1 + e^{-(X_1 \times w_1 + X_2 \times w_2 + \dots + b)}}$$
+$$P(Y = 1 | X) = \frac{1}{1 + e^{-(X_1 * w_1 + X_2*w_2 + \dots + b)}}$$
 et 
-$$P(Y = 0 | X) = 1 - \frac{1}{1 + e^{-(X_1 \times w_1 + \dots + b)}}$$
+$$P(Y = 0 | X) = 1 - \frac{1}{1 + e^{-(X_1 * w_1 + \dots + b)}}$$
 
-Pour plus de simplicité, on va considérer que le biais est compris dans les poids: au lieu d'écrire $z = w^TX + b$, on écrit $z = \theta^T\hat{X}$ avec $\hat{X} = \begin{bmatrix} 1 \\ X \end{bmatrix}$ modifié ou on a ajouté un $1$ au début et $\theta = \begin{bmatrix} b \\ w \end{bmatrix}$.
-Ainsi, on a:
-$$\theta^T \hat{X} = \theta_0 + X_1 \times \theta_1 + \dots + X_n \times \theta_n = b + X_1 \times w_1 + \dots + X_n \times w_n$$
+Pour plus de simplicité, on va considérer que le biais est compris dans les poids: au lieu d'écrire $z = w^TX + b$, on écrit $z = \theta^T\hat{X}$ avec $\hat{X} = \begin{bmatrix} 1 \\ X \end{bmatrix}$ modifié ou on a ajouté un $1$ au début et $\theta = \begin{bmatrix} b \\ w^T \end{bmatrix}$.
+Ainsi, on a:  
+$\theta^T \hat{X} = \theta_0 * 1 + w^T X = \theta_0 + \sum_{i = 1}^n{w_i * X_i} = b + X_1 * w_1 + \dots + X_n * w_n$  
+
+<!-- \vspace{-3cm} -->
 
 Notre régression logistique binaire peut donc s'écrire comme:
 $$P(Y = 1 | X) = \frac{1}{1 + e^{\theta^T X}} = \sigma(\theta^TX)$$
@@ -47,7 +51,7 @@ On peut remarquer que:
 
 $$P(Y = 1 | X)$$
 $$=\frac{1}{1 + e^{-\theta^TX}}$$
-$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{e^{\theta^TX}}{e^{\theta^TX}}$$
+$$=\frac{1}{1 + e^{-\theta^TX}} * \frac{e^{\theta^TX}}{e^{\theta^TX}}$$
 $$=\frac{e^{\theta^TX}}{e^{\theta^TX} + e^{\theta^TX - \theta^TX}}$$
 $$=\frac{e^{\theta^TX}}{e^{\theta^TX} + e^0}$$
 $$=\frac{e^{\theta^TX}}{e^{\theta^TX} + 1}$$
@@ -103,12 +107,12 @@ C'est pourquoi, on peut utiliser l'inverse de cette fonction, dont on prend le l
 
 Cela nous donne une fonction de coût comme suit:
 
-$$\sum_k^K f(Y, k) log(\frac{1}{P(Y = k | X)})$$
-$$\sum_k^K f(Y, k) (log(1) - log(P(Y = k | X)))$$
-$$\sum_k^K f(Y, k) - log(P(Y = k | X))$$
-$$-\sum_k^K f(Y, k)log(P(Y = k | X))$$
+$$\sum_k^K f(Y, k) \log(\frac{1}{P(Y = k | X)})$$
+$$\sum_k^K f(Y, k) (\log(1) - \log(P(Y = k | X)))$$
+$$\sum_k^K f(Y, k) - \log(P(Y = k | X))$$
+$$-\sum_k^K f(Y, k)\log(P(Y = k | X))$$
 
 On peut minimiser cette fonction de coût grâce à une descente en gradient.
 
 Pour n données d'apprentissage, notre minimisation devient:
-$$-\sum_i^n\sum_k^K f(Y_i, k) log(P(Y_i = k | X))$$
+$$-\sum_i^n\sum_k^K f(Y_i, k) \log(P(Y_i = k | X))$$

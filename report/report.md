@@ -203,7 +203,13 @@ où l'on peut ensuite dévolpper $p(y_i | x_i; w, b)$ pour retomber sur la cross
 La fonction ci-dessus pénalise fortement (du moins plus que les autres cas) les fausses prédictions "confiantes" (i.e. annonce faux + haute probabilités) et son domaine d'arrivé est de 0 à $\infty$, un modèle parfait aurait une log-loss de 0.  
 Un modèle complètement incorrect aurait, quant à lui, une log loss qui tend vers $\infty$
 
+### 2.2.2 -- Apprentissage
+
+
+
 ---
+
+\newpage{}
 
 ## 2.3 -- Naive Bayes
 
