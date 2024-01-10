@@ -297,20 +297,33 @@ Suite à l'apprentissage , nous avons obtenu les résultats suivants:
     b &= 0.45146791
 \end{align*}
 
-Nous verrons juste après, le f1-score qu'à généré ces paramètres.
-
 > N.B.:   
 L'apprentissage peut être ré-effectué de manière efficient si besoine est à l'aide du jupyter notebook [training\_test.ipynb](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) disponible sur la branche [gpu-training](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) du repository github.
 Le code de l'entraînement (uniquement sur cette branche) à été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev).  
 A noter qu'il utilise des fonctions des sklearn alors que nous devions les implémenter nous mêmes, (telles que les metrics f1-score...).
-Ces fonctions ont bien été implenté mais pour une raison de simplicité, elle n'ont pas été utilisée pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.
+Ces fonctions ont bien été implenté mais pour une raison de simplicité, elle n'ont pas été utilisée pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.  
 
+\vspace{0.3cm}
 
+Comme dit en section 1.1, ces paramètres sont, en effet, plus que satisfaisants,
+comme on peut le voir sur l'output de `pytest` suivant:
 
+\begin{lstlisting}
+src/log_reg.py::test_log_reg_f1score 
+weights & biases: [0.53452349, 0.36463584, 1.16132476, 1.08204578], 0.45146791  
+{ 'accuracy': 1.0, 'f1_score': 1.0, 'precision': 1.0, 'recall': 1.0 }
+PASSED
 
+src/naive_bayes.py::test_predict_bayes_f1score_all  
+{ 'accuracy': 0.97, 'f1_score': 0.975, 'precision': 0.976, 'recall': 0.974 }
+PASSED
+\end{lstlisting}
 
+NB: pour reproduire cette output, lancer \code{make test\_model}.
 
-
+Ce résultat a été obtenu avec une séparation 70/30 de training/test data. 
+Lorsque l'on essaye de changer la portion qui est prise aléatoirement dans chaque catégorie, 
+on obtient un F1-score qui varie entre 0.93 et 1.0 (avec, dans de rares exceptions 0.91 ou 0.89).
 
 
 
