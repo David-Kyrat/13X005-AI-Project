@@ -102,10 +102,6 @@ def predict_log_reg(X: NDArray, w: NDArray, b):
     :return: Vector of predicted class labels (0 or 1) for each example in X. Vector NDArray
     """
     from main import LAB_VAL_IDX
-
-    # return i32(sigmoid(z(X, w, b)).get() >= 0.5)
-    # print(sigmoid(z(X, w, b)))
-    # predicted= sigmoid((z(X, w, b))).get()
     # if DataFrame or Series is passed, convert to numpy array
     if not isinstance(X, np.ndarray):
         X = np.asarray(X)

@@ -24,7 +24,9 @@ Ce document se propose d'étudier ces deux techniques, en mettant l'accent sur l
 
 ## 1.1 -- Régression Logistique
 
-En statistiques, la régression logistique, s'inscrit dans le cadre des modèles de régression pour les variables binaires.  
+En statistiques, la régression logistique, s'inscrit dans le cadre des modèles de régression pour les variables binaires. 
+Bien qu'elle soit quasiment exclusivement utilisée en tant que méthode de classification.  
+En effet, c'est l'ajout d'un seuil, à la probabilité continue donnée par le model de regression qui nous permet de l'utiliser pour la classification.
 
 Ce type de modèle vise à expliquer de manière optimale une variable binaire,
 qui représente la présence ou l'absence d'une caractéristique spécifique,
@@ -42,11 +44,19 @@ $$
 où $w \in \R^n$ est le vecteur de poids, $b \in \R$ le biais et $\scalproduct{.}{.}$ le produit scalair usuel.
 $f$ est une fonction dite de seuillage qui va séparer nos résultats. Un choix commun pour $f$ est la sigmoide ou la fonction signe \cite{ClassifieurLineaire2022}.
 
-Par exemple, dans notre cas, on suppose le modèle suivant:
+Par exemple, dans le cas de la regression logistique binaire, on suppose le modèle suivant:
+
 $$
 y_i \sim Bernoulli(p_i),\quad p_i = \sigma(\scalproduct{w}{x_i} + b),\quad \sigma(z) = \frac{1}{1 + e^{-z}}
 $$
 où $x_i$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ features (aussi appelé un *sample*), et $y_i$ la variable aléatoire qui représente le label qui leur est associé.
+
+Cependant, dans notre dataset (voir \href{#choix-du-dataset-outils-utilisuxe9s}{section 2.0}) nous avons 3 classes (3 espèces d'iris),
+$y$ ne suit donc, évidemment, plus une loi de Bernoulli.  
+La sigmoide étant continue, nous avons simplement modifié la manière dont nous lui appliquions le seuillage, pour distinguer 3 cas au lieu de 2.
+i.e. Au lieu de séparer le domaine en 2 ($\sigma(z) \leq 0.5,\ \sigma(z) > 0.5$), nous l'avons séparé en $N$ (ici $N = 3$).
+On a donc que $y_i = k \Leftrightarrow \frac{k}{N} \leq \sigma(z) < \frac{k + 1}{N}$,
+ce qui a donné des résultats plus que satisfaisants comme nous le verrons en \href{#ruxe9gression-logistique-1}{section 2.2}.
 
 
 ## 1.2 -- Naive Bayes
@@ -68,15 +78,17 @@ Citation Test: \cite{LinearModels}
 
 # 2 -- Méthodologie  
 
-# 2.0 -- Choix du dataset & outils utilisés
+## 2.0 -- Choix du dataset & outils utilisés
 
 Pour la suite de ce projet les outils suivants ont été utilisés dans chaque parties:
 
 - [python](https://www.python.org/)
 - [numpy](https://numpy.org/)
+- [pandas](https://pandas.pydata.org/)
 - [sklearn](https://scikit-learn.org/stable/)
 - [matplotlib](https://matplotlib.org/)
 - [ucmilrepo](https://github.com/uci-ml-repo/ucimlrepo)
+- [pytest](https://docs.pytest.org/en/stable/)
 
 
 Le package `ucmilrepo` a été utilisé pour charger les données de notre dataset depuis la base de donnée du [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/ml/index).  
@@ -128,6 +140,10 @@ dépend fortement de la valeur initiale et ce pour les deux fonctions.
 
 ### 2.2.1 -- Fonction de coût pour la régression logistique
 
+#### MSE -- Une mauvaise idée
+:
+
+
 Afin d'entraîner les paramètres de la régression logistique, il faut pouvoir comparer les résultats obtenus par la régression avec les résultats attendus.
 
 
@@ -142,22 +158,50 @@ $$MSE = \frac{1}{n}\sum_i^n (\sigma(z_i) - y_i)^2$$
 
 avec $\sigma$ la fonction sigmoïde utilisée pour la régression logistique, définie comme en section \href{#ruxe9gression-logistique}{1.1} notre MSE nous donnerait:
 
-$$MSE = \frac{1}{n}\sum_i^n (\frac{1}{1 + e^{-z_i}} - y_i)^2$$
-
-Cependant, nous pouvons remarquer que la fonction $\sigma(z)$ n'est pas linéaire.
-
-En effet, on a $\sigma(z) = \frac{1}{1 + e^{-z}}$, ce qui n'est pas une fonction linéaire.
-
-Cela a pour conséquence que la MSE n'est pas convexe.
-
-La descente en gradient ne pourra donc pas fonctionnner correctement, car on pourra trouver des minimum locaux à la place du minimum global, et si on trouve un minimum local, on ne va pas trouver les paramètres optimaux pour la régression logistique.
-
-C'est pourquoi, on utilise plutôt la log loss fonction.
+$$MSE = \frac{1}{n}\sum_i^n{\left(\frac{1}{1 + e^{-z_i}} - y_i \right)^2}$$
 
 
----
+Afin de visualiser la MSE obtenue, nous avons créé un graph de la fonction
+$$
+\text{MSE}(w, b) = \frac{1}{n} \left( \frac{1}{1+ e^{w^T x + b}} - y_i \right)^2
+$$
+pour $x = 1$ et $y = 0.3$. Nous obtenons alors les graphes suivants:
+
+Global vision | Zoomed vision
+:------------:|:----------:
+![minima global vision](../res/minima.png)|![zoom vision](../res/minima_zoom.png)
+Fonction MSE avec $x = 1$ et $y = 0.3$ (global) | Fonction MSE avec $x = 1$ et $y = 0.3$ (zoomed)
 
 
+Nous pouvons remarquer sur la figure zoomé, que la fonction admet plusieurs minimum locaux. La fonction MSE n'est donc pas convexe.
+Ceci est problématique pour la descente en gradient, car celle-ci risquera de se retrouver coïncé dans un minimum local et ne trouvera jamais le minimum global.
+
+Si on pouvait faire des plots pour la fonction avec plus de paramètres, on verrait mieux et plus de minimum locaux.
+
+Cela est dû au fait que la fonction $\sigma(z)$ n'est pas linéaire. (Découle trivialement du fait qu'il y ait une exponentielle dans la fonction.)
+Ce qui empêche la MSE d'être convexe.
+
+La descente en gradient ne pourra donc pas fonctionnner correctement, car on pourrait trouver des minimum locaux à la place du minimum global, 
+ce qui nous empêcherait de trouver les paramètres optimaux pour la régression logistique.
+
+#### Log Loss -- Cross-Entropy
+:
+
+Pour résoudre ce problème, on utilise plutôt la `log loss` fonction, appellée également `cross-entropy`.
+
+<!-- La formule de la `cross-entropy` est donnée par:
+ $$H(p, q) = - \sum_{x \in \mathcal{X}} p(x) \log q(x)$$ 
+qui n'est enfait riend d'autre que la forme développé de la formule-->
+
+La formule de la log loss function est donnée par:
+$$
+\frac{1}{N} \sum_{i=0}^{N}{ \log p(y_i | x_i; w, b) }
+$$ 
+
+où l'on peut ensuite dévolpper $p(y_i | x_i; w, b)$ pour retomber sur la cross-entropy, avec $p(x) = y$ et $q(x) = z$
+
+La fonction ci-dessus pénalise fortement (du moins plus que les autres cas) les fausses prédictions "confiantes" (i.e. annonce faux + haute probabilités) et son domaine d'arrivé est de 0 à $\infty$, un modèle parfait aurait une log-loss de 0.  
+Un modèle complètement incorrect aurait, quant à lui, une log loss qui tend vers $\infty$
 
 ---
 

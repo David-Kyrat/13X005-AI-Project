@@ -2,10 +2,12 @@
 \contentsline {subsection}{1.1 -- Régression Logistique}{1}{section*.3}%
 \contentsline {subsection}{1.2 -- Naive Bayes}{1}{section*.4}%
 \contentsline {section}{2 -- Méthodologie}{2}{section*.5}%
-\contentsline {section}{2.0 -- Choix du dataset \& outils utilisés}{2}{section*.6}%
+\contentsline {subsection}{2.0 -- Choix du dataset \& outils utilisés}{2}{section*.6}%
 \contentsline {subsection}{2.1 -- Gradient Descent}{3}{section*.7}%
 \contentsline {subsection}{2.2 -- Régression Logistique}{4}{section*.8}%
 \contentsline {subsubsection}{2.2.1 -- Fonction de coût pour la régression logistique}{4}{section*.9}%
-\contentsline {subsection}{2.3 -- Naive Bayes}{4}{section*.10}%
-\contentsline {section}{3 -- Résultats}{5}{section*.11}%
-\contentsline {section}{Références}{5}{section*.12}%
+\contentsline {paragraph}{MSE -- Une mauvaise idée}{4}{section*.10}%
+\contentsline {paragraph}{Log Loss -- Cross-Entropy}{5}{section*.11}%
+\contentsline {subsection}{2.3 -- Naive Bayes}{5}{section*.12}%
+\contentsline {section}{3 -- Résultats}{6}{section*.13}%
+\contentsline {section}{Références}{6}{section*.14}%
