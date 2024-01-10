@@ -1,7 +1,6 @@
 # TODO : COMMENT
 # TODO : Adapt to the logistic regression implementation (columns names...)
 
-
 def evaluation(true_labels, predict_labels, label):
     """
     This function evaluates a prediction by calculating the true/false positive/negative, which are necessary for the below metrics.
@@ -120,6 +119,27 @@ def f1_score(true_labels, predict_labels):
     return 0 if prec_rec == 0 else 2 * (prec * rec) / (prec + rec)
 
 
+def compute_metrics(true_labels, predicted_labels):
+    """This function calculates the performance metrics for each class in a binary classification problem.
+    The metrics calculated are Precision, Recall, and F1 Score.
+    Parameters
+    ----------
+    `test_data`: pandas.DataFrame
+        test dataset
+    `predict_labels`: 1d array-like
+        predicted labels
+    Returns
+    -------
+    dict: A dictionary containing the performance metrics for each class."""
+
+    _precision = precision(true_labels, predicted_labels)
+    _recall = recall(true_labels, predicted_labels)
+    _accuracy = accuracy(true_labels, predicted_labels)
+    f1 = f1_score(true_labels, predicted_labels)
+
+    return {"precision": _precision, "recall": _recall, "accuracy": _accuracy, "f1_score": f1}
+
+
 # ================================================================
 # ======================= TEST:==================================
 # ================================================================
@@ -130,12 +150,14 @@ from numpy.testing import assert_almost_equal
 from pandas import DataFrame
 import numpy as np
 
+
 def test_metrics():
     from main import FEAT_test, LABELS_test
     import naive_bayes as nb
     import log_reg as lr
+    from pprint import pprint
 
-    predictions = nb.predict_bayes_all(FEAT_test)
+    # predictions = nb.predict_bayes_all(FEAT_test)
     predictions = lr.predict_log_reg(FEAT_test.to_numpy(), lr.best_w, lr.best_b)
     # print("predictions : ", predictions
     # print("\n")
@@ -171,3 +193,29 @@ def test_metrics():
     print("\nF1 Score : ", obtained)
     print("sklearn F1 Score :", expected)
     assert_almost_equal(obtained, expected, decimal=decimal)
+
+
+def test_compute_metrics():
+    from main import FEAT_test, LABELS_test
+    import log_reg as lr
+    from pprint import pprint
+    from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score
+    import pytest
+
+    predictions = lr.predict_log_reg(FEAT_test.to_numpy(), lr.best_w, lr.best_b)
+    computed_metrics = compute_metrics(LABELS_test, predictions)
+
+    precision = precision_score(LABELS_test, predictions, average="macro")
+    recall = recall_score(LABELS_test, predictions, average="macro")
+    accuracy = accuracy_score(LABELS_test, predictions)
+    f1 = f1_score(LABELS_test, predictions, average="macro")
+
+    computed_metrics_expected = {
+        "precision": float(precision),
+        "recall": float(recall),
+        "accuracy": float(accuracy),
+        "f1_score": float(f1),
+    }
+    pprint(computed_metrics)
+
+    assert computed_metrics == pytest.approx(computed_metrics_expected, 0.07)

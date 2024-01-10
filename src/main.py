@@ -15,7 +15,7 @@ assert iris.data is not None
 DATA: DataFrame = iris.data.original
 LAB_NAME: str = iris.data["headers"][-1]
 
-#TODO : Faire le split manuellement afin de pouvoir controller le volument de données d'entrainements et le bruit
+# TODO : Faire le split manuellement afin de pouvoir controller le volument de données d'entrainements et le bruit
 from sklearn.model_selection import train_test_split
 
 # tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=np.random.randint(0, 100))
@@ -44,11 +44,15 @@ LABELS_test: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_t
 
 
 if __name__ == "__main__":
-    import naive_bayes, log_reg,metrics  # noqa: F401
+    import naive_bayes, log_reg, metrics  # noqa: F401
 
     # test_gradient_descent()
     # naive_bayes.main()
-    naive_bayes.main()
-    metrics.test_metrics()
+    # naive_bayes.main()
+    # metrics.test_metrics()
+    w, b = np.array([0.53452349, 0.36463584, 1.16132476, 1.08204578]), 0.45146791
+
+    predicted_val_logreg = log_reg.predict_log_reg(FEAT_test.to_numpy(), w, b)
+    print(metrics.f1_score(LABELS_test, predicted_val_logreg))
     # log_reg.main()
     # pass

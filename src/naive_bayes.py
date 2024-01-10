@@ -2,7 +2,7 @@ from pprint import pprint
 from typing import Any
 
 import numpy as np
-from metrics import f1_score
+import metrics
 
 # NB: floating is any (numpy) floating type NDArray or not
 from numpy import float32 as f32
@@ -120,16 +120,17 @@ def test_predict_bayes_seq_score():
 
     params_by_class = get_distrib_parameters(FEAT, LABELS)
     predicted = [predict_bayes(sample[1:], params_by_class) for sample in FEAT_test.itertuples()]
-    score = f1_score(LABELS_test, predicted)
-    print("F1 score for Naive Bayes:", score)
+    scores = metrics.compute_metrics(LABELS_test, predicted)
+    pprint(scores)
 
 
 def test_predict_bayes_f1score_all():
     from main import FEAT_test, LABELS_test
 
     predicted = predict_bayes_all(FEAT_test)
-    score = f1_score(LABELS_test, predicted)
-    print("F1 score for Naive Bayes:", score)
+    scores = metrics.compute_metrics(LABELS_test, predicted)
+    print()
+    pprint(scores)
 
 
 def main():
