@@ -9,59 +9,6 @@ date: \today
 
 Afin d'entraîner les paramètres de la régression logistique, il faut pouvoir comparer les résultats obtenus par la régression avec les résultats attendus.
 
-
-Pour cela, on pourrait penser utiliser quelque chose comme la `Mean Squared Error (MSE)`, qui est une moyenne du carré de la différence entre le résultat obtenu par la régression (donné par $z$) et la valeur estimée $y$.
-
-La MSE nous donne une estimation de l'erreur moyenne faite entre la fonction approximative $f$ et la valeur attendue $y$.
-
-L'objectif est donc de minimiser la MSE afin de minimiser l'erreur entre les valeurs estimées et les valeurs attendues.
-
-Ce qui nous donnerait
-$$MSE = \frac{1}{n}\sum_i^n (\sigma(z_i) - y_i)^2$$
-
-avec $\sigma$ la fonction sigmoïde utilisée pour la régression logistique, définie comme suit:
-$$\sigma(z) = \frac{1}{1 + e^{-z}}$$.
-
-Donc notre MSE nous donnerait:
-
-$$MSE = \frac{1}{n}\sum_i^n (\frac{1}{1 + e^{-z_i}} - y_i)^2$$
-
-Afin de visualiser la fonction MSE obtenu, nous avons créé un graphe de la fonction
-
-$$MSE = (\frac{1}{1 + e^{-(x * w + b)}} - y)^2$$
-
-et nous avons choisi $x = 1$ et $y = 0.3$.
-
-Nous obtenons alors les graphes suivants:
-
-Global vision | Zoomed vision
-:------------:|:----------:
-![minima global vision](../res/minima.png)|![zoom vision](../res/minima_zoom.png)
-
-Nous pouvons remarquer sur la figure ou l'on a zoomé, que la fonction MSE admet plusieurs minimum locaux. La fonction MSE n'est donc pas convexe...
-Ceci est problématique pour la descente en gradient, car celle-ci risquera de se retrouver coïncé dans un minimum local et ne trouvera jamais le minimum global.
-
-Si on pouvait faire des plots pour la fonction avec plus de paramètres, on verrait mieux et plus de minimum locaux.
-
-Cela est dû au fait que la fonction $\sigma(z)$ n'est pas linéaire.
-En effet, on a $\sigma(z) = \frac{1}{1 + e^{-z}}$
-et si on prend par exemple $\sigma(2) = \frac{1}{1 + e^{-2}} = 0.8$ et $\sigma(-2) = \frac{1}{1 + e^{-(-2)}} = \frac{1}{1 + e^2} = 0.1$, on n'a pas que $\sigma(2) = - \sigma(-2)$, ce qui signifie que la fonction $\sigma(z)$ n'est pas linéaire.
-Cela entraîne que la fonction MSE n'est pas convexe.
-
-La descente en gradient ne pourra donc pas fonctionnner correctement.
-
-C'est pourquoi, on utilise plutôt la `log loss` fonction, qui s'appelle également `cross-entropy loss` fonction ou encore `cross-entropy`.
-
-La formule de la `cross-entropy` est donnée par:
-
-$$H(p, q) = - \sum_x p(x) log(q(x))$$
-
-On peut considérer que $p(x) = y$ et que $q(x) = z$.
-
-
-
-## Nouveau test
-
 On souhaite définir une fonction à minimiser permettant de trouver les paramètres optimaux de la régression logistique.
 
 Notre classification se base sur la fonction sigmoïde $\sigma(z) = \frac{1}{1 + e^{-z}}$.
@@ -88,21 +35,6 @@ $$P(Y = 1 | X) = \frac{1}{1 + e^{\theta^T X}} = \sigma(\theta^TX)$$
 et
 $$P(Y = 0 | X) = 1 - \sigma(\theta^TX)$$
 
-Dans notre cas, on a plus que 2 labels.
-Il s'agit donc d'une régression multinomiale.
-Ainsi, on va modifier notre vecteur $\theta$ pour obtenir une régression multinomiale:
-l'idée est que pour chaque label $Y \in \{0, 1, \dots, k\}$, on va calculer la probabilité que l'élément (avec ses caractéristiques X) appartienne à ce label, et la probabilité la plus grande va nous donner la classe dans laquelle on doit placer l'élément.
-
-Ainsi, on aura pour $k$ labels une matrice de poids donnée par:
-$$\theta = \begin{bmatrix} \theta_{11} & \dots & \theta_{1n} \\ \hdots & \ddots & \hdots \\ \theta_{k1} & \dots & \theta_{kn} \end{bmatrix}$$
-
-Et cela nous donne:
-$$P(Y = i | X) = \sigma(\theta_i^TX)$$
-
-Comme il s'agit de probabilités et que pour des caractéristiques $X$ données, l'élément $X$ appartient forcément à une classe, on a que:
-
-$$\sum_i^k P(Y = i|X) = 1$$
-
 ---------
 
 #### Rapport de vraissemblance
@@ -126,51 +58,94 @@ Ce qui signifie que si l'élément respecte bien la contrainte $Y$, alors le rap
 
 -------
 
-Soit $i$ le ième label et $s$ l'ensemble de tous les labels moins le ième label.
+Pour notre régression logistique binaire, le rapport de vraissemblance peut alors s'écrire:
+$$O(Y = 1|X)$$
+$$=\frac{P(Y = 1|X)}{P(Y=0|X)}$$
+$$=\frac{\sigma(\theta^TX)}{1 - \sigma(\theta^TX)}$$
+$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{1}{1 - \frac{1}{1 + e^{-\theta^TX}}}$$
+$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{1}{\frac{1 + e^{-\theta^TX} - 1}{1 + e^{-\theta^TX}}}$$
+$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{1 + e^{-\theta^TX}}{e^{-\theta^TX}}$$
+$$=\frac{1}{e^{-\theta^TX}}$$
+$$=\boxed{e^{\theta^TX}}$$
 
-On a donc:
-$$P(Y = i|X) = p = \sigma(\theta_i^TX)$$
-et
-$$P(Y = s|X) = 1 - p = 1 - \sigma(\theta_i^TX)$$
 
-Le rapport de vraissemblance s'écrit alors:
-$$O(Y = i|X)$$
-$$=\frac{P(Y = i|X)}{P(Y=s|X)}$$
-$$=\frac{\sigma(\theta_i^TX)}{1 - \sigma(\theta_i^TX)}$$
-$$=\frac{1}{1 + e^{-\theta_i^TX}} \times \frac{1}{1 - \frac{1}{1 + e^{-\theta_i^TX}}}$$
-$$=\frac{1}{1 + e^{-\theta_i^TX}} \times \frac{1}{\frac{1 + e^{-\theta_i^TX} - 1}{1 + e^{-\theta_i^TX}}}$$
-$$=\frac{1}{1 + e^{-\theta_i^TX}} \times \frac{1 + e^{-\theta_i^TX}}{e^{-\theta_i^TX}}$$
-$$=\frac{1}{e^{-\theta_i^TX}}$$
-$$=\boxed{e^{\theta_i^TX}}$$
 
 Le rapport de vraisemblance nous donne alors une indication sur le respect du label par notre élément.
-On va alors vouloir mettre l'élément dans la classe dont le label donne le plus grand rapport de vraissemblance.
 
---------
+## Généralisation
 
-Comme la fonction logarithme est une fonction strictement croissante, on peut appliquer la fonction sur le rapport de vraissemblance sans perdre l'information donnée par celui-ci.
-En effet, si le résultat est plus grand que $log(1) = 0$ alors l'élément respecte bien la contrainte et si le résultat est plus petit que $log(1) = 0$, alors l'élément ne respecte pas bien la contrainte.
+On désire donc trouver une nouvelle distribution $\phi(z)$ tel que:
+$$\phi(z) \in [0, 1]\ \forall z$$
+est une généralisation de la fonction $\sigma(z)$
 
-Ainsi, cela nous donne:
-$$log(O(Y = i | X))=log(e^{\theta_i^TX})=\theta_i^TX$$
+On veut donc que pour une régression logistique binaire, on ait $\sigma(z) = \phi(z)$.
 
---------
+On peut remarquer que:
 
-On veut déterminer l'expression de $P(Y = i | X)$
+$$P(Y = 1 | X)$$
+$$=\frac{1}{1 + e^{-\theta^TX}}$$
+$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{e^{\theta^TX}}{e^{\theta^TX}}$$
+$$=\frac{e^{\theta^TX}}{e^{\theta^TX} + e^{\theta^TX - \theta^TX}}$$
+$$=\frac{e^{\theta^TX}}{e^{\theta^TX} + e^0}$$
+$$=\frac{e^{\theta^TX}}{e^{\theta^TX} + 1}$$
 
-On a:
-$$\frac{P(Y = i | X)}{P(Y = s | X)} = e^{\theta_i^TX}$$
-$$\Leftrightarrow P(Y = i | X) = e^{\theta_i^TX}P(Y = s | X)$$
+On peut considérer que nous avons un vecteur de poids pour chaque label.
 
-Or
-$$P(Y = s | X)$$
-$$=\sum_{j \neq i}^k P(Y = j | X)$$
-$$= \sum_{j \neq i}^k \sigma(\theta_j^TX)$$
-$$=\sum_{j \neq i}^k \frac{1}{1 + e^{-\theta_j^TX}}$$
-$$=\frac{1}{1 + \sum_{j \neq i}^k e^{-\theta_j^TX}}$$
+Ainsi, on a $\theta_0$ pour le label 0 et $\theta_1$ pour le label 1.
 
-Donc
-$$P(Y = i | X) = \frac{e^{\theta_i^TX}}{1 + \sum_{j \neq i}^ke^{-\theta_j^TX}}$$
+Comme on a besoin seulement d'un vecteur de poids pour déterminer le label de nouveaux éléments avec leurs caractéristiques, on peut considérer que $\theta_0 = 0$.
 
+Ainsi, la formule précédente nous donne:
 
-L'objectif étant de trouver le maximum de $P(Y = i | X)$, soit de trouver le minimum de $-log(P(Y = i | X)) = -\theta_i^TX + \sum_{j \neq i}^k log(1 + e^{-\theta_j^TX})$
+$$P(Y = 1 | X)$$
+$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + 1}$$
+$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + e^0}$$
+$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + e^{0 * X}}$$
+$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + e^{\theta_0^TX}}$$
+$$=\frac{e^{\theta_1^TX}}{\sum_{i = 0}^1 e^{\theta_i^TX}}$$
+
+On peut donc généraliser cette formule pour $K$ labels.
+
+Cela nous donne:
+
+$$P(Y = k| X )=\frac{e^{\theta_k^TX}}{\sum_{i = 0}^K e^{\theta_i^TX}}$$
+
+Comme la fonction exponentielle est toujours positive, on a bien que:
+$$0 \leq e^{\theta_k^TX} \leq e^{\theta_k^TX} + \sum_{i \neq k}^K e^{\theta_i^TX}$$
+$$\Leftrightarrow 0 \leq e^{\theta_k^TX} \leq \sum_{i}^K e^{\theta_i^TX}$$
+$$\Leftrightarrow 0 \leq \frac{e^{\theta_k^TX}}{\sum_{i}^K e^{\theta_i^TX}} \leq 1$$
+$$\Leftrightarrow 0 \leq \phi(z) \leq 1$$
+
+De plus, on a que:
+$$\sum_k^K P(Y = k | X)$$
+$$=\sum_k^K \frac{e^{\theta_k^TX}}{\sum_i^K e^{\theta_i^TX}}$$
+$$=\frac{\sum_k^Ke^{\theta_k^TX}}{\sum_i^K e^{\theta_i^TX}}$$
+$$=\frac{\sum_i^Ke^{\theta_i^TX}}{\sum_i^K e^{\theta_i^TX}}$$
+$$=1$$
+
+Donc la fonction $\phi(z)$ est bien une fonction de distribution de probabilité qui généralise la fonction sigmoïde pour des problèmes à plusieurs labels.
+
+Cette fonction est courramment appelée fonction `softmax`.
+
+Notre objectif est donc de trouver une fonction de coût pour pouvoir entraîner les paramètres de la régression multinomiale.
+On cherche à maximiser la vraisemblance des données.
+Donc pour un label $Y$ donné, on veut maximiser:
+$$\sum_k^K f(Y, k) P(Y = k | X)$$
+avec $f(Y, k)$ la fonction qui vaut $1$ si $Y = k$ et $0$ sinon.
+
+En effet, en maximisant cette fonction, on fait en sorte que le paramètre $\theta_k$ permette d'obtenir la prédiction que le label soit égal à $k$ avec la probabilité la plus grande possible.
+Afin de pouvoir utiliser un algorithme comme la descente en gradient, il faut non pas maximiser une fonction, mais minimiser une fonction.
+
+C'est pourquoi, on peut utiliser l'inverse de cette fonction, dont on prend le logarithme pour simplifier les calculs, car on travaille avec des exponentielles.
+
+Cela nous donne une fonction de coût comme suit:
+
+$$\sum_k^K f(Y, k) log(\frac{1}{P(Y = k | X)})$$
+$$\sum_k^K f(Y, k) (log(1) - log(P(Y = k | X)))$$
+$$\sum_k^K f(Y, k) - log(P(Y = k | X))$$
+$$-\sum_k^K f(Y, k)log(P(Y = k | X))$$
+
+On peut minimiser cette fonction de coût grâce à une descente en gradient.
+
+Pour n données d'apprentissage, notre minimisation devient:
+$$-\sum_i^n\sum_k^K f(Y_i, k) log(P(Y_i = k | X))$$
