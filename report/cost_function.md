@@ -120,7 +120,7 @@ $$-\sum_i^n\sum_k^K f(Y_i, k) \log(P(Y_i = k | X))$$
 
 Cette fonction de coût s'appele communément `negative log-likelihood`
 
-### Dérivée
+## Dérivée
 
 On va calculer la dérivée de la fonction de coût.
 
@@ -165,73 +165,5 @@ On a donc:
 $$\frac{\partial}{\partial \theta_{j}} \sum_i^K f(Y, i)log(P(Y = i | X)) = X(f(Y, j) - P(Y = j|X))$$
 
 car $f(Y, k)$ est égal à 1 si $Y = k$ et 0 sinon.
-
-On note:
-$$\Phi_k = P(Y = k | X) = \frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
-
-La Jacobienne de la fonction softmax s'écrira:
-
-$$J = 
-\begin{bmatrix}
-    \frac{\partial \Phi_1}{\partial \theta_1} & \dots & \frac{\partial \Phi_1}{\partial \theta_K} \\
-    \vdots & \ddots & \vdots \\ 
-    \frac{\partial \Phi_K}{\partial \theta_1} & \dots & \frac{\partial \Phi_K}{\partial \theta_K}
-\end{bmatrix}
-$$
-
-Rappel:
-
-$$(\frac{u}{v})' = \frac{u'v - uv'}{v^2}$$
-
-Pour calculer la dérivée $\frac{\partial \Phi_k}{\partial \theta_j}$, on a 2 cas de figure possible:
-
-Soit $k \neq j$:
-
-$$\frac{\partial \Phi_k}{\partial \theta_j}$$
-$$=\frac{\partial}{\partial \theta_j} \frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
-
-
-On a:
-
-$$\frac{\partial}{\partial \theta_j} e^{\theta_kX} = 0$$
-
-et:
-
-$$\frac{\partial}{\partial \theta_j} \sum_i^K e^{\theta_iX} = \frac{\partial}{\partial \theta_j} e^{\theta_jX} = e^{\theta_jX}$$
-
-Donc
-
-$$\frac{\partial}{\partial \theta_j} \frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
-$$=\frac{-e^{\theta_kX} e^{\theta_jX}}{(\sum_i^K e^{\theta_iX})^2}$$
-$$=-\frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}\frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}}$$
-$$=-\Phi_k \Phi_j$$
-
-
-Soit $k = j$:
-
-On a:
-
-$$\frac{\partial}{\partial \theta_j} e^{\theta_jX} = e^{\theta_jX}$$
-
-et:
-
-$$\frac{\partial}{\partial \theta_j} \sum_i^K e^{\theta_iX} = \frac{\partial}{\partial \theta_j} e^{\theta_jX} = e^{\theta_jX}$$
-
-Donc
-$$\frac{\partial}{\partial \theta_j} \frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}}$$
-$$=\frac{e^{\theta_jX} \sum_i^K e^{\theta_iX}-e^{\theta_jX} e^{\theta_jX}}{(\sum_i^K e^{\theta_iX})^2}$$
-$$=\frac{e^{\theta_jX} (\sum_i^K e^{\theta_iX}-e^{\theta_jX})}{(\sum_i^K e^{\theta_iX})^2}$$
-$$=\frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}} \frac{\sum_i^K e^{\theta_iX}-e^{\theta_jX}}{\sum_i^K e^{\theta_iX}}$$
-$$= \Phi_j (\frac{\sum_i^K e^{\theta_iX}}{\sum_i^K e^{\theta_iX}} -\frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}})$$
-$$= \Phi_j (1 -\Phi_j)$$
-
-La jacobienne s'écrit donc:
-$$J = 
-\begin{bmatrix}
-    \Phi_1 (1 - \Phi_1) & \dots & -\Phi_1 \Phi_K \\
-    \vdots & \ddots & \vdots \\ 
-    -\Phi_K \Phi_1 & \dots & \Phi_K (1 - \Phi_K)
-\end{bmatrix}
-$$
 
 
