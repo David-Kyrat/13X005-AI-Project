@@ -255,13 +255,12 @@ On l'obtient donc comme suit: (la somme des dérivées est la dérivée de la so
 $$\nabla_b\, {C} =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(\w^T X_i + b)}}$$
 
 De même pour `dw`:
-\begin{align}
+\begin{align*}
   \nabla_{\mathbf{w}} C & = \frac{1}{N} \sum_{i = 1}^{N}(x_{ij}(y_i - p_i))_{1 \leq j \leq k} 
   = \frac{1}{N} \sum_{i=1}^N(y_i - \sigma(z_i))\cdot (x_{ij})_{1 \leq j\leq k} \\
 %
-& =\frac{1}{N}\sum_{i = 1}^N (y_i - (\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
-  = \frac{1}{N}\sum_{i = 1}^N (y_i - \langle\mathbf{w}, \mathbf{x_i}\rangle)\ \mathbf{x_i}
-\end{align}
+& =\frac{1}{N}\sum_{i = 1}^N (y_i - \sigma(\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
+\end{align*}
 
 
 On retrouve ainsi, le calcul effectué dans la fonction \code{grad} de \code{log\_reg.py} de signature suivante: 
