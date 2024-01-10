@@ -5,6 +5,8 @@ header-includes:
   - \bibliography{references}
   - \usepackage{algorithm}
   - \usepackage{algpseudocode}
+  - \newcommand{\w}{\mathbf{w}}
+  - \newcommand{\x}{\mathbf{x}}
 output: pdf_document
 colorlinks: true
 urlcolor: Blue
@@ -49,9 +51,9 @@ $f$ est une fonction dite de seuillage qui va séparer nos résultats. Un choix 
 Par exemple, dans le cas de la regression logistique binaire, on suppose le modèle suivant:
 
 $$
-y_i \sim Bernoulli(p_i),\quad p_i = \sigma(\scalproduct{w}{x_i} + b),\quad \sigma(z) = \frac{1}{1 + e^{-z}}
+y_i \sim Bernoulli(p_i),\quad p_i = \sigma(\scalproduct{\w}{\x_i} + b),\quad \sigma(z) = \frac{1}{1 + e^{-z}}
 $$
-où $x_i$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ features (aussi appelé un *sample*), et $y_i$ la variable aléatoire qui représente le label qui leur est associé.
+où $\x_i \in \R^K$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ features (aussi appelé un *sample*), et $y_i$ la variable aléatoire qui représente le label qui leur est associé.
 
 Cependant, dans notre dataset (voir \href{#choix-du-dataset-outils-utilisuxe9s}{section 2.0}) nous avons 3 classes (3 espèces d'iris),
 $y$ ne suit donc, évidemment, plus une loi de Bernoulli.  
@@ -197,11 +199,11 @@ qui n'est enfait riend d'autre que la forme développé de la formule-->
 
 La formule de la log loss function est donnée par:
 $$
-C(w,b) = \frac{1}{N} \sum_{i=0}^{N}{ \log p(y_i | x_i; w, b) }
+C(\w,b) = \frac{1}{N} \sum_{i=0}^{N}{ \log p(y_i | \x_i; \w, b) }
 $$ 
 
-avec $N$ le nombre de sample, $y_i$ la "vrai" classe associé au sample $x_i$ et $w, b$ le vecteur de poids et biais.  
-Où l'on peut ensuite dévolpper $p(y_i | x_i; w, b)$ pour retomber sur la cross-entropy, avec $p(x) = y$ et $q(x) = z$
+avec $N$ le nombre de sample, $y_i$ la "vrai" classe associé au sample $\x_i$ et $\w, b$ le vecteur de poids et biais.  
+Où l'on peut ensuite dévolpper $p(y_i | \x_i; \w, b)$ pour retomber sur la cross-entropy, avec $p(x) = y$ et $q(x) = z$
 
 La fonction ci-dessus pénalise fortement (du moins plus que les autres cas) les fausses prédictions "confiantes" (i.e. annonce faux + haute probabilités) et son domaine d'arrivé est de 0 à $\infty$, un modèle parfait aurait une log-loss de 0.  
 Un modèle complètement incorrect aurait, quant à lui, une log loss qui tend vers $\infty$
@@ -212,7 +214,7 @@ Maitenant que nous avons une fonction de coût permettant de quantifier (en moye
 Il ne reste plus qu'à chercher les paramètres optimaux qui minimisent cette fonction de coût.
 Ce que l'on va réaliser à l'aide de la descente en gradient. C'est le processus d'apprentissage.
 
-En effet, lors de l'apprentissage, on va chercher de manière itérative les $w$ et $b$ qui respectent les critères mentionnés ci-dessus en calculant le gradient de la fonction de coût à chaque itérations et en allant dans la direction opposé.
+En effet, lors de l'apprentissage, on va chercher de manière itérative les $\w$ et $b$ qui respectent les critères mentionnés ci-dessus en calculant le gradient de la fonction de coût à chaque itérations et en allant dans la direction opposé.
 
 
 Concrètement cela revient à appliquer l'algorithme suivant:
@@ -220,12 +222,12 @@ Concrètement cela revient à appliquer l'algorithme suivant:
 \begin{algorithm}
 \caption{gradient descent}\label{alg:grad_desc}
 \begin{algorithmic}
-\Function {GradientDescent}{$f, w_0, b_0, \alpha, \text{num\_iters}$}
-\State $w \gets w_0$
+\Function {GradientDescent}{$f, \w_{init}, b_0, \alpha, \text{num\_iters}$}
+\State $\w \gets \w_{init}$
 \State $b \gets b_0$
 \For{1 to num\_iters}
-    \State $dw, db \gets \nabla{f(w, b)} $
-    \State $w \gets w - \alpha*dw$
+    \State $\mathbf{dw}, db \gets \nabla{f(w, b)} $
+    \State $\w \gets \w - \alpha*\mathbf{dw}$
     \State $b \gets b - \alpha*db$
 \EndFor
 \State \Return $w, b$
@@ -237,22 +239,30 @@ En pratique, il est plus simple de passer directement la function qui calcul le 
 Où le calcul des dérivées partielles a été definit comme ci-dessous.
 
 
-Soit $\nabla C(w,b) = (\frac{\partial C(w,b)}{\partial w}, \frac{\partial C(w,b)}{\partial b} )$, pour un sample $x_i$ et sa classe $y_i$, on obtient:
+Soit $\nabla C(\w,b) = (\frac{\partial C(\w,b)}{\partial \w}, \frac{\partial C(\w,b)}{\partial b} )$, pour un sample $\x_i$ et sa classe $y_i$, on obtient:
 \begin{align*}
-\frac{\partial \log(y_i|x_i ; w, b)}{\partial b} &= y_i - \sigma(z_i) = y_i - \sigma(w^T X_i + b)\\
+\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} 
+&= y_i - \sigma(z_i) 
+= y_i - \sigma(\w^T X_i + b)\\
 %
-\frac{\partial \log(y_i|x_i ; w, b)}{\partial w_j} &= X_{ij}* ( y_i - \sigma(z_i)) = (y_i - \sigma(w^T X_i + b)) * X_{ij}
+\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial w_j} 
+&= x_{ij}* ( y_i - \sigma(z_i)) 
+= (y_i - \sigma(\w^T X_i + b)) * x_{ij}
 \end{align*}
 Or le `db` dans l'algorithme ci-dessus se refert à la moyenne (pour tout i) de ces valeurs (i.e. distance moyenne _classes prédites_ -- _"vrai" classes_).
 
 On l'obtient donc comme suit: (la somme des dérivées est la dérivée de la somme, linéarité de la dérivée)
-$$(\nabla{C(w,b)})_2 =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|x_i ; w, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(w^T X_i + b)}}$$
+$$\nabla_b\, {C} =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(\w^T X_i + b)}}$$
 
 De même pour `dw`:
-$$
-(\nabla{C(w,b)})_1 = \frac{1}{N} \sum_{i=1}^N{ \frac{\partial \log(y_i|x_i ; w, b)}{\partial w_j}} = 
-\frac{1}{N} \sum_{i=1}^N{ (y_i - \sigma(w^T X_i + b)) \sum_{j=1}^K{ X_{ij} }}
-$$
+\begin{align}
+  \nabla_{\mathbf{w}} C & = \frac{1}{N} \sum_{i = 1}^{N}(x_{ij}(y_i - p_i))_{1 \leq j \leq k} 
+  = \frac{1}{N} \sum_{i=1}^N(y_i - \sigma(z_i))\cdot (x_{ij})_{1 \leq j\leq k} \\
+%
+& =\frac{1}{N}\sum_{i = 1}^N (y_i - (\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
+  = \frac{1}{N}\sum_{i = 1}^N (y_i - \langle\mathbf{w}, \mathbf{x_i}\rangle)\ \mathbf{x_i}
+\end{align}
+
 
 On retrouve ainsi, le calcul effectué dans la fonction \code{grad} de \code{log\_reg.py} de signature suivante: 
 
