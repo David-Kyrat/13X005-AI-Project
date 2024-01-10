@@ -15,6 +15,7 @@ import metrics
 # NOTE: parameters found after testing with different values, see branch "gpu-training" of repo for more details
 best_w, best_b = np.array([0.53452349, 0.36463584, 1.16132476, 1.08204578]), 0.45146791
 
+
 def z(X: NDArray, w: NDArray, b: float) -> fl:
     """
     Returns
@@ -41,15 +42,15 @@ def norm(X: NDArray) -> NDArray:
 
 def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
     """Computes (vectorized) the gradient of the log loss function w.r.t "w" and "b" for the current iteration.
-    It is used in the gradient descent algorithm.
+    It is used in the gradient descent algorithm. Let K be the number of features and N the number of samples.
 
     Parameters
     ----------
-    `X` : NDArray
+    `X` : NDArray of size (N, K)
         Samples / features.
-    `y` : NDArray
+    `y` : NDArray of size (N,)
         labels / class associated to each sample.
-    `w` : NDArray
+    `w` : NDArray of size (K,)
         weights vector.
     `b` : float
         bias
@@ -60,11 +61,9 @@ def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
 
     predictions = sigmoid(z(X, w, b))  # Sigmoid function applied to z
     errors = y - predictions  # Difference between actual and predicted values
-    db = -np.sum(errors)  # Vectorized computation of db component
-
-    X_sum_over_rows = np.sum(X, axis=1)  # Sum over rows of X
-    dw = -np.sum(X_sum_over_rows * errors)  # Vectorized computation of dw component
-
+    db = -np.mean(errors)  # Vectorized computation of db component
+    dw = -np.mean(errors @ X)  # Vectorized computation of dw component
+    # NB: errors is a 1xN vector and X a NxK matrix, so `errors @ X` is a 1xK vector. like `w`
     return dw, db
 
 
@@ -102,6 +101,7 @@ def predict_log_reg(X: NDArray, w: NDArray, b):
     :return: Vector of predicted class labels (0 or 1) for each example in X. Vector NDArray
     """
     from main import LAB_VAL_IDX
+
     # if DataFrame or Series is passed, convert to numpy array
     if not isinstance(X, np.ndarray):
         X = np.asarray(X)
@@ -128,6 +128,7 @@ def test_log_reg_with_random_values(m, n):
     X, y, w, b = rand(m, n), rand(m), rand(n), rand()
     n_it, lr = 100, 0.03
     w, b = train_log_reg(X, y, w, b, n_it, lr)
+
 
 def test_log_reg_with_dataset_values():
     from main import FEAT, LABELS
