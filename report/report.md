@@ -3,6 +3,8 @@ header-includes:
   - \usepackage{preamble_ai_project}
   - \usepackage[backend=bibtex,style=numeric]{biblatex} 
   - \bibliography{references}
+  - \usepackage{algorithm}
+  - \usepackage{algpseudocode}
 output: pdf_document
 colorlinks: true
 urlcolor: Blue
@@ -93,7 +95,7 @@ Pour la suite de ce projet les outils suivants ont été utilisés dans chaque p
 
 Le package `ucmilrepo` a été utilisé pour charger les données de notre dataset depuis la base de donnée du [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/ml/index).  
 
-Le dataset que nous avons choisi est le fameux dataset "Iris" \cite{r.a.fisherIris1936}, un des plus anciens et connus dataset de classification. Il contient 150 observations de 3 espèces différentes d'iris (Iris setosa, Iris virginica et Iris versicolor) avec 4 features (longueur et largeur des sépales et pétales).  
+Le dataset que nous avons choisi est le fameux dataset "Iris" \cite{r.a.fisherIris1936}, un des plus anciens et connus dataset de classification. Il contient 150 observations de 3 espèces différentes d'iris (Iris setosa, Iris virginica et Iris versicolor) avec $K = 4$ features (longueur et largeur des sépales et pétales).  
 
 Voici un aperçu des points-clés du dataset:
 
@@ -195,19 +197,112 @@ qui n'est enfait riend d'autre que la forme développé de la formule-->
 
 La formule de la log loss function est donnée par:
 $$
-\frac{1}{N} \sum_{i=0}^{N}{ \log p(y_i | x_i; w, b) }
+C(w,b) = \frac{1}{N} \sum_{i=0}^{N}{ \log p(y_i | x_i; w, b) }
 $$ 
 
-où l'on peut ensuite dévolpper $p(y_i | x_i; w, b)$ pour retomber sur la cross-entropy, avec $p(x) = y$ et $q(x) = z$
+avec $N$ le nombre de sample, $y_i$ la "vrai" classe associé au sample $x_i$ et $w, b$ le vecteur de poids et biais.  
+Où l'on peut ensuite dévolpper $p(y_i | x_i; w, b)$ pour retomber sur la cross-entropy, avec $p(x) = y$ et $q(x) = z$
 
 La fonction ci-dessus pénalise fortement (du moins plus que les autres cas) les fausses prédictions "confiantes" (i.e. annonce faux + haute probabilités) et son domaine d'arrivé est de 0 à $\infty$, un modèle parfait aurait une log-loss de 0.  
 Un modèle complètement incorrect aurait, quant à lui, une log loss qui tend vers $\infty$
 
 ### 2.2.2 -- Apprentissage
 
+Maitenant que nous avons une fonction de coût permettant de quantifier (en moyenne) à quel point un set de $N$ prédiction est correct/incorrect à un point de l'apprentissage donné.
+Il ne reste plus qu'à chercher les paramètres optimaux qui minimisent cette fonction de coût.
+Ce que l'on va réaliser à l'aide de la descente en gradient. C'est le processus d'apprentissage.
+
+En effet, lors de l'apprentissage, on va chercher de manière itérative les $w$ et $b$ qui respectent les critères mentionnés ci-dessus en calculant le gradient de la fonction de coût à chaque itérations et en allant dans la direction opposé.
 
 
----
+Concrètement cela revient à appliquer l'algorithme suivant:
+
+\begin{algorithm}
+\caption{gradient descent}\label{alg:grad_desc}
+\begin{algorithmic}
+\Function {GradientDescent}{$f, w_0, b_0, \alpha, \text{num\_iters}$}
+\State $w \gets w_0$
+\State $b \gets b_0$
+\For{1 to num\_iters}
+    \State $dw, db \gets \nabla{f(w, b)} $
+    \State $w \gets w - \alpha*dw$
+    \State $b \gets b - \alpha*db$
+\EndFor
+\State \Return $w, b$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+En pratique, il est plus simple de passer directement la function qui calcul le gradient en argument, que d'essayer de le calculer dynamiquement, c'est pourquoi la signature de notre implémentation prend un `df` en argument plutôt que la fonction de coût elle même.  
+Où le calcul des dérivées partielles a été definit comme ci-dessous.
+
+
+Soit $\nabla C(w,b) = (\frac{\partial C(w,b)}{\partial w}, \frac{\partial C(w,b)}{\partial b} )$, pour un sample $x_i$ et sa classe $y_i$, on obtient:
+\begin{align*}
+\frac{\partial \log(y_i|x_i ; w, b)}{\partial b} &= y_i - \sigma(z_i) = y_i - \sigma(w^T X_i + b)\\
+%
+\frac{\partial \log(y_i|x_i ; w, b)}{\partial w_j} &= X_{ij}* ( y_i - \sigma(z_i)) = (y_i - \sigma(w^T X_i + b)) * X_{ij}
+\end{align*}
+Or le `db` dans l'algorithme ci-dessus se refert à la moyenne (pour tout i) de ces valeurs (i.e. distance moyenne _classes prédites_ -- _"vrai" classes_).
+
+On l'obtient donc comme suit: (la somme des dérivées est la dérivée de la somme, linéarité de la dérivée)
+$$(\nabla{C(w,b)})_2 =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|x_i ; w, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(w^T X_i + b)}}$$
+
+De même pour `dw`:
+$$
+(\nabla{C(w,b)})_1 = \frac{1}{N} \sum_{i=1}^N{ \frac{\partial \log(y_i|x_i ; w, b)}{\partial w_j}} = 
+\frac{1}{N} \sum_{i=1}^N{ (y_i - \sigma(w^T X_i + b)) \sum_{j=1}^K{ X_{ij} }}
+$$
+
+On retrouve ainsi, le calcul effectué dans la fonction \code{grad} de \code{log\_reg.py} de signature suivante: 
+
+\begin{lstlisting}
+    def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
+\end{lstlisting}
+
+Etant donné que pour le calcul du gradient il est nécessaire d'avoir un matrice de feature $X$ et vecteur de label $y$, une version "modifiée" de la descente en gradient a été implementé.
+
+\begin{lstlisting}
+def grad_desc_ml(features: NDArray, labels: NDArray, df, w: NDArray, b: float, alpha: float, num_iters: int) -> tuple[NDArray, float]:
+\end{lstlisting}
+
+Cette fonction se comporte exactement de la même manière que celle décrite en \href{#gradient-descent}{section 2.1}. La seule différence est qu'elle passe `features` et `labels` comme `X` et `y` à la fonction `df` (dans notre cas `df` est toujours la fonction `grad`), i.e. on a \code{df(features, labels, w, b)} au lieu de \code{df(params)}.
+
+### 2.2.3 -- Prédictions
+
+Pour la prédiction, nous avons utilisé la fonction suivante:
+
+\begin{lstlisting}
+   def predict_log_reg(X: NDArray, w: NDArray, b):
+\end{lstlisting}
+
+qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de manière à retourner un nombre entre 0 et 2 (avec les poids et bais entraînés). 
+
+### 2.2.4 -- Résultats
+
+Suite à l'apprentissage , nous avons obtenu les résultats suivants:
+\begin{align*}
+    w &= [0.53452349, 0.36463584, 1.16132476, 1.08204578]\\
+    b &= 0.45146791
+\end{align*}
+
+Nous verrons juste après, le f1-score qu'à généré ces paramètres.
+
+L'apprentissage peut être ré-effectué de manière efficient si besoine est à l'aide du jupyter notebook [training\_test.ipynb](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) disponible sur la branche [gpu-training](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) du repository github.
+Le code de l'entraînement (uniquement sur cette branche) à été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev).  
+A noter qu'il utilise des fonctions des sklearn alors que nous devions les implémenter nous mêmes, (telles que les metrics f1-score...).
+Ces fonctions ont bien été implenté mais pour une raison de simplicité, elle n'ont pas été utilisée pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.
+
+
+
+
+
+
+
+
+
+
+<!-- --- -->
 
 \newpage{}
 
