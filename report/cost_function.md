@@ -35,43 +35,6 @@ $$P(Y = 1 | X) = \frac{1}{1 + e^{\theta^T X}} = \sigma(\theta^TX)$$
 et
 $$P(Y = 0 | X) = 1 - \sigma(\theta^TX)$$
 
----------
-
-#### Rapport de vraissemblance
-
-Le rapport de vraissemblance est plus communément appelé odds ratio.
-
-Si on veut essayer de définir le rapport de vraissemblance formellement, cela nous donne:
-
-Soit $P(Y = 1| X) = p$ la probabilité que l'élément (possédant ses caractéristiques $X$) respecte une contrainte $Y$. On a donc $1 - p$ la probabilité que l'élément ne respecte pas la contrainte $Y$. Le rapport de vraissemblance se définit de la sorte:
-$$O(Y = 1 | X) = \frac{p}{1 - p}$$
-
-On remarque:
-$$
-\begin{matrix}
-    \text{Si}\ p = 1 - p \Rightarrow & O(Y = 1|X) = O(Y = 0|X) = 1 \\
-    \text{Si}\ p > 1 - p \Rightarrow & O(Y = 1|X) > 1 \\
-    \text{Si}\ p < 1 - p \Rightarrow & 0 \leq O(Y = 1|X) < 1\  (\text{car p, étant une probabilité, }\in [0, 1])
-\end{matrix}
-$$
-Ce qui signifie que si l'élément respecte bien la contrainte $Y$, alors le rapport de vraissemblance est supérieur à 1 et si l'élément ne respecte pas bien la contrainte $Y$, alors le rapport de vraissemblance est inférieur à 1.
-
--------
-
-Pour notre régression logistique binaire, le rapport de vraissemblance peut alors s'écrire:
-$$O(Y = 1|X)$$
-$$=\frac{P(Y = 1|X)}{P(Y=0|X)}$$
-$$=\frac{\sigma(\theta^TX)}{1 - \sigma(\theta^TX)}$$
-$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{1}{1 - \frac{1}{1 + e^{-\theta^TX}}}$$
-$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{1}{\frac{1 + e^{-\theta^TX} - 1}{1 + e^{-\theta^TX}}}$$
-$$=\frac{1}{1 + e^{-\theta^TX}} \times \frac{1 + e^{-\theta^TX}}{e^{-\theta^TX}}$$
-$$=\frac{1}{e^{-\theta^TX}}$$
-$$=\boxed{e^{\theta^TX}}$$
-
-
-
-Le rapport de vraisemblance nous donne alors une indication sur le respect du label par notre élément.
-
 ## Généralisation
 
 On désire donc trouver une nouvelle distribution $\phi(z)$ tel que:
