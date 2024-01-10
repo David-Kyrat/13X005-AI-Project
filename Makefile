@@ -43,9 +43,11 @@ package:
 	cp -r $(RES) $(PKG_DIR)
 	cp -r $(SRC) $(PKG_DIR)
 	cp $(REPORT_DIR)/$(REPORT).pdf regressionLogistique.pdf $(PKG_DIR)/$(REPORT)
-	cp Makefile pyproject.toml README.md poetry.lock $(PKG_DIR)
+	cp Makefile pyproject.toml README.md $(PKG_DIR)
 	rm $(PKG_DIR)/$(SRC)/*cache* $(PKG_DIR)/$(SRC)/.*cache* -rf
+	- rm $(PKG_DIR)/poetry.lock
 	zip -r $(PKG_DIR).zip $(PKG_DIR)
+	rm $(PKG_DIR) -r  # removing temp dir
 
 clean_report:
 	@-rm  $(TEX_AUTOGEN) &> /dev/null ;\
