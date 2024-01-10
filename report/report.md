@@ -287,6 +287,8 @@ Pour la prédiction, nous avons utilisé la fonction suivante:
 
 qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de manière à retourner un nombre entre 0 et 2 (avec les poids et bais entraînés). 
 
+\newpage{}
+
 ### 2.2.4 -- Résultats
 
 Suite à l'apprentissage , nous avons obtenu les résultats suivants:
