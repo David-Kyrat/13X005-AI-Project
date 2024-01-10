@@ -1,5 +1,6 @@
 *cache*
 
+.idea
 # latex compilation
 *.aux
 *.fdb_latexmk
