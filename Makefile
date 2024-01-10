@@ -3,7 +3,7 @@
 SRC := src
 RES := res
 MAIN := main.py
-PKG_DIR := ia-project-group-3
+PKG_DIR := ai-project-group-3
 
 # Name of the report file without extension
 REPORT_DIR := report

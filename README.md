@@ -34,13 +34,15 @@ i.e. avoid problems related to python/package versions as well as the _"It works
 
 - **Dependencies:**  
     This project manages depency with [poetry](https://python-poetry.org) (installable with `pip install poetry`).  
-    To install the required dependencies, simply run `poetry install`.  
+    To install the required dependencies, simply run `poetry install`. Note that the makefile should do that automatically if you don't already have a `poetry.lock` file.  
 
     If for some reason you don't want to use poetry, you can see a list of dependencies from [here](pyproject.toml),  
 
 
 - **Run:** To run it just use `make`.  
-    or manually "poetry run python src/main.py"
+
+- **Test:** To run the tests use `make test` or to test the effiency (f1-score) of the models use `make test_model` as some tests can be quite verbose.  
+
 
 ### Editing the report
 
@@ -51,6 +53,10 @@ i.e. avoid problems related to python/package versions as well as the _"It works
 [pdf-report](./report/report.pdf)
 
 - The citations are in the file [report/references.bib](report/references.bib) and can be called with `\cite{citation-key}`.
+
+### Submission
+
+To build a zip archive containing the relevant files for submission, run `make package` and an archive named `ai-project-group3.zip` will get created at root of the project.
 
 
 ## Authors
