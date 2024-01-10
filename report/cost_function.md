@@ -28,16 +28,18 @@ $$P(Y = 1 | X) = \frac{1}{1 + e^{-(X_1 * w_1 + X_2*w_2 + \dots + b)}}$$
 et 
 $$P(Y = 0 | X) = 1 - \frac{1}{1 + e^{-(X_1 * w_1 + \dots + b)}}$$
 
-Pour plus de simplicité, on va considérer que le biais est compris dans les poids: au lieu d'écrire $z = w^TX + b$, on écrit $z = \theta^T\hat{X}$ avec $\hat{X} = \begin{bmatrix} 1 \\ X \end{bmatrix}$ modifié ou on a ajouté un $1$ au début et $\theta = \begin{bmatrix} b \\ w^T \end{bmatrix}$.
+Pour plus de simplicité, on va considérer que le biais est compris dans les poids: au lieu d'écrire $z = wX + b$, on écrit $z = \theta\hat{X}$ avec $\hat{X} = \begin{bmatrix} 1 \\ X \end{bmatrix}$ modifié ou on a ajouté un $1$ au début et $\theta = \begin{bmatrix} b & w \end{bmatrix}$.
 Ainsi, on a:  
-$\theta^T \hat{X} = \theta_0 * 1 + w^T X = \theta_0 + \sum_{i = 1}^n{w_i * X_i} = b + X_1 * w_1 + \dots + X_n * w_n$  
+$\theta \hat{X} = \theta_0 * 1 + w X = \theta_0 + \sum_{i = 1}^n{w_i * X_i} = b + X_1 * w_1 + \dots + X_n * w_n$
+
+Pour la suite, on va noter $X = \hat{X}$
 
 <!-- \vspace{-3cm} -->
 
 Notre régression logistique binaire peut donc s'écrire comme:
-$$P(Y = 1 | X) = \frac{1}{1 + e^{\theta^T X}} = \sigma(\theta^TX)$$
+$$P(Y = 1 | X) = \frac{1}{1 + e^{\theta X}} = \sigma(\theta X)$$
 et
-$$P(Y = 0 | X) = 1 - \sigma(\theta^TX)$$
+$$P(Y = 0 | X) = 1 - \sigma(\theta X)$$
 
 ## Généralisation
 
@@ -50,11 +52,11 @@ On veut donc que pour une régression logistique binaire, on ait $\sigma(z) = \p
 On peut remarquer que:
 
 $$P(Y = 1 | X)$$
-$$=\frac{1}{1 + e^{-\theta^TX}}$$
-$$=\frac{1}{1 + e^{-\theta^TX}} * \frac{e^{\theta^TX}}{e^{\theta^TX}}$$
-$$=\frac{e^{\theta^TX}}{e^{\theta^TX} + e^{\theta^TX - \theta^TX}}$$
-$$=\frac{e^{\theta^TX}}{e^{\theta^TX} + e^0}$$
-$$=\frac{e^{\theta^TX}}{e^{\theta^TX} + 1}$$
+$$=\frac{1}{1 + e^{-\theta X}}$$
+$$=\frac{1}{1 + e^{-\theta X}} * \frac{e^{\theta X}}{e^{\theta X}}$$
+$$=\frac{e^{\theta X}}{e^{\theta X} + e^{\theta X - \theta X}}$$
+$$=\frac{e^{\theta X}}{e^{\theta X} + e^0}$$
+$$=\frac{e^{\theta X}}{e^{\theta X} + 1}$$
 
 On peut considérer que nous avons un vecteur de poids pour chaque label.
 
@@ -65,29 +67,29 @@ Comme on a besoin seulement d'un vecteur de poids pour déterminer le label de n
 Ainsi, la formule précédente nous donne:
 
 $$P(Y = 1 | X)$$
-$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + 1}$$
-$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + e^0}$$
-$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + e^{0 * X}}$$
-$$=\frac{e^{\theta_1^TX}}{e^{\theta_1^TX} + e^{\theta_0^TX}}$$
-$$=\frac{e^{\theta_1^TX}}{\sum_{i = 0}^1 e^{\theta_i^TX}}$$
+$$=\frac{e^{\theta_1X}}{e^{\theta_1X} + 1}$$
+$$=\frac{e^{\theta_1X}}{e^{\theta_1X} + e^0}$$
+$$=\frac{e^{\theta_1X}}{e^{\theta_1X} + e^{0 * X}}$$
+$$=\frac{e^{\theta_1X}}{e^{\theta_1X} + e^{\theta_0X}}$$
+$$=\frac{e^{\theta_1X}}{\sum_{i = 0}^1 e^{\theta_iX}}$$
 
 On peut donc généraliser cette formule pour $K$ labels.
 
 Cela nous donne:
 
-$$P(Y = k| X )=\frac{e^{\theta_k^TX}}{\sum_{i = 0}^K e^{\theta_i^TX}}$$
+$$P(Y = k| X )=\frac{e^{\theta_kX}}{\sum_{i = 0}^K e^{\theta_iX}}$$
 
 Comme la fonction exponentielle est toujours positive, on a bien que:
-$$0 \leq e^{\theta_k^TX} \leq e^{\theta_k^TX} + \sum_{i \neq k}^K e^{\theta_i^TX}$$
-$$\Leftrightarrow 0 \leq e^{\theta_k^TX} \leq \sum_{i}^K e^{\theta_i^TX}$$
-$$\Leftrightarrow 0 \leq \frac{e^{\theta_k^TX}}{\sum_{i}^K e^{\theta_i^TX}} \leq 1$$
+$$0 \leq e^{\theta_kX} \leq e^{\theta_kX} + \sum_{i \neq k}^K e^{\theta_iX}$$
+$$\Leftrightarrow 0 \leq e^{\theta_kX} \leq \sum_{i}^K e^{\theta_iX}$$
+$$\Leftrightarrow 0 \leq \frac{e^{\theta_kX}}{\sum_{i}^K e^{\theta_iX}} \leq 1$$
 $$\Leftrightarrow 0 \leq \phi(z) \leq 1$$
 
 De plus, on a que:
 $$\sum_k^K P(Y = k | X)$$
-$$=\sum_k^K \frac{e^{\theta_k^TX}}{\sum_i^K e^{\theta_i^TX}}$$
-$$=\frac{\sum_k^Ke^{\theta_k^TX}}{\sum_i^K e^{\theta_i^TX}}$$
-$$=\frac{\sum_i^Ke^{\theta_i^TX}}{\sum_i^K e^{\theta_i^TX}}$$
+$$=\sum_k^K \frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
+$$=\frac{\sum_k^Ke^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
+$$=\frac{\sum_i^Ke^{\theta_iX}}{\sum_i^K e^{\theta_iX}}$$
 $$=1$$
 
 Donc la fonction $\phi(z)$ est bien une fonction de distribution de probabilité qui généralise la fonction sigmoïde pour des problèmes à plusieurs labels.
@@ -109,10 +111,127 @@ Cela nous donne une fonction de coût comme suit:
 
 $$\sum_k^K f(Y, k) \log(\frac{1}{P(Y = k | X)})$$
 $$\sum_k^K f(Y, k) (\log(1) - \log(P(Y = k | X)))$$
-$$\sum_k^K f(Y, k) - \log(P(Y = k | X))$$
 $$-\sum_k^K f(Y, k)\log(P(Y = k | X))$$
 
 On peut minimiser cette fonction de coût grâce à une descente en gradient.
 
 Pour n données d'apprentissage, notre minimisation devient:
 $$-\sum_i^n\sum_k^K f(Y_i, k) \log(P(Y_i = k | X))$$
+
+Cette fonction de coût s'appele communément `negative log-likelihood`
+
+### Dérivée
+
+On va calculer la dérivée de la fonction de coût.
+
+On a:
+
+$$log(P(Y = k | X))$$
+$$=log(\frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}})$$
+$$=\theta_kX - log(\sum_i^K e^{\theta_iX})$$
+
+Donc:
+
+$$\frac{\partial}{\partial \theta_{k ,j}} \sum_i^K f(Y, i)log(P(Y = i | X))$$
+$$=\frac{\partial}{\partial \theta_{k ,j}} f(Y, k)log(P(Y = k | X))\ \text{  (NB: On considère que Y = k)}$$
+$$=\frac{\partial}{\partial \theta_{k ,j}} f(Y, k)(\theta_{kj}X - log(\sum_i^K e^{\theta_iX})) $$
+$$=f(Y, k) (x_j - \frac{\partial}{\partial \theta_{k ,j}}log(\sum_i^K e^{\theta_iX})) $$
+$$=f(Y, k) (x_j - \frac{1}{\sum_i^K e^{\theta_iX}} \frac{\partial}{\partial \theta_{k ,j}}\sum_i^K e^{\theta_iX} $$
+$$=f(Y, k) (x_j - \frac{1}{\sum_i^K e^{\theta_iX}} \frac{\partial}{\partial \theta_{k ,j}}e^{\theta_kX} $$
+$$=f(Y, k) (x_j - \frac{x_j e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
+$$=f(Y, k) (x_j - x_j P(Y = k | X))$$
+$$=x_j (f(Y, k) - P(Y = k | X))$$
+
+$$\frac{\partial}{\partial \theta_{j}} \sum_i^K f(Y, i)log(P(Y = i | X))$$
+$$=\frac{\partial}{\partial \theta_{j}} f(Y, k)log(P(Y = k | X))\ \text{  (NB: On considère que Y = k)}$$
+$$=\frac{\partial}{\partial \theta_{j}} (\theta_{k}X - log(\sum_i^K e^{\theta_iX})) $$
+Supposons que j = k.
+$$=X - \frac{\partial}{\partial \theta_{j}}log(\sum_i^K e^{\theta_iX}) $$
+$$=X - \frac{1}{\sum_i^K e^{\theta_iX}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{\theta_iX} $$
+$$=X - \frac{1}{\sum_i^K e^{\theta_iX}} \frac{\partial}{\partial \theta_{j}}e^{\theta_jX}$$
+$$=X - \frac{X e^{\theta_jX}}{\sum_i^K e^{\theta_iX}}$$
+$$=X - X P(Y = j | X)$$
+$$=X (1 - P(Y = j | X))$$
+Supposons que $j \neq k$.
+
+$$\frac{\partial}{\partial \theta_{j}} (\theta_{k}X - log(\sum_i^K e^{\theta_iX})) $$
+$$= - \frac{\partial}{\partial \theta_{j}}log(\sum_i^K e^{\theta_iX}) $$
+$$= - \frac{1}{\sum_i^K e^{\theta_iX}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{\theta_iX} $$
+$$= - \frac{1}{\sum_i^K e^{\theta_iX}} \frac{\partial}{\partial \theta_{j}}e^{\theta_jX} $$
+$$= - \frac{Xe^{\theta_jX}}{\sum_i^K e^{\theta_iX}} $$
+$$= -X P(Y = j | X)$$
+
+On a donc:
+$$\frac{\partial}{\partial \theta_{j}} \sum_i^K f(Y, i)log(P(Y = i | X)) = X(f(Y, j) - P(Y = j|X))$$
+
+car $f(Y, k)$ est égal à 1 si $Y = k$ et 0 sinon.
+
+On note:
+$$\Phi_k = P(Y = k | X) = \frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
+
+La Jacobienne de la fonction softmax s'écrira:
+
+$$J = 
+\begin{bmatrix}
+    \frac{\partial \Phi_1}{\partial \theta_1} & \dots & \frac{\partial \Phi_1}{\partial \theta_K} \\
+    \vdots & \ddots & \vdots \\ 
+    \frac{\partial \Phi_K}{\partial \theta_1} & \dots & \frac{\partial \Phi_K}{\partial \theta_K}
+\end{bmatrix}
+$$
+
+Rappel:
+
+$$(\frac{u}{v})' = \frac{u'v - uv'}{v^2}$$
+
+Pour calculer la dérivée $\frac{\partial \Phi_k}{\partial \theta_j}$, on a 2 cas de figure possible:
+
+Soit $k \neq j$:
+
+$$\frac{\partial \Phi_k}{\partial \theta_j}$$
+$$=\frac{\partial}{\partial \theta_j} \frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
+
+
+On a:
+
+$$\frac{\partial}{\partial \theta_j} e^{\theta_kX} = 0$$
+
+et:
+
+$$\frac{\partial}{\partial \theta_j} \sum_i^K e^{\theta_iX} = \frac{\partial}{\partial \theta_j} e^{\theta_jX} = e^{\theta_jX}$$
+
+Donc
+
+$$\frac{\partial}{\partial \theta_j} \frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}$$
+$$=\frac{-e^{\theta_kX} e^{\theta_jX}}{(\sum_i^K e^{\theta_iX})^2}$$
+$$=-\frac{e^{\theta_kX}}{\sum_i^K e^{\theta_iX}}\frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}}$$
+$$=-\Phi_k \Phi_j$$
+
+
+Soit $k = j$:
+
+On a:
+
+$$\frac{\partial}{\partial \theta_j} e^{\theta_jX} = e^{\theta_jX}$$
+
+et:
+
+$$\frac{\partial}{\partial \theta_j} \sum_i^K e^{\theta_iX} = \frac{\partial}{\partial \theta_j} e^{\theta_jX} = e^{\theta_jX}$$
+
+Donc
+$$\frac{\partial}{\partial \theta_j} \frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}}$$
+$$=\frac{e^{\theta_jX} \sum_i^K e^{\theta_iX}-e^{\theta_jX} e^{\theta_jX}}{(\sum_i^K e^{\theta_iX})^2}$$
+$$=\frac{e^{\theta_jX} (\sum_i^K e^{\theta_iX}-e^{\theta_jX})}{(\sum_i^K e^{\theta_iX})^2}$$
+$$=\frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}} \frac{\sum_i^K e^{\theta_iX}-e^{\theta_jX}}{\sum_i^K e^{\theta_iX}}$$
+$$= \Phi_j (\frac{\sum_i^K e^{\theta_iX}}{\sum_i^K e^{\theta_iX}} -\frac{e^{\theta_jX}}{\sum_i^K e^{\theta_iX}})$$
+$$= \Phi_j (1 -\Phi_j)$$
+
+La jacobienne s'écrit donc:
+$$J = 
+\begin{bmatrix}
+    \Phi_1 (1 - \Phi_1) & \dots & -\Phi_1 \Phi_K \\
+    \vdots & \ddots & \vdots \\ 
+    -\Phi_K \Phi_1 & \dots & \Phi_K (1 - \Phi_K)
+\end{bmatrix}
+$$
+
+
