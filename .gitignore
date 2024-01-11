@@ -18,3 +18,6 @@ project-infos.md
 *.blg
 
 *.lock
+
+# test file unused
+check_poetry_installed
