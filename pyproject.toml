@@ -168,19 +168,3 @@ max-line-length = 0            # Maximum number of characters on a single line.
 max-module-lines = 0           # Maximum number of lines in a module.
 single-line-class-stmt = "yes" # Allow the body of a class to be on the same line as the declaration if body contains a single statement.
 single-line-if-stmt = "yes"    # Allow the body of an if to be on the same line as the test if there is no else.
-
-[tool.flake8]
-ignore = ["E501"]
-extend-ignore = [
-    "B905",
-    "C901",
-    "E501",
-    "E211",
-    "E401",
-    "E402",
-    "E701",
-    "E741",
-    "W293",
-    "W191",
-    "RET505",
-]
