@@ -28,6 +28,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 select = ["E", "F", "C", "B", "W"]
+
 ignore = [
     "B905",
     "C901",
@@ -41,9 +42,12 @@ ignore = [
     "W191",
     "RET505",
 ]
+
 line-length = 140
+
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
@@ -146,7 +150,7 @@ warn_return_any = false
 warn_unused_configs = true
 exclude = [
     '^file1\.py$',  # TOML literal string (single-quotes, no escaping necessary)
-    "^file2\\.py$",
+    "^file2\\.py$",  # TOML basic string (double-quotes, backslash and other characters need escaping)
 ]
 ignore_missing_imports = true
 ignore_errors = true
@@ -168,3 +172,4 @@ max-line-length = 0            # Maximum number of characters on a single line.
 max-module-lines = 0           # Maximum number of lines in a module.
 single-line-class-stmt = "yes" # Allow the body of a class to be on the same line as the declaration if body contains a single statement.
 single-line-if-stmt = "yes"    # Allow the body of an if to be on the same line as the test if there is no else.
+
