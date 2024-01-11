@@ -1,6 +1,20 @@
 #!/usr/bin/env bash
 
+arg="$1"
+
+if [[ $arg -eq 1 ]]; then
+    # install poetry
+    	curl -sSL "https://install.python-poetry.org" | python3  -
+	if ! command -v poetry > /dev/null 2>&1; then
+	    	echo "Adding Poetry to path"
+		export PATH="~/.local/bin:$PATH"
+	fi
+    	poetry --version
+fi
+
+# install dependencies
+
 # To prevent poetry from asking to unlock keyring (thus preventing issue of installation never finishing)
-# this workaround is needed see  https://github.com/python-poetry/poetry/issues/5250 or https://stackoverflow.com/questions/74438817/poetry-failed-to-unlock-the-collection
+# this workaround is needed see  https://github.com/python-poetry/poetry/issues/5250
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 poetry install

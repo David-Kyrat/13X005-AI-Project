@@ -32,14 +32,12 @@ report:
 	($(TEX_ENGINE) $(TEX_ARGS)); bibtex $(REPORT) && ($(TEX_ENGINE) $(TEX_ARGS)) ;\
 	cd ..
 
-f_poetry: 
-	export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring && echo "$$PYTHON_KEYRING_BACKEND"
+# install poetry and check if dependencies are installed
+check_dep:
+	@([ -f ./poetry.lock ] && [ command -v poetry > /dev/null 2>&1 ]) ||\
+	( echo "Dependencies not installed. Installing them..."; (./setup_poetry 1 || (exit 1) ))
 
-# check if dependencies are installed
-check_dep: f_poetry
-	[ -f ./poetry.lock ] || \
-	( echo "Dependencies not installed. Installing them..."; (./setup_poetry || (echo "Please make sure you've run 'pip install poetry'."; exit 1) ))
-
+# echo "Please make sure you've run 'pip install poetry'."; 
 
 # ZIP project for submission
 package:
