@@ -1,9 +1,10 @@
-.PHONY: all run report
+.PHONY: all run report check_dep f_poetry test
 
 SRC := src
 RES := res
 MAIN := main.py
 PKG_DIR := ai-project-group-3
+
 
 # Name of the report file without extension
 REPORT_DIR := report
@@ -11,6 +12,7 @@ REPORT := report
 TEX_ENGINE := pdflatex
 TEX_ARGS = -halt-on-error $(REPORT).tex | grep '^!.*' -A200
 TEX_AUTOGEN = *.aux *.log *.out *.bbl *.blg *blx.bib *.fls *.fdb_latexmk *.synctex.gz *.synctex *.run.xml
+
 
 all: run
 
@@ -30,10 +32,13 @@ report:
 	($(TEX_ENGINE) $(TEX_ARGS)); bibtex $(REPORT) && ($(TEX_ENGINE) $(TEX_ARGS)) ;\
 	cd ..
 
+f_poetry: 
+	export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring && echo "$$PYTHON_KEYRING_BACKEND"
+
 # check if dependencies are installed
-check_dep:
-	@[ -f ./poetry.lock ] || \
-	( echo "Dependencies not installed. Installing them..."; (poetry install || (echo "Please make sure you've run 'pip install poetry'."; exit 1) ))
+check_dep: f_poetry
+	[ -f ./poetry.lock ] || \
+	( echo "Dependencies not installed. Installing them..."; (./setup_poetry || (echo "Please make sure you've run 'pip install poetry'."; exit 1) ))
 
 
 # ZIP project for submission
