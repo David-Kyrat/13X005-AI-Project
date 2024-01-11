@@ -51,5 +51,4 @@ jobs:
       - name: Test with pytest
         run: |
           make test
-          # pytest src/*.py
 
