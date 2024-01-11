@@ -7,7 +7,7 @@ import metrics
 # NB: floating is any (numpy) floating type NDArray or not
 from numpy import float32 as f32
 from numpy import floating as fl
-from numpy.typing import NDArray
+from numpy.typing import NDArray  # noqa: F401
 from pandas import DataFrame
 
 

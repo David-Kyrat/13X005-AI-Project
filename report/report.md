@@ -69,16 +69,14 @@ ce qui a donné des résultats plus que satisfaisants comme nous le verrons en \
 caractérisée par l'adoption d'une hypothèse d'indépendance forte entre les features (attributs), qualifiée de "naïve".  
 Plus simplement, le classifieur est classifié de "naïf" car il part du principe que chaque feature (attribut) est indépendante des autres et a un poid égal quant à la probabilité qu'un point appartienne à une classe. 
 
-Ce model est dit génératif contrairement à la regression logistique étant considéré comme "méthode discriminante" \cite{ClassifieurLineaire2022} et consiste à modéliser les probabilités conditionnelles $P(X | classe)$ pour chaque classe $y$ et vecteur de features $X$ afin de trouver celle qui maximise cette probabilité.
+Ce model est dit génératif contrairement à la regression logistique étant considéré comme "méthode discriminante" \cite{ClassifieurLineaire2022} et consiste à modéliser les probabilités conditionnelles $P(\x | classe)$ pour chaque classe $y$ et smaple $\x$ afin de trouver celle qui maximise cette probabilité.
 
-En d'autres termes, le problème revient à trouver, pour des attributs $X_1, \ldots, X_k$, la classe $\tilde{y}$ telle que:
+En d'autres termes, le problème revient à trouver, pour des attributs $x_1, \ldots, x_k$, la classe $\tilde{y}$ telle que:
 
 $$
-\tilde{y} = \text{arg}\max_{Y \in \mathcal{Y}} \left[\  P(Y) \prod_{k = 1}^K{P(X_k | Y)}\  \right]
+\tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | Y)}\  \right]
 $$
 
-
-Citation Test: \cite{LinearModels}
 
 # 2 -- Méthodologie  
 
@@ -87,6 +85,8 @@ Citation Test: \cite{LinearModels}
 Pour la suite de ce projet les outils suivants ont été utilisés dans chaque parties:
 
 - [python](https://www.python.org/)
+- [poetry](https://python-poetry.org/)
+- [Make](https://www.gnu.org/software/make/)
 - [numpy](https://numpy.org/)
 - [pandas](https://pandas.pydata.org/)
 - [sklearn](https://scikit-learn.org/stable/)
@@ -299,7 +299,7 @@ Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 
 > N.B.:   
 L'apprentissage peut être ré-effectué de manière efficient si besoine est à l'aide du jupyter notebook [training\_test.ipynb](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) disponible sur la branche [gpu-training](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) du repository github.
-Le code de l'entraînement (uniquement sur cette branche) à été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev).  
+Le code de l'entraînement (uniquement sur cette branche) à été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev) \cite{NumPySciPyGPU}.  
 A noter qu'il utilise des fonctions des sklearn alors que nous devions les implémenter nous mêmes, (telles que les metrics f1-score...).
 Ces fonctions ont bien été implenté mais pour une raison de simplicité, elle n'ont pas été utilisée pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.  
 
@@ -325,6 +325,11 @@ Ce résultat a été obtenu avec une séparation 70/30 de training/test data.
 Lorsque l'on essaye de changer la portion qui est prise aléatoirement dans chaque catégorie, 
 on obtient un F1-score qui varie entre 0.93 et 1.0 (avec, dans de rares exceptions 0.91 ou 0.89).
 
+De plus, l'on voit que les performances que nous avons obtenus rentrent tout à fait dans le cadre de celles annoncées par le UCI ML Repository:
+
+![performances attendu d'après le UCI ML Repo \cite{IrisWebsite}](../res/screenshot_ucmi_perfs.png){width=70%}
+
+Ce résultat illustre bien que notre démarche est correcte et que nos 2 modèles sont efficaces, avec un penchant pour la régression logistique qui semble être plus efficace que Naive Bayes.
 
 
 <!-- --- -->
@@ -334,14 +339,8 @@ on obtient un F1-score qui varie entre 0.93 et 1.0 (avec, dans de rares exceptio
 ## 2.3 -- Naive Bayes
 
 Dans cette section, une implémentation d'un classifieur linéaire bayesien (naive bayes) a été réalisée. 
-La fonction de prédictition a la signature suivante:
 
-\begin{lstlisting}
-    #  TODO
-\end{lstlisting}
-
-et calcule la classe qui maximise la probabilité conditionnelle définie en section \href{#naive-bayes}{1.2}.
-
+### 2.3.1 -- Extraction des distributions
 
 Dans cette implémentation, étant données que toutes nos features sont continues, nous avons considéré que _sepal length_, _sepal width_, _petal length_ et _petal width_ seront représenté comme 4 variables aléatoires $X_0, \cdots, X_3$ suivant 4 lois normales normales de paramètre $(\mu_k, \sigma_k)$.
 
@@ -350,16 +349,88 @@ $$
 X_k \sim \mathcal{N}( \mu_k, \sigma_k) \qquad \qquad k \in \iitv{0, 3}
 $$
 
+Elles peuvent être récupérées à l'aide de la fonction suivante:
+
+\begin{lstlisting}
+def get_distrib_parameters(features: DataFrame, labels) -> dict[Any, list[tuple[fl, fl]]]:
+\end{lstlisting}
+
+qui va retourner un dict mappant chaque classe à une liste contenant les paramètres des distributions conditionnelles (normales) des features pour cette classe.
 
 
+### 2.3.2 -- Prédictions
+
+Deux fonctions de prédictions ont été implémenté,
+
+1. Prennant un sample et prédisant sa classe
+2. Une deuxième qui prend tous les samples et applique, en parallèle, la première fonction à chacun d'eux.
+
+Elles ont les signatures suivantes:
+
+\begin{lstlisting}
+    def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
+    def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> list[Any]:
+\end{lstlisting}
+
+Comme dit précédemment, pour pouvoir prédire la classe d'un sample, il faut calculer les probabilité conditionnelle $P(\x | classe)$
+pour chaque classe $y$ et sample $\x$ et prendre la classe qui maximise cette dernière.
+
+Cela revient à chercher le $\tilde{y}$ défini en \href{#naive-bayes}{section 1.2}, 
+développons le calcul qui nous amené à cette formule:
+
+$$
+\tilde{y}  = \text{arg}\max_{y \in \mathcal{Y}}\ P(y|\x) = \text{arg}\max_{y \in \mathcal{Y}}\ \frac{P(\x|y)  P(y)}{P(\x)} =  \text{arg}\max_{y \in \mathcal{Y}}\ P(\x | y)P(y)
+$$
+
+Or
+$$ 
+P(\x | y) = P(x_1 | y) \prod_{i = 2}^{n}{P(x_i | x_{i-1}, \ldots, x_1, y)}
+$$
+Avec l'hypothèse que les $\{X_i\}_{i \leq n}$ sont indépendants, on obtient que: 
+
+$$P(x_i | x_{i-1}, \ldots, x_1, y) = P(x_i | y)$$
+
+Donc
+$$P(\x|y) = P(x_1 | y) \prod_{k = 2}^{K}{P(x_k | y)} = \prod_{k=1}^K{P(x_k | y)}$$
+
+En conclusion:
+$$ \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | y)}\  \right] $$ 
+(où $K$ reste le nombre de features.)
+
+Où au début on cherche à maximiser $P(y | x)$ car idéalement on voudrait savoir la probabilité que $y$ soit le bon label pour n'importe quel sample $\x$. 
+Cependant, on aimerait pouvoir effectuer cette prédictions pour des $\x$ 
+qui n'appartiennent pas à notre dataset d'apprentissage, i.e. on ne doit pas avoir besoin
+d'avoir déjà vu exactement ce sample. On a donc besoin d'une généralisation, c'est ainsi que l'on fini par retomber sur
+ 
+$$ \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | y)}\  \right] $$ 
+
+qui est ce que calculent les fonctions dont on a donné la signature ci-dessus.
+
+### 2.3.3 -- Résultats
+
+Dans cette section, nous allons simplement reprendre ce qui a été fait dit dans la 
+\href{#ruxe9sultats}{section 2.2.4} et remontrer les mêmes tests.
+
+Voici l'output du test `pytest` pour les rapports de performances du model bayesien:
+
+\begin{lstlisting}
+src/log_reg.py::test_log_reg_f1score 
+weights & biases: [0.53452349, 0.36463584, 1.16132476, 1.08204578], 0.45146791  
+{ 'accuracy': 1.0, 'f1_score': 1.0, 'precision': 1.0, 'recall': 1.0 }
+PASSED
+
+src/naive_bayes.py::test_predict_bayes_f1score_all  
+{ 'accuracy': 0.97, 'f1_score': 0.975, 'precision': 0.976, 'recall': 0.974 }
+PASSED
+\end{lstlisting}
+
+Ce résultat a été obtenu avec une séparation 70/30 de training/test data.  
+Ces résultats illustrent bien que notre démarche est correcte et que nos 2 modèles sont efficaces, avec un penchant pour la régression logistique qui semble être plus efficace que Naive Bayes.  
+Cependant, un f1-score de $> 0.95$ reste excellent.
 
 \newpage{}
-
-# 3 -- Résultats 
 
 <!-- \newpage{} -->
 
 \printbibliography[heading=bibintoc, title={Références}]
-
-- TODO: ajouter les autres références des documentations utilisées
 

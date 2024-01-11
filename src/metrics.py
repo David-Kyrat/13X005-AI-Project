@@ -147,15 +147,15 @@ def compute_metrics(true_labels, predicted_labels):
 
 import sklearn.metrics as sk_metrics
 from numpy.testing import assert_almost_equal
-from pandas import DataFrame
-import numpy as np
+from pandas import DataFrame  # noqa: F401
+import numpy as np  # noqa: F401
 
 
 def test_metrics():
     from main import FEAT_test, LABELS_test
-    import naive_bayes as nb
+    import naive_bayes as nb  # noqa: F401
     import log_reg as lr
-    from pprint import pprint
+    from pprint import pprint  # noqa: F401
 
     # predictions = nb.predict_bayes_all(FEAT_test)
     predictions = lr.predict_log_reg(FEAT_test.to_numpy(), lr.best_w, lr.best_b)

@@ -9,7 +9,6 @@ from numpy import floating as fl, int32 as i32
 from numpy.random import rand, randint
 from numpy.typing import NDArray
 from pandas import DataFrame
-import pandas as pd
 import metrics
 
 # NOTE: parameters found after testing with different values, see branch "gpu-training" of repo for more details
@@ -114,8 +113,7 @@ def predict_compute_metrics(X_test, Y_test, w, b):
     if not isinstance(X_test, np.ndarray):
         X_test = np.asarray(X_test)
     predicted_val_logreg = predict_log_reg(X_test, w, b)
-    # metrics = compute_metrics(Y_test, predicted_val_logreg)
-    # return metrics
+    return metrics.compute_metrics(Y_test, predicted_val_logreg)
 
 
 # ================================================================
@@ -134,7 +132,7 @@ def test_log_reg_with_dataset_values():
     from main import FEAT, LABELS
 
     X = np.asarray(FEAT)
-    m, n = X.shape
+    _, n = X.shape
     init_w = np.random.rand(n)
     init_b = np.random.rand()
     n_it, lr = 1000, 1e-5
