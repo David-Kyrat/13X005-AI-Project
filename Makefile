@@ -34,7 +34,7 @@ report:
 
 # install poetry and check if dependencies are installed
 check_dep:
-	@([ -f ./poetry.lock ] && [ command -v poetry > /dev/null 2>&1 ]) ||\
+	@( [ -f ./poetry.lock ] && (command -v poetry > /dev/null 2>&1) ) ||\
 	( echo "Dependencies not installed. Installing them..."; (./setup_poetry 1 || (exit 1) ))
 
 # echo "Please make sure you've run 'pip install poetry'."; 
