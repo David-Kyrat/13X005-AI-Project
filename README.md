@@ -33,7 +33,7 @@ Poetry was used to simplify the project & dependencies setup,
 i.e. avoid problems related to python/package versions as well as the _"It works on my machine"_ problem.
 
 - **Dependencies:**  
-    This project manages depency with [poetry](https://python-poetry.org) (installable with `pip install poetry`).  
+    This project manages depency with [poetry](https://python-poetry.org) (installable with `./setup_poetry 1`).  
     To install the required dependencies, simply run `poetry install`. Note that the makefile should do that automatically if you don't already have a `poetry.lock` file.  
 
     If for some reason you don't want to use poetry, you can see a list of dependencies from [here](pyproject.toml),  
