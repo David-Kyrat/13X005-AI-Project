@@ -1,5 +1,8 @@
 # 13X005 AI Project - Logistic Regression & Naive Bayes
 
+![test](https://github.com/David-Kyrat/13X005-AI-Project/actions/workflows/python-app.yml/badge.svg)
+
+
 End of semester AI Project on Logistic Regression and Naive Bayes using the famous ["Iris"](https://archive.ics.uci.edu/dataset/53/iris) dataset.
 
 Assignement Pdf:
