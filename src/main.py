@@ -15,7 +15,7 @@ assert iris.data is not None
 DATA: DataFrame = iris.data.original
 LAB_NAME: str = iris.data["headers"][-1]
 
-# TODO : Faire le split manuellement afin de pouvoir controller le volument de données d'entrainements et le bruit
+#? Faire le split manuellement afin de pouvoir controller le volume de données d'entrainements et le bruit ?
 from sklearn.model_selection import train_test_split
 
 # tmp_x, tmp_x_test, y_train, y_test = train_test_split(iris.data.features, DATA[LAB_NAME], test_size=0.3, random_state=np.random.randint(0, 100))
