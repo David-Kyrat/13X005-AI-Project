@@ -1,6 +1,7 @@
 
 #! CE CODE NE MARCHE PAS TANT QUE NOUS NE POUVONS PAS PASSER LES DONEES D'APPRENTISSAGE EN PARAMETRE 
 #TODO : Ajouter des commentaires + formaliser l'explication des fonctions
+#TODO : Implémenter l'évolution pour les autres métriques
 
 import numpy as np
 from numpy.typing import NDArray
@@ -13,7 +14,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import naive_bayes, log_reg,metrics
 
-def add_gaussian_noise_to_dataframe(df, mean=0, std=1):
+def add_gaussian_noise(df, mean=0, std=1.0):
     noise = pd.DataFrame(np.random.normal(mean, std, df.shape), columns=df.columns)
     noisy_df = df + noise
     return noisy_df
@@ -119,7 +120,7 @@ def evolution_noise(train=True):
     
     print("nb f1scores",naive_bayes_f1_scores)
     print("logreg f1scores",log_reg_f1_scores)
-    print(train_lengths)
+    print(variances)
     plt.plot(variances,log_reg_f1_scores,label='log_reg')
     plt.plot(variances,naive_bayes_f1_scores,label='naive_bayes')
     plt.legend()
