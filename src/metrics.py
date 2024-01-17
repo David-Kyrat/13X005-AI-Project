@@ -16,6 +16,11 @@ def evaluation(true_labels, predict_labels, label):
     ------------
     tuple of int (4 elements wich are the true/false positive/negative values)
     """
+    if not isinstance(true_labels, np.ndarray):
+        true_labels = np.asarray(true_labels)
+    if not isinstance(predict_labels, np.ndarray):
+        predict_labels = np.asarray(predict_labels)
+
     true_negative = sum(real == label and pred != label for real, pred in zip(true_labels, predict_labels))
     true_positive = sum(real == label and pred == label for real, pred in zip(true_labels, predict_labels))
     false_negative = sum(real == label and pred != label for real, pred in zip(true_labels, predict_labels))
@@ -40,6 +45,11 @@ def accuracy(true_labels, predicted_labels):
     float number wich is the accuracy proportion value between 0 and 1.
     """
 
+    if not isinstance(true_labels, np.ndarray):
+        true_labels = np.asarray(true_labels)
+    if not isinstance(predicted_labels, np.ndarray):
+        predict_labels = np.asarray(predicted_labels)
+
     correct_predictions = sum(true == pred for true, pred in zip(true_labels, predicted_labels))
     total_instances = len(true_labels)
     return correct_predictions / total_instances
@@ -60,6 +70,11 @@ def precision(true_labels, predict_labels):
     ------------
     float number wich is the precision value between 0 and 1.
     """
+
+    if not isinstance(true_labels, np.ndarray):
+        true_labels = np.asarray(true_labels)
+    if not isinstance(predict_labels, np.ndarray):
+        predict_labels = np.asarray(predict_labels)
 
     labels_names = list(set(true_labels))
     precisions = []
@@ -87,6 +102,11 @@ def recall(true_labels, predict_labels):
     float number wich is the recall value between 0 and 1.
     """
 
+    if not isinstance(true_labels, np.ndarray):
+        true_labels = np.asarray(true_labels)
+    if not isinstance(predict_labels, np.ndarray):
+        predict_labels = np.asarray(predict_labels)
+
     labels_names = list(set(true_labels))
     recalls = []
     for label in labels_names:
@@ -113,6 +133,11 @@ def f1_score(true_labels, predict_labels):
     float number wich is the f1 score value between 0 and 1.
     """
 
+    if not isinstance(true_labels, np.ndarray):
+        true_labels = np.asarray(true_labels)
+    if not isinstance(predict_labels, np.ndarray):
+        predict_labels = np.asarray(predict_labels)
+
     prec = precision(true_labels, predict_labels)
     rec = recall(true_labels, predict_labels)
     prec_rec = prec + rec
@@ -131,6 +156,11 @@ def compute_metrics(true_labels, predicted_labels):
     Returns
     -------
     dict: A dictionary containing the performance metrics for each class."""
+
+    if not isinstance(true_labels, np.ndarray):
+        true_labels = np.asarray(true_labels)
+    if not isinstance(predicted_labels, np.ndarray):
+        predict_labels = np.asarray(predicted_labels)
 
     _precision = precision(true_labels, predicted_labels)
     _recall = recall(true_labels, predicted_labels)
