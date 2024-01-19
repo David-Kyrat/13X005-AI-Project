@@ -526,6 +526,36 @@ Cependant, un f1-score de $> 0.95$ reste excellent.
 
 \newpage{}
 
+### 3. -- Analyse
+
+Pour chaque classe y, on peut tracer les fonctions de distribution de probabilité pour chaque donnée $X_k$ sachant la classe y afin d'analyser la structure des données. 
+
+Pour la classe Y=0, on obtient le graphe suivant :
+
+![graphe des fonctions de distribution sachant Y=0](../src/res/comp_normal_law_Y_0.png){width=60%}
+
+On peut voir tout d'abord que pour cette classe, les pics des courbes bleue et rouge sont bien inférieurs aux pics des courbes vert et magenta. Ainsi, on en conclu que les variables $X_0$ et $X_1$ ont moins d'influence dans la prédiction de cette classe. Alors que le pic de la courbe magenta est bien supérieur aux autres, indiquant que la variable $X_3$ a une forte influence sur la prédiction de cette classe. De plus, on observe que seul les courbent bleu et rouge ont un chevauchement perceptible mais quand même assez petit, on en conclu que les variables sont pour cette classe très peu indépendante les unes des autres. 
+
+Pour la classe Y=1, on obtient le graphe suivant :
+
+![graphe des fonctions de distribution sachant Y=0](../src/res/comp_normal_law_Y_1.png){width=60%}
+
+On peut voir tout d'abord que pour cette classe, les pics des courbes bleus et verte sont bien inférieurs aux pics des courbes rouge et magenta. Ainsi, on en conclu que les variables $X_0$ et $X_2$ ont moins d'influence dans la prédiction de cette classe. Alors que le pic de la courbe magenta est bien supérieur aux autres, indiquant que la variable $X_3$ a une forte influence sur la prédiction de cette classe. De plus, on observe que les courbes rouge et magenta ont un faible chevauchement indiquant une faible interdépence entre $X_3$ et $X_1$ alors que les courbes rouge et verte ainsi que verte et bleue ont un chevauchement assez élevé montrant une certaine interdépendance entre les variables $X_1$ et $X_2$ ainsi qu'entre les variables $X_0$ et $X_2$.
+
+Enfin pour la classe Y=2, on obtient le graphe suivant :
+
+![graphe des fonctions de distribution sachant Y=0](../src/res/comp_normal_law_Y_2.png){width=60%}
+
+
+On observe que les pics des courbes rouge et magenta sont presque deux fois plus grand que ceux des courbes bleue et verte, de plus les courbes rouge  se chevauchent fortement. Ainsi les variables $X_3$ et $X_1$ ont une très forte influence sur cette classe et sont assez interdépendant alors que les variables $X_0$ et $X_2$ ont très peu d'impacte sur la prédiction de cette classe. Les courbes bleue et verte se chevauchent aussi énormément montrant aussi une forte interdépendance entre les variables $X_0$ et $X_2$. 
+
+
+Ainsi on peut remarquer que globalement la variable $X_3$ a une forte influence sur la classification alors que la variable $X_0$ a une plus faible. 
+De plus, les variables indépendantes ne sont pas séparables les unes des autres.  
+
+
+
+
 <!-- \newpage{} -->
 
 \printbibliography[heading=bibintoc, title={Références}]
