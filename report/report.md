@@ -57,6 +57,8 @@ où $\x_i \in \R^K$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ f
 
 Cependant, dans notre dataset (voir \href{#choix-du-dataset-outils-utilisuxe9s}{section 2.0}) nous avons 3 classes (3 espèces d'iris),
 $y$ ne suit donc, évidemment, plus une loi de Bernoulli.  
+
+__À modifier ?__
 La sigmoide étant continue, nous avons simplement modifié la manière dont nous lui appliquions le seuillage, pour distinguer 3 cas au lieu de 2.
 i.e. Au lieu de séparer le domaine en 2 ($\sigma(z) \leq 0.5,\ \sigma(z) > 0.5$), nous l'avons séparé en $N$ (ici $N = 3$).
 On a donc que $y_i = k \Leftrightarrow \frac{k}{N} \leq \sigma(z) < \frac{k + 1}{N}$,
@@ -144,69 +146,163 @@ dépend fortement de la valeur initiale et ce pour les deux fonctions.
 
 ### 2.2.1 -- Fonction de coût pour la régression logistique
 
-#### MSE -- Une mauvaise idée
-:
-
-
 Afin d'entraîner les paramètres de la régression logistique, il faut pouvoir comparer les résultats obtenus par la régression avec les résultats attendus.
 
+On souhaite définir une fonction à minimiser permettant de trouver les paramètres optimaux de la régression logistique.
 
-Pour cela, on pourrait penser utiliser quelque chose comme la `Mean Squared Error (MSE)`, qui est une moyenne du carré de la différence entre le résultat obtenu par la régression (donné par $z$) et la valeur estimée $y$.
+Notre classification se base sur la fonction sigmoïde $\sigma(z) = \frac{1}{1 + e^{-z}}$.
 
-La MSE nous donne une estimation de l'erreur moyenne faite entre la fonction approximative $f$ et la valeur attendue $y$.
+Comme la fonction exponnentielle est toujours positive, on a bien que $\sigma(z) \in [0, 1]$.
 
-L'objectif est donc de minimiser la MSE afin de minimiser l'erreur entre les valeurs estimées et les valeurs attendues.
+La fonction sigmoïde nous donne la probabilité que l'élément donné appartienne à un label.
 
-Ce qui nous donnerait
-$$MSE = \frac{1}{n}\sum_i^n (\sigma(z_i) - y_i)^2$$
+Autrement dit, la fonction sigmoïde est la fonction de répartition de la régression logistique.
 
-avec $\sigma$ la fonction sigmoïde utilisée pour la régression logistique, définie comme en section \href{#ruxe9gression-logistique}{1.1} notre MSE nous donnerait:
+Soit $Y \in \{0, 1\}$ les différents labels que peut prendre l'élément que l'on considère et soit $X$ l'ensemble des caractéristiques connues de l'élément, dont on cherche à déterminer dans quelle classe le mettre, donc quel label on doit lui attribuer.
+Soit $\theta$ le vecteur des poids des covariables, indiquant à quel point les covariables influencent sur la décision du label. On a donc:
 
-$$MSE = \frac{1}{n}\sum_i^n{\left(\frac{1}{1 + e^{-z_i}} - y_i \right)^2}$$
+$$P(Y = 1 | X) = \frac{1}{1 + e^{-(X_1 * w_1 + X_2*w_2 + \dots + b)}}$$
+et 
+$$P(Y = 0 | X) = 1 - \frac{1}{1 + e^{-(X_1 * w_1 + \dots + b)}}$$
 
+Pour plus de simplicité, on va considérer que le biais est compris dans les poids: au lieu d'écrire $z = wX + b$, on écrit $z = \hat{X}\theta$ avec $\hat{X} = \begin{bmatrix} X & 1 \end{bmatrix}$ modifié ou on a ajouté une colonne avec que des $1$ à la fin de la matrice $X$ et $\theta = \begin{bmatrix} w & b \end{bmatrix}$ afin d'avoir une bonne cohérence avec le rapport et le code. (On a trouvé cela plus facile d'avoir pour chaque labels les poids et bias sur une ligne, donc d'avoir $\theta_1$ pour le label $1$ etc...)
+Ainsi, on a:
+$\hat{X} \theta^T = X_1 * w_1 + X_2 * w_2 + \dots + b$
 
-Afin de visualiser la MSE obtenue, nous avons créé un graph de la fonction
-$$
-\text{MSE}(w, b) = \frac{1}{n} \left( \frac{1}{1+ e^{w^T x + b}} - y_i \right)^2
-$$
-pour $x = 1$ et $y = 0.3$. Nous obtenons alors les graphes suivants:
+Pour la suite, on va noter $X = \hat{X}$
 
-Global vision | Zoomed vision
-:------------:|:----------:
-![minima global vision](../res/minima.png)|![zoom vision](../res/minima_zoom.png)
-Fonction MSE avec $x = 1$ et $y = 0.3$ (global) | Fonction MSE avec $x = 1$ et $y = 0.3$ (zoomed)
+<!-- \vspace{-3cm} -->
 
+Notre régression logistique binaire peut donc s'écrire comme:
+$$P(Y = 1 | X) = \frac{1}{1 + e^{X \theta^T}} = \sigma(X \theta^T)$$
+et
+$$P(Y = 0 | X) = 1 - \sigma(X \theta^T)$$
 
-Nous pouvons remarquer sur la figure zoomé, que la fonction admet plusieurs minimum locaux. La fonction MSE n'est donc pas convexe.
-Ceci est problématique pour la descente en gradient, car celle-ci risquera de se retrouver coïncé dans un minimum local et ne trouvera jamais le minimum global.
+#### 2.2.1.1 -- Généralisation
 
-Si on pouvait faire des plots pour la fonction avec plus de paramètres, on verrait mieux et plus de minimum locaux.
+On désire donc trouver une nouvelle distribution $\phi(z)$ tel que:
+$$\phi(z) \in [0, 1]\ \forall z$$
+est une généralisation de la fonction $\sigma(z)$
 
-Cela est dû au fait que la fonction $\sigma(z)$ n'est pas linéaire. (Découle trivialement du fait qu'il y ait une exponentielle dans la fonction.)
-Ce qui empêche la MSE d'être convexe.
+On veut donc que pour une régression logistique binaire, on ait $\sigma(z) = \phi(z)$.
 
-La descente en gradient ne pourra donc pas fonctionnner correctement, car on pourrait trouver des minimum locaux à la place du minimum global, 
-ce qui nous empêcherait de trouver les paramètres optimaux pour la régression logistique.
+On peut remarquer que:
 
-#### Log Loss -- Cross-Entropy
-:
+$$P(Y = 1 | X)$$
+$$=\frac{1}{1 + e^{-X \theta^T}}$$
+$$=\frac{1}{1 + e^{-X \theta^T}} * \frac{e^{X \theta^T}}{e^{X \theta^T}}$$
+$$=\frac{e^{X \theta^T}}{e^{X \theta^T} + e^{X \theta^T - X \theta^T}}$$
+$$=\frac{e^{X \theta^T}}{e^{X \theta^T} + e^0}$$
+$$=\frac{e^{X \theta^T}}{e^{X \theta^T} + 1}$$
 
-Pour résoudre ce problème, on utilise plutôt la `log loss` fonction, appellée également `cross-entropy`.
+On peut considérer que nous avons un vecteur de poids pour chaque label.
 
-<!-- La formule de la `cross-entropy` est donnée par:
- $$H(p, q) = - \sum_{x \in \mathcal{X}} p(x) \log q(x)$$ 
-qui n'est enfait riend d'autre que la forme développé de la formule-->
+Ainsi, on a $\theta_0 = \begin{bmatrix} w_0 & b_0 \end{bmatrix}$ pour le label 0 et $\theta_1 = \begin{bmatrix} w_0 & b_0 \end{bmatrix}$ pour le label 1.
 
-La formule de la log loss function est donnée par:
-$$
-C(\w,b) = \frac{1}{N} \sum_{i=0}^{N}{ \log p(y_i | \x_i; \w, b) }
-$$ 
+Comme on a besoin seulement d'un vecteur de poids pour déterminer le label de nouveaux éléments avec leurs caractéristiques, on peut considérer que $\theta_0 = \begin{bmatrix} 0 & \dots & 0 \end{bmatrix}$.
 
-avec $N$ le nombre de sample, $y_i$ la "vrai" classe associé au sample $\x_i$ et $\w, b$ le vecteur de poids et biais.  
-Où l'on peut ensuite dévolpper $p(y_i | \x_i; \w, b)$ pour retomber sur la cross-entropy, avec $p(x) = y$ et $q(x) = z$
+Ainsi, la formule précédente nous donne:
 
-La fonction ci-dessus pénalise fortement (du moins plus que les autres cas) les fausses prédictions "confiantes" (i.e. annonce faux + haute probabilités) et son domaine d'arrivé est de 0 à $\infty$, un modèle parfait aurait une log-loss de 0.  
-Un modèle complètement incorrect aurait, quant à lui, une log loss qui tend vers $\infty$
+$$P(Y = 1 | X)$$
+$$=\frac{e^{X \theta_1^T}}{e^{X \theta_1^T} + 1}$$
+$$=\frac{e^{X \theta_1^T}}{e^{X \theta_1^T} + e^0}$$
+$$=\frac{e^{X \theta_1^T}}{e^{X \theta_1^T} + e^{0 * X}}$$
+$$=\frac{e^{X \theta_1^T}}{e^{X \theta_1^T} + e^{X \theta_0^T}}$$
+$$=\frac{e^{X \theta_1^T}}{\sum_{i = 0}^1 e^{X \theta_i^T}}$$
+
+On peut donc généraliser cette formule pour $K$ labels.
+
+Cela nous donne:
+
+$$P(Y = k| X )=\frac{e^{X \theta_k^T}}{\sum_{i = 0}^K e^{X \theta_i^T}}$$
+
+Comme la fonction exponentielle est toujours positive, on a bien que:
+$$0 \leq e^{X \theta_k^T} \leq e^{X \theta_k^T} + \sum_{i \neq k}^K e^{X \theta_i^T}$$
+$$\Leftrightarrow 0 \leq e^{X \theta_k^T} \leq \sum_{i}^K e^{X \theta_i^T}$$
+$$\Leftrightarrow 0 \leq \frac{e^{X \theta_k^T}}{\sum_{i}^K e^{X \theta_i^T}} \leq 1$$
+$$\Leftrightarrow 0 \leq \phi(z) \leq 1$$
+
+De plus, on a que:
+$$\sum_k^K P(Y = k | X)$$
+$$=\sum_k^K \frac{e^{X \theta_k^T}}{\sum_i^K e^{X \theta_i^T}}$$
+$$=\frac{\sum_k^Ke^{X \theta_k^T}}{\sum_i^K e^{X \theta_i^T}}$$
+$$=\frac{\sum_i^Ke^{X \theta_i^T}}{\sum_i^K e^{X \theta_i^T}}$$
+$$=1$$
+
+Donc la fonction $\phi(z)$ est bien une fonction de distribution de probabilité qui généralise la fonction sigmoïde pour des problèmes à plusieurs labels.
+
+Cette fonction est courramment appelée fonction `softmax`.
+
+#### 2.2.1.2 -- Fonction de coût
+
+Notre objectif est donc de trouver une fonction de coût pour pouvoir entraîner les paramètres de la régression multinomiale.
+On cherche à maximiser la vraisemblance des données.
+Donc pour un label $Y$ donné, on veut maximiser:
+$$\sum_k^K f(Y, k) P(Y = k | X)$$
+avec $f(Y, k)$ la fonction qui vaut $1$ si $Y = k$ et $0$ sinon.
+
+Comme on a plusieurs couples de données $(X_i, Y_i)$, on peut écrire la fonction précédente comme:
+
+$$\sum_i^n\sum_k^K f(Y_i, k) P(Y_i = k | X_i)$$
+
+En maximisant cette fonction, on fait en sorte que le paramètre $\theta_k$ permette d'obtenir la prédiction que le label soit égal à $k$ avec la somme des probabilités où $Y_i = k$ est la plus grande possible.
+
+Afin de pouvoir utiliser un algorithme comme la descente en gradient, il faut non pas maximiser une fonction, mais minimiser une fonction.
+
+Tout d'abord, comme on travaille avec des exponentielles, on a intérêt à prendre un logarithme pour éviter d'avoir à travailler avec de trop grandes valeurs. Cette modification n'aura pas d'impact sur la convexité car la fonction logarithme est une fonction strictement croissante.
+
+Enfin, comme on cherche une fonction à minimiser et non pas à maximiser pour pouvoir utiliser la descente en gradient, on va prendre l'inverse de la fonction.
+
+Cela s'appelle courrament le `negative logarithm likelihood`.
+
+Cela nous donne une fonction de coût comme suit:
+
+$$\sum_i^n \sum_k^K f(Y_i, k) \log(\frac{1}{P(Y_i = k | X_i)})$$
+$$\sum_i^n \sum_k^K f(Y_i, k) (\log(1) - \log(P(Y_i = k | X_i)))$$
+$$-\sum_i^n \sum_k^K f(Y, k)\log(P(Y_i = k | X_i))$$
+
+On peut minimiser cette fonction de coût grâce à une descente en gradient.
+
+#### 2.2.1.3 -- Dérivée de la fonction de coût
+
+On va calculer la dérivée de la fonction de coût.
+
+On a:
+
+$$log(P(Y = k | X))$$
+$$=log\left(\frac{e^{X \theta_k^T}}{\sum_i^K e^{X\theta_i^T}}\right)$$
+$$=X \theta_k^T - log\left(\sum_i^K e^{X \theta_i^T}\right)$$
+
+Donc:
+$$\frac{\partial}{\partial \theta_{j}} \sum_i^K f(Y, i)log(P(Y = i | X))$$
+$$\text{(NB: On considère que Y = k, tous les autres termes étant annulés car f = 0)}$$
+$$=\frac{\partial}{\partial \theta_{j}} f(Y, k)log(P(Y = k | X))$$
+$$=\frac{\partial}{\partial \theta_{j}} \left(X \theta_{k}^T - log\left(\sum_i^K e^{X \theta_i^T}\right)\right) $$
+Supposons que j = k.
+$$=X - \frac{\partial}{\partial \theta_{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) $$
+$$=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{X \theta_i^T} $$
+$$=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}e^{X \theta_j^T}$$
+$$=X - \frac{X e^{X \theta_j^T}}{\sum_i^K e^{X \theta_i^T}}$$
+$$=X - X P(Y = j | X)$$
+$$=X (1 - P(Y = j | X))$$
+Supposons que $j \neq k$.
+
+$$\frac{\partial}{\partial \theta_{j}} \left(X \theta_{k}^T - log\left(\sum_i^K e^{X \theta_i^T}\right)\right) $$
+$$= - \frac{\partial}{\partial \theta_{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) $$
+$$= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{X \theta_i^T} $$
+$$= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}e^{X \theta_j^T} $$
+$$= - \frac{Xe^{X \theta_j^T}}{\sum_i^K e^{X \theta_i^T}} $$
+$$= -X P(Y = j | X)$$
+
+On a donc:
+$$\frac{\partial}{\partial \theta_{j}} \sum_i^K f(Y, i)log(P(Y = i | X)) = X(f(Y, j) - P(Y = j|X))$$
+
+car $f(Y, k)$ est égal à 1 si $Y = k$ et 0 sinon.
+
+Donc pour $n$ données, cela nous donne:
+$$\frac{\partial}{\partial \theta_{j}} \sum_m^n \sum_i^K f(Y_m, i)log(P(Y_m = i | X_m)) = \sum_m^n X_m(f(Y_m, j) - P(Y_m = j|X_m))$$
+
+Maintenant, on est prêt pour entraîner notre régression logistique multinomiale !
 
 ### 2.2.2 -- Apprentissage
 
