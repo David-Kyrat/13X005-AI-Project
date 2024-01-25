@@ -1,6 +1,8 @@
 import numpy as np
+import pandas
 import matplotlib.pyplot as plt
-from log_reg import train_log_reg, predict_log_reg, predict_compute_metrics
+from softmax import train_log_reg_2, predict_log_reg_2, predict_compute_metrics
+from naive_bayes import get_distrib_parameters, predict_bayes
 from main import FEAT, FEAT_test, LABELS, LABELS_test
 from metrics import f1_score
 
@@ -40,15 +42,42 @@ def get_percentage_of_data(feat: np.ndarray, labels: np.ndarray, percentage: int
     feat_remain = data[indices_remain, :-1]
     labels_remain = data[indices_remain, -1]
     # Is it usefull to keep feat_remain and labels_remain ?
-    return newfeat, newlabels
+    return newfeat, newlabels.astype(int)
 
-def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.ndarray, labels_test: np.ndarray):
+def add_noise_to_data(labels: np.ndarray, percentage: int) -> np.ndarray:
+    """
+    Allow to get random sampling of a percentage of datas
+
+    Parameters
+    ----------
+    labels: np.ndarray
+        labels we want a percentage of
+    percentage: int
+        percentage of datas we want
+
+    Return value
+    ------------
+    Return a tuple with the np.array with the right percentage of the datas we want,
+    and with the np.array of the datas which weren't taken
+    """
+
+    values = np.array(labels)
+    index = np.random.binomial(1, percentage/100, len(values))
+    newvalues = np.random.binomial(np.unique(values).shape[0] - 1, 0.5, len(values))
+    newvalues *= index
+    invert_index = np.zeros(index.shape) == index
+
+    values *= invert_index
+
+    values += newvalues
+
+    return values
+
+def over_training_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: np.ndarray, labels_test: np.ndarray):
     """
     Function to show the over training.
 
-    The over training can be caused by redondant caracteristic, by a too small set of datas, by a too complex model or by too much interaction between caracteristics.
-
-    This function will test the performances of the model for a too small set of datas and for redondant caracteristic
+    This function will test the performances of the model for a too small set of datas
     """
     if not isinstance(feat, np.ndarray):
         feat = np.asarray(feat)
@@ -59,69 +88,256 @@ def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.nd
     if not isinstance(labels_test, np.ndarray):
         labels_test = np.asarray(labels_test)
    
-    percentage = [10 * i for i in range(1, 11)]
+    percentage = np.arange(5, 100)
+
+    percent_10 = [10 for i in range(5,100)]
+    percent_100 = [100 for i in range(5,100)]
+    index = np.arange(5,100)
 
     f1_score_test = []
     f1_score_training = []
+    f1_score_test_10 = []
+    f1_score_training_10 = []
+    f1_score_test_100 = []
+    f1_score_training_100 = []
+    f1_score_noise_test = []
+    f1_score_noise_training = []
 
     for i in range(len(percentage)):
-        training_feat, training_labels = get_percentage_of_data(feat, labels, percentage[i])
-        X = np.asarray(training_feat)
-        _, n = X.shape
-        init_w = np.random.rand(n)
-        init_b = np.random.rand()
-        n_it, lr = 1000, 1e-5
-        w, b = train_log_reg(X, training_labels, init_w, init_b, n_it, lr)
-        predicted_val_logreg_test = predict_log_reg(feat_test, w, b)
-        predicted_val_logreg_training = predict_log_reg(training_feat, w, b)
-        f1_score_test.append(f1_score(labels_test, predicted_val_logreg_test))
-        f1_score_training.append(f1_score(training_labels, predicted_val_logreg_training))
 
+        # F1 score for 5% -> 100% of datas
+        training_feat, training_labels = get_percentage_of_data(feat, labels, percentage[i])
+        params = get_distrib_parameters(training_feat, training_labels)
+        predicted_val_naive_bayes_test = []
+        for j in feat_test:
+            predicted_val_naive_bayes_test.append(predict_bayes(j, params))
+        predicted_val_naive_bayes_training = []
+        for j in training_feat:
+            predicted_val_naive_bayes_training.append(predict_bayes(j, params))
+        f1_score_test.append(f1_score(labels_test, predicted_val_naive_bayes_test))
+        f1_score_training.append(f1_score(training_labels, predicted_val_naive_bayes_training))
+
+        # F1 score for 5% -> 100% of datas noised
+        training_labels = add_noise_to_data(labels, percentage[i])
+        training_feat = feat
+        params = get_distrib_parameters(training_feat, training_labels)
+        predicted_val_naive_bayes_test = []
+        for j in feat_test:
+            predicted_val_naive_bayes_test.append(predict_bayes(j, params))
+        predicted_val_naive_bayes_training = []
+        for j in training_feat:
+            predicted_val_naive_bayes_training.append(predict_bayes(j, params))
+        f1_score_noise_test.append(f1_score(labels_test, predicted_val_naive_bayes_test))
+        f1_score_noise_training.append(f1_score(training_labels, predicted_val_naive_bayes_training))
+
+        # F1 scores for 10% of datas
+        training_feat, training_labels = get_percentage_of_data(feat, labels, percent_10[i])
+        params = get_distrib_parameters(training_feat, training_labels)
+        predicted_val_naive_bayes_test = []
+        for j in feat_test:
+            predicted_val_naive_bayes_test.append(predict_bayes(j, params))
+        predicted_val_naive_bayes_training = []
+        for j in training_feat:
+            predicted_val_naive_bayes_training.append(predict_bayes(j, params))
+        f1_score_test_10.append(f1_score(labels_test, predicted_val_naive_bayes_test))
+        f1_score_training_10.append(f1_score(training_labels, predicted_val_naive_bayes_training))
+
+        # F1 scores for 100% of datas
+        training_feat, training_labels = get_percentage_of_data(feat, labels, percent_100[i])
+        params = get_distrib_parameters(training_feat, training_labels)
+        predicted_val_naive_bayes_test = []
+        for j in feat_test:
+            predicted_val_naive_bayes_test.append(predict_bayes(j, params))
+        predicted_val_naive_bayes_training = []
+        for j in training_feat:
+            predicted_val_naive_bayes_training.append(predict_bayes(j, params))
+        f1_score_test_100.append(f1_score(labels_test, predicted_val_naive_bayes_test))
+        f1_score_training_100.append(f1_score(training_labels, predicted_val_naive_bayes_training))
+
+    # Plot figure for percentage of datas from 5% to 100%
     plt.figure()
     plt.title("Over training observate with too small volume of datas")
-    plt.plot(percentage, f1_score_test, label="F1 score for test datas")
-    plt.plot(percentage, f1_score_training, label="F1 score for training datas")
+    plt.plot(percentage, f1_score_test, 'o', label="F1 score for test datas")
+    plt.plot(percentage, f1_score_training, 'x', label="F1 score for training datas")
+    a, b = np.polyfit(np.log(percentage), f1_score_training, 1)
+    plt.plot(percentage, a * np.log(percentage) + b, label="Approximation for training datas")
+    c, d = np.polyfit(np.log(percentage), f1_score_test, 1)
+    plt.plot(percentage, c * np.log(percentage) + d, label="Approximation for test datas")
     plt.xlabel("Percentage of datas used")
     plt.ylabel("f1 score")
     plt.legend()
     plt.show()
-
-    # Add redondant parameters
-
-    f1_score_test_2 = []
-    f1_score_training_2 = []
-
-    number_of_redondant_parameters = 10
-    training_feat = feat.copy()
-    test_feat = feat_test.copy()
-    redondance_list = np.arange(number_of_redondant_parameters)
-    for i in range(number_of_redondant_parameters):
-        training_feat = np.append(training_feat, np.ones((len(training_feat),1)) * i, axis = 1)
-        test_feat = np.append(test_feat, np.ones((len(test_feat),1)) * i, axis = 1)
-        X = np.asarray(training_feat)
-        _, n = X.shape
-        init_w = np.random.rand(n)
-        init_b = np.random.rand()
-        n_it, lr = 1000, 1e-5
-        w, b = train_log_reg(X, labels, init_w, init_b, n_it, lr)
-        predicted_val_logreg_test = predict_log_reg(test_feat, w, b)
-        predicted_val_logreg_training = predict_log_reg(training_feat, w, b)
-        f1_score_test_2.append(f1_score(labels_test, predicted_val_logreg_test))
-        f1_score_training_2.append(f1_score(labels, predicted_val_logreg_training))
-
-
+ 
+    # Plot figure for percentage of datas noised from 5% to 100%
     plt.figure()
-    plt.title("Over training observate with redondant caracteristics")
-    plt.plot(redondance_list, f1_score_test_2, label="F1 score for test datas")
-    plt.plot(redondance_list, f1_score_training_2, label="F1 score for training datas")
-    plt.xlabel("Number of redondant caracteristics")
+    plt.title("Over training observate with noise added to datas")
+    plt.plot(percentage, f1_score_noise_test, 'o', label="F1 score for test datas")
+    plt.plot(percentage, f1_score_noise_training, 'x', label="F1 score for training datas")
+    plt.xlabel("Percentage of noise added to datas")
+    plt.ylabel("f1 score")
+    plt.legend()
+    plt.show()
+ 
+    # Plot figure for 10% of datas used
+    plt.figure()
+    plt.title("Over training observate with too small volume of datas")
+    plt.plot(index, f1_score_test_10, 'o', label="F1 score for test datas")
+    plt.plot(index, f1_score_training_10, 'x', label="F1 score for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_training_10), label="Approximation for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_test_10), label="Approximation for test datas")
+    plt.xlabel("10% of datas used")
+    plt.ylabel("f1 score")
+    plt.legend()
+    plt.show()
+    
+    # Plot figure for 100% of datas used
+    plt.figure()
+    plt.title("Over training observate with too small volume of datas")
+    plt.plot(index, f1_score_test_100, 'o', label="F1 score for test datas")
+    plt.plot(index, f1_score_training_100, 'x', label="F1 score for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_training_100), label="Approximation for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_test_100), label="Approximation for test datas")
+    plt.xlabel("100% of datas used")
     plt.ylabel("f1 score")
     plt.legend()
     plt.show()
 
 
 
-over_training_log_reg(FEAT, LABELS, FEAT_test, LABELS_test)
+def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.ndarray, labels_test: np.ndarray):
+    """
+    Function to show the over training.
+
+    This function will test the performances of the model for a too small set of datas
+    """
+    if not isinstance(feat, np.ndarray):
+        feat = np.asarray(feat)
+    if not isinstance(feat_test, np.ndarray):
+        feat_test = np.asarray(feat_test)
+    if not isinstance(labels, np.ndarray):
+        labels = np.asarray(labels)
+    if not isinstance(labels_test, np.ndarray):
+        labels_test = np.asarray(labels_test)
+   
+    percentage = np.arange(5, 100)
+
+    percent_10 = [10 for i in range(5,100)]
+    percent_100 = [100 for i in range(5,100)]
+    index = np.arange(5,100)
+
+    f1_score_test = []
+    f1_score_training = []
+    f1_score_test_10 = []
+    f1_score_training_10 = []
+    f1_score_test_100 = []
+    f1_score_training_100 = []
+    f1_score_noise_test = []
+    f1_score_noise_training = []
+
+    for i in range(len(percentage)):
+
+        # F1 score for 5% -> 100% of datas
+        training_feat, training_labels = get_percentage_of_data(feat, labels, percentage[i])
+        X = np.asarray(training_feat)
+        _, n = X.shape
+        theta = np.zeros((np.unique(labels).shape[0], n + 1))
+        n_it, lr = 1000, 1e-4
+        theta = train_log_reg_2(X, training_labels, theta, n_it, lr)
+        predicted_val_logreg_test = predict_log_reg_2(feat_test, theta)
+        predicted_val_logreg_training = predict_log_reg_2(training_feat, theta)
+        f1_score_test.append(f1_score(labels_test, predicted_val_logreg_test))
+        f1_score_training.append(f1_score(training_labels, predicted_val_logreg_training))
+
+        # F1 score for 5% -> 100% of datas noised
+        training_labels = add_noise_to_data(labels, percentage[i])
+        training_feat = feat
+        X = np.asarray(feat)
+        _, n = X.shape
+        theta = np.zeros((np.unique(labels).shape[0], n + 1))
+        n_it, lr = 1000, 1e-4
+        theta = train_log_reg_2(X, training_labels, theta, n_it, lr)
+        predicted_val_logreg_test = predict_log_reg_2(feat_test, theta)
+        predicted_val_logreg_training = predict_log_reg_2(training_feat, theta)
+        f1_score_noise_test.append(f1_score(labels_test, predicted_val_logreg_test))
+        f1_score_noise_training.append(f1_score(training_labels, predicted_val_logreg_training))
+
+        # F1 scores for 10% of datas
+        training_feat, training_labels = get_percentage_of_data(feat, labels, percent_10[i])
+        X = np.asarray(training_feat)
+        _, n = X.shape
+        theta = np.zeros((np.unique(labels).shape[0], n + 1))
+        n_it, lr = 1000, 1e-4
+        theta = train_log_reg_2(X, training_labels, theta, n_it, lr)
+        predicted_val_logreg_test = predict_log_reg_2(feat_test, theta)
+        predicted_val_logreg_training = predict_log_reg_2(training_feat, theta)
+        f1_score_test_10.append(f1_score(labels_test, predicted_val_logreg_test))
+        f1_score_training_10.append(f1_score(training_labels, predicted_val_logreg_training))
+
+        # F1 scores for 100% of datas
+        training_feat, training_labels = get_percentage_of_data(feat, labels, percent_100[i])
+        X = np.asarray(training_feat)
+        _, n = X.shape
+        theta = np.zeros((np.unique(labels).shape[0], n + 1))
+        n_it, lr = 1000, 1e-4
+        theta = train_log_reg_2(X, training_labels, theta, n_it, lr)
+        predicted_val_logreg_test = predict_log_reg_2(feat_test, theta)
+        predicted_val_logreg_training = predict_log_reg_2(training_feat, theta)
+        f1_score_test_100.append(f1_score(labels_test, predicted_val_logreg_test))
+        f1_score_training_100.append(f1_score(training_labels, predicted_val_logreg_training))
+
+    # Plot figure for percentage of datas from 5% to 100%
+    plt.figure()
+    plt.title("Over training observate with too small volume of datas")
+    plt.plot(percentage, f1_score_test, 'o', label="F1 score for test datas")
+    plt.plot(percentage, f1_score_training, 'x', label="F1 score for training datas")
+    a, b = np.polyfit(np.log(percentage), f1_score_training, 1)
+    plt.plot(percentage, a * np.log(percentage) + b, label="Approximation for training datas")
+    c, d = np.polyfit(np.log(percentage), f1_score_test, 1)
+    plt.plot(percentage, c * np.log(percentage) + d, label="Approximation for test datas")
+    plt.xlabel("Percentage of datas used")
+    plt.ylabel("f1 score")
+    plt.legend()
+    plt.show()
+ 
+    # Plot figure for percentage of datas noised from 5% to 100%
+    plt.figure()
+    plt.title("Over training observate with noise added to datas")
+    plt.plot(percentage, f1_score_noise_test, 'o', label="F1 score for test datas")
+    plt.plot(percentage, f1_score_noise_training, 'x', label="F1 score for training datas")
+    plt.xlabel("Percentage of noise added to datas")
+    plt.ylabel("f1 score")
+    plt.legend()
+    plt.show()
+ 
+    # Plot figure for 10% of datas used
+    plt.figure()
+    plt.title("Over training observate with too small volume of datas")
+    plt.plot(index, f1_score_test_10, 'o', label="F1 score for test datas")
+    plt.plot(index, f1_score_training_10, 'x', label="F1 score for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_training_10), label="Approximation for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_test_10), label="Approximation for test datas")
+    plt.xlabel("10% of datas used")
+    plt.ylabel("f1 score")
+    plt.legend()
+    plt.show()
+    
+    # Plot figure for 100% of datas used
+    plt.figure()
+    plt.title("Over training observate with too small volume of datas")
+    plt.plot(index, f1_score_test_100, 'o', label="F1 score for test datas")
+    plt.plot(index, f1_score_training_100, 'x', label="F1 score for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_training_100), label="Approximation for training datas")
+    plt.plot(index, 0 * index + np.mean(f1_score_test_100), label="Approximation for test datas")
+    plt.xlabel("100% of datas used")
+    plt.ylabel("f1 score")
+    plt.legend()
+    plt.show()
+
+
+
+if __name__ == "__main__":
+    over_training_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)
+    #over_training_log_reg(FEAT, LABELS, FEAT_test, LABELS_test)
 
 
 

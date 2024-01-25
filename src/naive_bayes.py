@@ -44,8 +44,11 @@ def get_distrib_parameters(features: DataFrame, labels) -> dict[Any, list[tuple[
         out_classv = []  # list of (mean, std) for each feature by class value
         data_c = features[labels == classv]  # data for current class
         for feature in data_c:
-            feat = data_c[feature]
-            mean, std = feat.mean(), feat.std()
+            if isinstance(features, np.ndarray):
+                mean, std = feature.mean(), feature.std()
+            else:
+                feat = data_c[feature]
+                mean, std = feat.mean(), feat.std()
             out_classv.append((f32(mean), f32(std)))
         out[classv] = out_classv
 

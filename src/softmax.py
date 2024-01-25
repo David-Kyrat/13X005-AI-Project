@@ -53,6 +53,7 @@ def gradient(X: np.ndarray, theta: np.ndarray, Y: np.ndarray):
         """
         if not isinstance(labels, np.ndarray):
             labels = np.asarray(labels)
+        assert y.dtype == int, "Labels must be integer !"
         result = np.zeros((len(y), len(labels)))
         for i in range(len(y)):
             result[i, y[i]] = 1
