@@ -117,7 +117,7 @@ print(compute_metrics(y_test, predicted_logreg))
 
 # --- SKLearn Logistic Regression ---
 print("Sklearn Logistic Regression")
-lr = LogisticRegression()
+lr = LogisticRegression(multi_class="multinomial")
 lr.fit(X_train, y_train)
 predicted_lr = lr.predict(X_test)
 print(compute_metrics(y_test, predicted_lr))

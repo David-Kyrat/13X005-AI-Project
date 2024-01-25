@@ -64,7 +64,7 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
@@ -82,9 +82,8 @@
 
 \intro{}
 
-\hypertarget{introduction-rappels-thuxe9oriques}{%
 \section{1 -- Introduction \& Rappels
-théoriques}\label{introduction-rappels-thuxe9oriques}}
+théoriques}\label{introduction-rappels-thuxe9oriques}
 
 Dans ce document, nous approfondirons des techniques de regression
 logistique et ``Naive Bayes'' comme outils d'apprentissage superivisés.
@@ -98,9 +97,8 @@ document se propose d'étudier ces deux techniques, en mettant l'accent
 sur leur mise en œuvre pratique, et leur efficacité comparative dans
 divers scénarios.
 
-\hypertarget{ruxe9gression-logistique}{%
 \subsection{1.1 -- Régression
-Logistique}\label{ruxe9gression-logistique}}
+Logistique}\label{ruxe9gression-logistique}
 
 En statistiques, la régression logistique, s'inscrit dans le cadre des
 modèles de régression pour les variables binaires. Bien qu'elle soit
@@ -126,7 +124,9 @@ un vecteur de feature \(x \in \R^n\)) est donnée par:
 
 \[
 g(x) = f(\scalproduct{w}{x} + b)
-\] où \(w \in \R^n\) est le vecteur de poids, \(b \in \R\) le biais et
+\]
+
+où \(w \in \R^n\) est le vecteur de poids, \(b \in \R\) le biais et
 \(\scalproduct{.}{.}\) le produit scalair usuel. \(f\) est une fonction
 dite de seuillage qui va séparer nos résultats. Un choix commun pour
 \(f\) est la sigmoide ou la fonction signe
@@ -137,7 +137,9 @@ le modèle suivant:
 
 \[
 y_i \sim Bernoulli(p_i),\quad p_i = \sigma(\scalproduct{\mathbf{w}}{\mathbf{x}_i} + b),\quad \sigma(z) = \frac{1}{1 + e^{-z}}
-\] où \(\mathbf{x}_i \in \R^K\) représente un vecteur (ligne) de \(K\)
+\]
+
+où \(\mathbf{x}_i \in \R^K\) représente un vecteur (ligne) de \(K\)
 valeurs pour les \(K\) features (aussi appelé un \emph{sample}), et
 \(y_i\) la variable aléatoire qui représente le label qui leur est
 associé.
@@ -156,8 +158,7 @@ distinguer 3 cas au lieu de 2. i.e.~Au lieu de séparer le domaine en 2
 ce qui a donné des résultats plus que satisfaisants comme nous le
 verrons en \href{#ruxe9gression-logistique-1}{section 2.2}.
 
-\hypertarget{naive-bayes}{%
-\subsection{1.2 -- Naive Bayes}\label{naive-bayes}}
+\subsection{1.2 -- Naive Bayes}\label{naive-bayes}
 
 ``Naive Bayes'' se présente comme une méthode de classification
 probabiliste basée sur le
@@ -183,12 +184,10 @@ En d'autres termes, le problème revient à trouver, pour des attributs
 \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | Y)}\  \right]
 \]
 
-\hypertarget{muxe9thodologie}{%
-\section{2 -- Méthodologie}\label{muxe9thodologie}}
+\section{2 -- Méthodologie}\label{muxe9thodologie}
 
-\hypertarget{choix-du-dataset-outils-utilisuxe9s}{%
 \subsection{2.0 -- Choix du dataset \& outils
-utilisés}\label{choix-du-dataset-outils-utilisuxe9s}}
+utilisés}\label{choix-du-dataset-outils-utilisuxe9s}
 
 Pour la suite de ce projet les outils suivants ont été utilisés dans
 chaque parties:
@@ -240,14 +239,13 @@ de l'iris.
 
 \newpage
 
-\hypertarget{gradient-descent}{%
-\subsection{2.1 -- Gradient Descent}\label{gradient-descent}}
+\subsection{2.1 -- Gradient Descent}\label{gradient-descent}
 
 Dans cette section, une implémentation de la ``descente en gradient'' a
 été réalisée. La fonction a la signature suivante
 
 \begin{lstlisting}
-  def gradient_descent(df, params: NDArray, alpha: float, num_iters: int) -> NDArray:  
+def gradient_descent(df, params: NDArray, alpha: float, num_iters: int) -> NDArray:  
 \end{lstlisting}
 
 Elle calcule de manière itérative le(s) paramètre(s) \code{params} qui
@@ -256,7 +254,9 @@ de convergence'' \code{alpha}.
 
 La fonction a été testé avec la fonction \code{scipy.optimize.fmin}
 \cite{ScipyOptimizeFmin} de la librairie \texttt{scipy} sur la fonction
-suivante: \[
+suivante:
+
+\[
 f(x) = x * \cos(\pi  (x + 1))
 \]
 
@@ -281,13 +281,11 @@ deux fonctions.
 
 \newpage{}
 
-\hypertarget{ruxe9gression-logistique-1}{%
 \subsection{2.2 -- Régression
-Logistique}\label{ruxe9gression-logistique-1}}
+Logistique}\label{ruxe9gression-logistique-1}
 
-\hypertarget{fonction-de-couxfbt-pour-la-ruxe9gression-logistique}{%
 \subsubsection{2.2.1 -- Fonction de coût pour la régression
-logistique}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique}}
+logistique}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique}
 
 Afin d'entraîner les paramètres de la régression logistique, il faut
 pouvoir comparer les résultats obtenus par la régression avec les
@@ -335,8 +333,7 @@ Notre régression logistique binaire peut donc s'écrire comme:
 \[P(Y = 1 | X) = \frac{1}{1 + e^{X \theta^T}} = \sigma(X \theta^T)\] et
 \[P(Y = 0 | X) = 1 - \sigma(X \theta^T)\]
 
-\hypertarget{guxe9nuxe9ralisation}{%
-\paragraph{2.2.1.1 -- Généralisation}\label{guxe9nuxe9ralisation}}
+\paragraph{2.2.1.1 -- Généralisation}\label{guxe9nuxe9ralisation}
 
 On désire donc trouver une nouvelle distribution \(\phi(z)\) tel que:
 \[\phi(z) \in [0, 1]\ \forall z\] est une généralisation de la fonction
@@ -395,8 +392,7 @@ plusieurs labels.
 
 Cette fonction est courramment appelée fonction \texttt{softmax}.
 
-\hypertarget{fonction-de-couxfbt}{%
-\paragraph{2.2.1.2 -- Fonction de coût}\label{fonction-de-couxfbt}}
+\paragraph{2.2.1.2 -- Fonction de coût}\label{fonction-de-couxfbt}
 
 Notre objectif est donc de trouver une fonction de coût pour pouvoir
 entraîner les paramètres de la régression multinomiale. On cherche à
@@ -437,9 +433,8 @@ Cela nous donne une fonction de coût comme suit:
 On peut minimiser cette fonction de coût grâce à une descente en
 gradient.
 
-\hypertarget{duxe9rivuxe9e-de-la-fonction-de-couxfbt}{%
 \paragraph{2.2.1.3 -- Dérivée de la fonction de
-coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt}}
+coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt}
 
 On va calculer la dérivée de la fonction de coût.
 
@@ -455,17 +450,17 @@ Donc:
 \[=\frac{\partial}{\partial \theta_{j}} f(Y, k)log(P(Y = k | X))\]
 \[=\frac{\partial}{\partial \theta_{j}} \left(X \theta_{k}^T - log\left(\sum_i^K e^{X \theta_i^T}\right)\right) \]
 Supposons que j = k.
-\[=X - \frac{\partial}{\partial \theta_{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) \]
-\[=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{X \theta_i^T} \]
-\[=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}e^{X \theta_j^T}\]
+\[=X - \frac{\partial}{\partial \theta*{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) \]
+\[=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}\sum*i^K e^{X \theta_i^T} \]
+\[=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}e^{X \theta_j^T}\]
 \[=X - \frac{X e^{X \theta_j^T}}{\sum_i^K e^{X \theta_i^T}}\]
 \[=X - X P(Y = j | X)\] \[=X (1 - P(Y = j | X))\] Supposons que
 \(j \neq k\).
 
 \[\frac{\partial}{\partial \theta_{j}} \left(X \theta_{k}^T - log\left(\sum_i^K e^{X \theta_i^T}\right)\right) \]
-\[= - \frac{\partial}{\partial \theta_{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) \]
-\[= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{X \theta_i^T} \]
-\[= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}e^{X \theta_j^T} \]
+\[= - \frac{\partial}{\partial \theta*{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) \]
+\[= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}\sum*i^K e^{X \theta_i^T} \]
+\[= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}e^{X \theta_j^T} \]
 \[= - \frac{Xe^{X \theta_j^T}}{\sum_i^K e^{X \theta_i^T}} \]
 \[= -X P(Y = j | X)\]
 
@@ -480,8 +475,7 @@ Donc pour \(n\) données, cela nous donne:
 Maintenant, on est prêt pour entraîner notre régression logistique
 multinomiale !
 
-\hypertarget{apprentissage}{%
-\subsubsection{2.2.2 -- Apprentissage}\label{apprentissage}}
+\subsubsection{2.2.2 -- Apprentissage}\label{apprentissage}
 
 Maitenant que nous avons une fonction de coût permettant de quantifier
 (en moyenne) à quel point un set de \(N\) prédiction est
@@ -497,22 +491,6 @@ itérations et en allant dans la direction opposé.
 
 Concrètement cela revient à appliquer l'algorithme suivant:
 
-\begin{algorithm}
-\caption{gradient descent}\label{alg:grad_desc}
-\begin{algorithmic}
-\Function {GradientDescent}{$f, \mathbf{w}_{init}, b_0, \alpha, \text{num\_iters}$}
-\State $\mathbf{w}\gets \mathbf{w}_{init}$
-\State $b \gets b_0$
-\For{1 to num\_iters}
-    \State $\mathbf{dw}, db \gets \nabla{f(w, b)} $
-    \State $\mathbf{w}\gets \mathbf{w}- \alpha*\mathbf{dw}$
-    \State $b \gets b - \alpha*db$
-\EndFor
-\State \Return $w, b$
-\EndFunction
-\end{algorithmic}
-\end{algorithm}
-
 En pratique, il est plus simple de passer directement la function qui
 calcul le gradient en argument, que d'essayer de le calculer
 dynamiquement, c'est pourquoi la signature de notre implémentation prend
@@ -523,33 +501,32 @@ Soit
 \(\nabla C(\mathbf{w},b) = (\frac{\partial C(\mathbf{w},b)}{\partial \mathbf{w}}, \frac{\partial C(\mathbf{w},b)}{\partial b} )\),
 pour un sample \(\mathbf{x}_i\) et sa classe \(y_i\), on obtient:
 \begin{align*}
-\frac{\partial \log(y_i|\mathbf{x}_i ; \mathbf{w}, b)}{\partial b} 
-&= y_i - \sigma(z_i) 
+\frac{\partial \log(y*i|\mathbf{x}*i ; \mathbf{w}, b)}{\partial b}
+&= y_i - \sigma(z_i)
 = y_i - \sigma(\mathbf{w}^T X_i + b)\\
 %
-\frac{\partial \log(y_i|\mathbf{x}_i ; \mathbf{w}, b)}{\partial w_j} 
-&= x_{ij}* ( y_i - \sigma(z_i)) 
-= (y_i - \sigma(\mathbf{w}^T X_i + b)) * x_{ij}
-\end{align*} Or le \texttt{db} dans l'algorithme ci-dessus se refert à
-la moyenne (pour tout i) de ces valeurs (i.e.~distance moyenne
-\emph{classes prédites} -- \emph{``vrai'' classes}).
+\frac{\partial \log(y_i|\mathbf{x}_i ; \mathbf{w}, b)}{\partial w_j}
+&= x*{ij}* ( y*i - \sigma(z*i))
+= (y_i - \sigma(\mathbf{w}^T X_i + b)) \* x*{ij}
+\end{align\*}
+Or le `db` dans l'algorithme ci-dessus se refert à la moyenne (pour tout i) de ces valeurs (i.e. distance moyenne \_classes prédites* -- *"vrai" classes\_).
 
-On l'obtient donc comme suit: (la somme des dérivées est la dérivée de
-la somme, linéarité de la dérivée)
-\[\nabla_b\, {C} =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|\mathbf{x}_i ; \mathbf{w}, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(\mathbf{w}^T X_i + b)}}\]
+On l'obtient donc comme suit: (la somme des dérivées est la dérivée de la somme, linéarité de la dérivée)
+$$\nabla_b\, {C} =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|\mathbf{x}_i ; \mathbf{w}, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(\mathbf{w}^T X_i + b)}}$$
 
-De même pour \texttt{dw}: \begin{align*}
-  \nabla_{\mathbf{w}} C & = \frac{1}{N} \sum_{i = 1}^{N}(x_{ij}(y_i - p_i))_{1 \leq j \leq k} 
-  = \frac{1}{N} \sum_{i=1}^N(y_i - \sigma(z_i))\cdot (x_{ij})_{1 \leq j\leq k} \\
+De même pour `dw`:
+\begin{align*}
+\nabla*{\mathbf{w}} C & = \frac{1}{N} \sum*{i = 1}^{N}(x*{ij}(y*i - p_i))*{1 \leq j \leq k}
+= \frac{1}{N} \sum\_{i=1}^N(y_i - \sigma(z_i))\cdot (x*{ij})*{1 \leq j\leq k} \\
 %
-& =\frac{1}{N}\sum_{i = 1}^N (y_i - \sigma(\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
+& =\frac{1}{N}\sum*{i = 1}^N (y_i - \sigma(\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
 \end{align*}
 
 On retrouve ainsi, le calcul effectué dans la fonction \code{grad} de
-\code{log\_reg.py} de signature suivante:
+\code{log_reg.py} de signature suivante:
 
 \begin{lstlisting}
-    def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
+def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
 \end{lstlisting}
 
 Etant donné que pour le calcul du gradient il est nécessaire d'avoir un
@@ -567,13 +544,12 @@ et \texttt{y} à la fonction \texttt{df} (dans notre cas \texttt{df} est
 toujours la fonction \texttt{grad}), i.e.~on a
 \code{df(features, labels, w, b)} au lieu de \code{df(params)}.
 
-\hypertarget{pruxe9dictions}{%
-\subsubsection{2.2.3 -- Prédictions}\label{pruxe9dictions}}
+\subsubsection{2.2.3 -- Prédictions}\label{pruxe9dictions}
 
 Pour la prédiction, nous avons utilisé la fonction suivante:
 
 \begin{lstlisting}
-   def predict_log_reg(X: NDArray, w: NDArray, b):
+def predict_log_reg(X: NDArray, w: NDArray, b):
 \end{lstlisting}
 
 qui prend simplement \(\sigma(w^T X + b)\) et seuil la sortie du
@@ -582,19 +558,18 @@ et bais entraînés).
 
 \newpage{}
 
-\hypertarget{ruxe9sultats}{%
-\subsubsection{2.2.4 -- Résultats}\label{ruxe9sultats}}
+\subsubsection{2.2.4 -- Résultats}\label{ruxe9sultats}
 
 Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 \begin{align*}
-    w &= [0.53452349, 0.36463584, 1.16132476, 1.08204578]\\
-    b &= 0.45146791
+w &= [0.53452349, 0.36463584, 1.16132476, 1.08204578]\\
+b &= 0.45146791
 \end{align*}
 
 \begin{quote}
 N.B.:\\
-L'apprentissage peut être ré-effectué de manière efficient si besoine
-est à l'aide du jupyter notebook
+L'apprentissage peut être ré-effectué de manière efficace si besoin à
+l'aide du jupyter notebook
 \href{https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb}{training\_test.ipynb}
 disponible sur la branche
 \href{https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb}{gpu-training}
@@ -616,7 +591,7 @@ satisfaisants, comme on peut le voir sur l'output de \texttt{pytest}
 suivant:
 
 \begin{lstlisting}
-src/log_reg.py::test_log_reg_f1score 
+src/log_reg.py::test_log_reg_f1score
 weights & biases: [0.53452349, 0.36463584, 1.16132476, 1.08204578], 0.45146791  
 { 'accuracy': 1.0, 'f1_score': 1.0, 'precision': 1.0, 'recall': 1.0 }
 PASSED
@@ -626,7 +601,7 @@ src/naive_bayes.py::test_predict_bayes_f1score_all
 PASSED
 \end{lstlisting}
 
-NB: pour reproduire cette output, lancer \code{make test\_model}.
+NB: pour reproduire cette output, lancer \code{make test_model}.
 
 Ce résultat a été obtenu avec une séparation 70/30 de training/test
 data. Lorsque l'on essaye de changer la portion qui est prise
@@ -648,15 +623,13 @@ qui semble être plus efficace que Naive Bayes.
 
 \newpage{}
 
-\hypertarget{naive-bayes-1}{%
-\subsection{2.3 -- Naive Bayes}\label{naive-bayes-1}}
+\subsection{2.3 -- Naive Bayes}\label{naive-bayes-1}
 
 Dans cette section, une implémentation d'un classifieur linéaire
 bayesien (naive bayes) a été réalisée.
 
-\hypertarget{extraction-des-distributions}{%
 \subsubsection{2.3.1 -- Extraction des
-distributions}\label{extraction-des-distributions}}
+distributions}\label{extraction-des-distributions}
 
 Dans cette implémentation, étant données que toutes nos features sont
 continues, nous avons considéré que \emph{sepal length}, \emph{sepal
@@ -664,7 +637,9 @@ width}, \emph{petal length} et \emph{petal width} seront représenté
 comme 4 variables aléatoires \(X_0, \cdots, X_3\) suivant 4 lois
 normales normales de paramètre \((\mu_k, \sigma_k)\).
 
-C'est à dire: \[
+C'est à dire:
+
+\[
 X_k \sim \mathcal{N}( \mu_k, \sigma_k) \qquad \qquad k \in \iitv{0, 3}
 \]
 
@@ -678,8 +653,7 @@ qui va retourner un dict mappant chaque classe à une liste contenant les
 paramètres des distributions conditionnelles (normales) des features
 pour cette classe.
 
-\hypertarget{pruxe9dictions-1}{%
-\subsubsection{2.3.2 -- Prédictions}\label{pruxe9dictions-1}}
+\subsubsection{2.3.2 -- Prédictions}\label{pruxe9dictions-1}
 
 Deux fonctions de prédictions ont été implémenté,
 
@@ -696,8 +670,8 @@ Deux fonctions de prédictions ont été implémenté,
 Elles ont les signatures suivantes:
 
 \begin{lstlisting}
-    def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
-    def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> list[Any]:
+def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
+def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> list[Any]:
 \end{lstlisting}
 
 Comme dit précédemment, pour pouvoir prédire la classe d'un sample, il
@@ -713,9 +687,13 @@ cette formule:
 \tilde{y}  = \text{arg}\max_{y \in \mathcal{Y}}\ P(y|\mathbf{x}) = \text{arg}\max_{y \in \mathcal{Y}}\ \frac{P(\mathbf{x}|y)  P(y)}{P(\mathbf{x})} =  \text{arg}\max_{y \in \mathcal{Y}}\ P(\mathbf{x}| y)P(y)
 \]
 
-Or \[ 
+Or
+
+\[
 P(\mathbf{x}| y) = P(x_1 | y) \prod_{i = 2}^{n}{P(x_i | x_{i-1}, \ldots, x_1, y)}
-\] Avec l'hypothèse que les \(\{X_i\}_{i \leq n}\) sont indépendants, on
+\]
+
+Avec l'hypothèse que les \(\{X_i\}_{i \leq n}\) sont indépendants, on
 obtient que:
 
 \[P(x_i | x_{i-1}, \ldots, x_1, y) = P(x_i | y)\]
@@ -724,7 +702,7 @@ Donc
 \[P(\mathbf{x}|y) = P(x_1 | y) \prod_{k = 2}^{K}{P(x_k | y)} = \prod_{k=1}^K{P(x_k | y)}\]
 
 En conclusion:
-\[ \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | y)}\  \right] \]
+\[ \tilde{y} = \text{arg}\max*{y \in \mathcal{Y}} \left[\ P(y) \prod*{k = 1}^K{P(x_k | y)}\ \right] \]
 (où \(K\) reste le nombre de features.)
 
 Où au début on cherche à maximiser \(P(y | x)\) car idéalement on
@@ -735,13 +713,12 @@ pas à notre dataset d'apprentissage, i.e.~on ne doit pas avoir besoin
 d'avoir déjà vu exactement ce sample. On a donc besoin d'une
 généralisation, c'est ainsi que l'on fini par retomber sur
 
-\[ \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | y)}\  \right] \]
+\[ \tilde{y} = \text{arg}\max*{y \in \mathcal{Y}} \left[\ P(y) \prod*{k = 1}^K{P(x_k | y)}\ \right] \]
 
 qui est ce que calculent les fonctions dont on a donné la signature
 ci-dessus.
 
-\hypertarget{ruxe9sultats-1}{%
-\subsubsection{2.3.3 -- Résultats}\label{ruxe9sultats-1}}
+\subsubsection{2.3.3 -- Résultats}\label{ruxe9sultats-1}
 
 Dans cette section, nous allons simplement reprendre ce qui a été fait
 dit dans la \href{#ruxe9sultats}{section 2.2.4} et remontrer les mêmes
@@ -751,7 +728,7 @@ Voici l'output du test \texttt{pytest} pour les rapports de performances
 du model bayesien:
 
 \begin{lstlisting}
-src/log_reg.py::test_log_reg_f1score 
+src/log_reg.py::test_log_reg_f1score
 weights & biases: [0.53452349, 0.36463584, 1.16132476, 1.08204578], 0.45146791  
 { 'accuracy': 1.0, 'f1_score': 1.0, 'precision': 1.0, 'recall': 1.0 }
 PASSED
@@ -770,8 +747,7 @@ Cependant, un f1-score de \(> 0.95\) reste excellent.
 
 \newpage{}
 
-\hypertarget{analyse}{%
-\section{3. -- Analyse}\label{analyse}}
+\section{3 -- Analyse}\label{analyse}
 
 Pour chaque classe y, on peut tracer les fonctions de distribution de
 probabilité pour chaque donnée \(X_k\) sachant la classe y afin
@@ -842,6 +818,181 @@ Ainsi on peut remarquer que globalement la variable \(X_3\) a une forte
 influence sur la classification alors que la variable \(X_0\) a une plus
 faible. De plus, les variables indépendantes ne sont pas séparables les
 unes des autres.
+
+\section{4 -- Comparaisons}\label{comparaisons}
+
+\subsection{4.1 - Vraisemblance et classification des
+échantillons}\label{vraisemblance-et-classification-des-uxe9chantillons}
+
+Une fois que les paramètres des classes sont obtenus en supposant
+l'indépendance des variables, on échantillone de nouvelles données afin
+de comparer les résultats obtenus avec les données d'origine.
+
+L'échantillonage est fait dans le fichier \texttt{sampling.py}.
+
+On fait 50 échantillons pour chaque classe, à partir des paramètres des
+distributions obtenus dans la section précédente.
+
+On obtient les résultats suivants (la moyenne et l'écart-type sont
+donnés pour chaque classe et chaque variable):
+
+\begin{itemize}
+\tightlist
+\item
+  Pour la classe 0:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Mean:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      réelle: 4.964516, 3.3612902, 1.467742, 0.2451613
+    \item
+      échantillon: 5.04191904, 3.33580458, 1.46340112, 0.23831319
+    \end{itemize}
+  \item
+    Ecart-type:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      réel: 0.34014544, 0.37654343, 0.18508933, 0.112067565
+    \item
+      échantillon: 0.32847194, 0.35161457, 0.16439592, 0.10696828
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics{../res/sample_compare_Y_0.png}
+\caption{Comparaison des distributions réelles et échantillonées pour la
+classe 0}
+\end{figure}
+
+\begin{itemize}
+\tightlist
+\item
+  Pour la classe 1:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Mean:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      réelle: 5.862162, 2.7243242, 4.2108107, 1.3027027
+    \item
+      échantillon: 5.89406553, 2.70037139, 4.28611674, 1.3473438
+    \end{itemize}
+  \item
+    Ecart-type:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      réel: 0.531952, 0.29944894, 0.49597478, 0.20613708
+    \item
+      échantillon: 0.51264886, 0.25024787, 0.40643571, 0.19599569
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics{../res/sample_compare_Y_1.png}
+\caption{Comparaison des distributions réelles et échantillonées pour la
+classe 1}
+\end{figure}
+
+\begin{itemize}
+\tightlist
+\item
+  Pour la classe 2:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Mean:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      réelle: 6.5594597, 2.9864864, 5.545946, 2.0054054
+    \item
+      échantillon: 6.52999239, 3.0324595, 5.57314614 2.00670609
+    \end{itemize}
+  \item
+    Ecart-type:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      réel: 0.65889615, 0.31460926, 0.54446435, 0.29715872
+    \item
+      échantillon: 0.63336966, 0.32560175, 0.68418903, 0.30524206
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics{../res/sample_compare_Y_2.png}
+\caption{Comparaison des distributions réelles et échantillonées pour la
+classe 2}
+\end{figure}
+
+\subsection{4.2 - Comparaison avec
+SKLearn}\label{comparaison-avec-sklearn}
+
+\subsubsection{4.2.1 - Naïve Bayes}\label{nauxefve-bayes}
+
+Notre implémentation de Naïve Bayes a été comparée avec celle de SKLearn
+dans le fichier \texttt{sampling.py}, avec un split des données
+échantillonnées en 70\% training et 30\% test.
+
+On obtient les résultats suivants:
+
+Notre Naive Bayes - Precision: 0.9761904761904763 - Recall:
+0.9743589743589745 - Accuracy: 0.9777777777777777 - F1\_score:
+0.9752738654147106
+
+Sklearn Naive Bayes
+
+\begin{itemize}
+\tightlist
+\item
+  precision: 0.9761904761904763
+\item
+  recall: 0.9743589743589745
+\item
+  accuracy: 0.9777777777777777
+\item
+  f1\_score: 0.9752738654147106
+\end{itemize}
+
+On voit que les résultats sont identiques, ce qui veut dire que notre
+implémentation est correcte.
+
+\subsubsection{4.2.2 - Régression
+Logistique}\label{ruxe9gression-logistique-2}
+
+Notre implémentation de Régression Logistique a été comparée avec celle
+de SKLearn dans le fichier \texttt{sampling.py}, avec un split des
+données échantillonnées en 70\% training et 30\% test.
+
+Notre Logistic Regression - Precision: 0.8505050505050505 - Recall:
+0.8461538461538461 - Accuracy: 0.8666666666666667 - F1\_score:
+0.848323868840447
+
+Sklearn Logistic Regression - Precision: 0.9761904761904763 - Recall:
+0.9743589743589745 - Accuracy: 0.9777777777777777 - F1\_score:
+0.9752738654147106
 
 \printbibliography[heading=bibintoc, title={Références}]
 
