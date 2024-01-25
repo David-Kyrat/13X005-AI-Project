@@ -334,14 +334,58 @@ def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.nd
     plt.show()
 
 
+def overfitting(feat, labels, feat_test, labels_test):
+
+    if not isinstance(feat, np.ndarray):
+        feat = np.asarray(feat)
+    if not isinstance(feat_test, np.ndarray):
+        feat_test = np.asarray(feat_test)
+    if not isinstance(labels, np.ndarray):
+        labels = np.asarray(labels)
+    if not isinstance(labels_test, np.ndarray):
+        labels_test = np.asarray(labels_test)
+
+    labels = add_noise_to_data(labels, 50)
+
+    lr = [10**-i for i in range(8)]
+
+    n_it = [10**5]
+
+    f1_score_training = []
+    f1_score_test = []
+
+    for j in range(len(lr)):   
+        for i in range(len(n_it)):
+            theta = np.zeros((np.unique(labels).shape[0], feat.shape[1] + 1))
+            theta = train_log_reg_2(feat, labels, theta, n_it[i], lr[j])
+            predicted_val_logreg_test = predict_log_reg_2(feat_test, theta)
+            predicted_val_logreg_training = predict_log_reg_2(feat, theta)
+            f1_score_test.append(f1_score(labels_test, predicted_val_logreg_test))
+            f1_score_training.append(f1_score(labels, predicted_val_logreg_training))
+    
+    plt.figure()
+    plt.plot(lr, f1_score_test, label="F1 score of test dataset")
+    plt.plot(lr, f1_score_training, label="F1 score of training dataset")
+    plt.xlabel("Number of iterations")
+    plt.xscale("log")
+    plt.ylabel("F1 score")
+    plt.legend()
+    plt.show()
+ 
+    plt.figure()
+    plt.plot(lr, np.array(f1_score_test) - np.array(f1_score_training), label="F1 score test - f1 score training")
+    plt.xlabel("Number of iterations")
+    plt.xscale("log")
+    plt.ylabel("F1 score")
+    plt.legend()
+    plt.show()
+
+
 
 if __name__ == "__main__":
-    over_training_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)
+    #over_training_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)
     #over_training_log_reg(FEAT, LABELS, FEAT_test, LABELS_test)
 
-
-
-
-
+    overfitting(FEAT, LABELS, FEAT_test, LABELS_test)
 
 
