@@ -73,9 +73,9 @@ def add_noise_to_data(labels: np.ndarray, percentage: int) -> np.ndarray:
 
     return values
 
-def over_training_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: np.ndarray, labels_test: np.ndarray):
+def overfitting_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: np.ndarray, labels_test: np.ndarray):
     """
-    Function to show the over training.
+    Function to show the overfitting.
 
     This function will test the performances of the model for a too small set of datas
     """
@@ -156,7 +156,7 @@ def over_training_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: n
 
     # Plot figure for percentage of datas from 5% to 100%
     plt.figure()
-    plt.title("Over training observate with too small volume of datas")
+    plt.title("Overfitting observate with too small volume of datas")
     plt.plot(percentage, f1_score_test, 'o', label="F1 score for test datas")
     plt.plot(percentage, f1_score_training, 'x', label="F1 score for training datas")
     a, b = np.polyfit(np.log(percentage), f1_score_training, 1)
@@ -170,7 +170,7 @@ def over_training_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: n
  
     # Plot figure for percentage of datas noised from 5% to 100%
     plt.figure()
-    plt.title("Over training observate with noise added to datas")
+    plt.title("Overfitting observate with noise added to datas")
     plt.plot(percentage, f1_score_noise_test, 'o', label="F1 score for test datas")
     plt.plot(percentage, f1_score_noise_training, 'x', label="F1 score for training datas")
     plt.xlabel("Percentage of noise added to datas")
@@ -180,7 +180,7 @@ def over_training_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: n
  
     # Plot figure for 10% of datas used
     plt.figure()
-    plt.title("Over training observate with too small volume of datas")
+    plt.title("Overfitting observate with too small volume of datas")
     plt.plot(index, f1_score_test_10, 'o', label="F1 score for test datas")
     plt.plot(index, f1_score_training_10, 'x', label="F1 score for training datas")
     plt.plot(index, 0 * index + np.mean(f1_score_training_10), label="Approximation for training datas")
@@ -192,7 +192,7 @@ def over_training_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: n
     
     # Plot figure for 100% of datas used
     plt.figure()
-    plt.title("Over training observate with too small volume of datas")
+    plt.title("Overfitting observate with too small volume of datas")
     plt.plot(index, f1_score_test_100, 'o', label="F1 score for test datas")
     plt.plot(index, f1_score_training_100, 'x', label="F1 score for training datas")
     plt.plot(index, 0 * index + np.mean(f1_score_training_100), label="Approximation for training datas")
@@ -204,9 +204,9 @@ def over_training_naive_bayes(feat: np.ndarray, labels: np.ndarray, feat_test: n
 
 
 
-def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.ndarray, labels_test: np.ndarray):
+def overfitting_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.ndarray, labels_test: np.ndarray):
     """
-    Function to show the over training.
+    Function to show the overfitting.
 
     This function will test the performances of the model for a too small set of datas
     """
@@ -287,7 +287,7 @@ def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.nd
 
     # Plot figure for percentage of datas from 5% to 100%
     plt.figure()
-    plt.title("Over training observate with too small volume of datas")
+    plt.title("Overfitting observate with too small volume of datas")
     plt.plot(percentage, f1_score_test, 'o', label="F1 score for test datas")
     plt.plot(percentage, f1_score_training, 'x', label="F1 score for training datas")
     a, b = np.polyfit(np.log(percentage), f1_score_training, 1)
@@ -301,7 +301,7 @@ def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.nd
  
     # Plot figure for percentage of datas noised from 5% to 100%
     plt.figure()
-    plt.title("Over training observate with noise added to datas")
+    plt.title("Overfitting observate with noise added to datas")
     plt.plot(percentage, f1_score_noise_test, 'o', label="F1 score for test datas")
     plt.plot(percentage, f1_score_noise_training, 'x', label="F1 score for training datas")
     plt.xlabel("Percentage of noise added to datas")
@@ -311,7 +311,7 @@ def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.nd
  
     # Plot figure for 10% of datas used
     plt.figure()
-    plt.title("Over training observate with too small volume of datas")
+    plt.title("Overfitting observate with too small volume of datas")
     plt.plot(index, f1_score_test_10, 'o', label="F1 score for test datas")
     plt.plot(index, f1_score_training_10, 'x', label="F1 score for training datas")
     plt.plot(index, 0 * index + np.mean(f1_score_training_10), label="Approximation for training datas")
@@ -323,7 +323,7 @@ def over_training_log_reg(feat: np.ndarray, labels: np.ndarray, feat_test: np.nd
     
     # Plot figure for 100% of datas used
     plt.figure()
-    plt.title("Over training observate with too small volume of datas")
+    plt.title("Overfitting observate with too small volume of datas")
     plt.plot(index, f1_score_test_100, 'o', label="F1 score for test datas")
     plt.plot(index, f1_score_training_100, 'x', label="F1 score for training datas")
     plt.plot(index, 0 * index + np.mean(f1_score_training_100), label="Approximation for training datas")
@@ -347,9 +347,9 @@ def overfitting(feat, labels, feat_test, labels_test):
 
     labels = add_noise_to_data(labels, 50)
 
-    lr = [10**-i for i in range(8)]
+    lr = [1e-5]
 
-    n_it = [10**5]
+    n_it = [10**i for i in range(3, 7)]
 
     f1_score_training = []
     f1_score_test = []
@@ -364,8 +364,8 @@ def overfitting(feat, labels, feat_test, labels_test):
             f1_score_training.append(f1_score(labels, predicted_val_logreg_training))
     
     plt.figure()
-    plt.plot(lr, f1_score_test, label="F1 score of test dataset")
-    plt.plot(lr, f1_score_training, label="F1 score of training dataset")
+    plt.plot(n_it, f1_score_test, label="F1 score of test dataset")
+    plt.plot(n_it, f1_score_training, label="F1 score of training dataset")
     plt.xlabel("Number of iterations")
     plt.xscale("log")
     plt.ylabel("F1 score")
@@ -373,7 +373,7 @@ def overfitting(feat, labels, feat_test, labels_test):
     plt.show()
  
     plt.figure()
-    plt.plot(lr, np.array(f1_score_test) - np.array(f1_score_training), label="F1 score test - f1 score training")
+    plt.plot(n_it, np.array(f1_score_test) - np.array(f1_score_training), label="F1 score test - f1 score training")
     plt.xlabel("Number of iterations")
     plt.xscale("log")
     plt.ylabel("F1 score")
@@ -383,8 +383,8 @@ def overfitting(feat, labels, feat_test, labels_test):
 
 
 if __name__ == "__main__":
-    #over_training_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)
-    #over_training_log_reg(FEAT, LABELS, FEAT_test, LABELS_test)
+    overfitting_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)
+    overfitting_log_reg(FEAT, LABELS, FEAT_test, LABELS_test)
 
     overfitting(FEAT, LABELS, FEAT_test, LABELS_test)
 
