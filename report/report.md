@@ -559,9 +559,188 @@ Ainsi on peut remarquer que globalement la variable $X_3$ a une forte influence 
 De plus, les variables indépendantes ne sont pas séparables les unes des autres.  
 
 
+\newpage{}
 
 
-<!-- \newpage{} -->
+# 4 -- Comparaisons
+
+  
+
+## 4.1 - Vraisemblance et classification des échantillons
+
+  
+
+Une fois que les paramètres des classes sont obtenus en supposant l'indépendance des variables, on échantillone de nouvelles données afin de comparer les résultats obtenus avec les données d'origine.
+
+  
+
+L'échantillonage est fait dans le fichier `sampling.py`.
+
+  
+
+On fait 50 échantillons pour chaque classe, à partir des paramètres des distributions obtenus dans la section précédente.
+
+  
+
+On obtient les résultats suivants (la moyenne et l'écart-type sont donnés pour chaque classe et chaque variable):
+
+![Comparaison des distributions réelles et échantillonées pour la classe 0](../res/sample_compare_Y_0.png)
+![Comparaison des distributions réelles et échantillonées pour la classe 1](../res/sample_compare_Y_1.png)
+![Comparaison des distributions réelles et échantillonées pour la classe 2](../res/sample_compare_Y_2.png)
+
+- Pour la classe 0:
+  - Mean:
+    - réelle: 4.964516, 3.3612902, 1.467742, 0.2451613
+    - échantillon: 5.04191904, 3.33580458, 1.46340112, 0.23831319
+  - Ecart-type:
+    - réel: 0.34014544, 0.37654343, 0.18508933, 0.112067565
+    - échantillon: 0.32847194, 0.35161457, 0.16439592, 0.10696828
+
+
+
+
+
+  
+
+- Pour la classe 1:
+  - Mean:
+    - réelle: 5.862162, 2.7243242, 4.2108107, 1.3027027
+    - échantillon: 5.89406553, 2.70037139, 4.28611674, 1.3473438
+  - Ecart-type:
+    - réel: 0.531952, 0.29944894, 0.49597478, 0.20613708
+    - échantillon: 0.51264886, 0.25024787, 0.40643571, 0.19599569
+
+  
+
+
+  
+
+- Pour la classe 2:
+  - Mean:
+    - réelle: 6.5594597, 2.9864864, 5.545946, 2.0054054
+    - échantillon: 6.52999239, 3.0324595, 5.57314614 2.00670609
+  - Ecart-type:
+    - réel: 0.65889615, 0.31460926, 0.54446435, 0.29715872
+    - échantillon: 0.63336966, 0.32560175, 0.68418903, 0.30524206
+
+  
+
+
+  
+
+Les nombres et les graphiques montrent que les échantillons sont très proches des données réelles, donc on a bien la vraisemblance.
+
+  
+
+## 4.2 - Comparaison avec SKLearn
+
+  
+
+### 4.2.1 - Naïve Bayes
+
+  
+
+Notre implémentation de Naïve Bayes a été comparée avec celle de SKLearn dans le fichier `sampling.py`, avec un split des données échantillonnées en 70\% training et 30\% test.
+
+  
+
+On obtient les résultats suivants:
+
+  
+
+Notre Naive Bayes
+
+  
+
+- Precision: 0.9761904761904763
+
+- Recall: 0.9743589743589745
+
+- Accuracy: 0.9777777777777777
+
+- F1_score: 0.9752738654147106
+
+  
+
+Sklearn Naive Bayes
+
+  
+
+- precision: 0.9761904761904763
+
+- recall: 0.9743589743589745
+
+- accuracy: 0.9777777777777777
+
+- f1_score: 0.9752738654147106
+
+  
+
+### 4.2.2 - Régression Logistique
+
+  
+
+Notre implémentation de Régression Logistique a été comparée avec celle de SKLearn dans le fichier `sampling.py`, avec un split des données échantillonnées en 70\% training et 30\% test.
+
+  
+
+Pour SKLearn, le modèle utilisé est `lr = LogisticRegression(multi_class="multinomial")`, car on a 3 classes et donc il nous faut un modèle multinomial. \cite{sklearnLogReg}
+
+  
+
+Notre Logistic Regression
+
+  
+
+- Precision: 0.8505050505050505
+
+- Recall: 0.8461538461538461
+
+- Accuracy: 0.8666666666666667
+
+- F1_score: 0.848323868840447
+
+  
+
+Sklearn Logistic Regression
+
+  
+
+- Precision: 0.9761904761904763
+
+- Recall: 0.9743589743589745
+
+- Accuracy: 0.9777777777777777
+
+- F1_score: 0.9752738654147106
+
+  
+
+## 4.3 - Conclusion sur les comparaisons
+
+  
+
+On a vu qu'on avait la vraisemblance, puisque les échantillons sont très proches des données réelles, comme le montrent les graphiques.
+
+  
+
+En ce qui concerne SKLearn, on peut voir que les métriques pour Naïve Bayes sont identiques car les 2 implémentations sont simplement une application du théorème de Bayes, donc on espère avoir les mêmes résultats.
+
+  
+
+Pour le logistic regression, SKLearn fournit de meilleurs métriques car il est certainement plus optimisé que notre implémentation.
+
+Malgré cela, notre implémentation donne quand même des très bons résultats, avec chaque métrique tournant autour de 85\%.
+
+  
+
+On a donc aussi la classification.
+
+  
+
+On peut donc conclure que les deux implémentations arrivent à bien classifier les données IRIS.
+
+\newpage{}
 
 \printbibliography[heading=bibintoc, title={Références}]
 
