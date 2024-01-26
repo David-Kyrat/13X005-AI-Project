@@ -1,7 +1,7 @@
 ---
 header-includes:
   - \usepackage{preamble_ai_project}
-  - \usepackage[backend=bibtex,style=numeric]{biblatex}
+  - \usepackage[backend=bibtex,style=numeric]{biblatex} 
   - \bibliography{references}
   - \usepackage{algorithm}
   - \usepackage{algpseudocode}
@@ -20,14 +20,15 @@ linkcolor: Blue
 Dans ce document, nous approfondirons des techniques de regression logistique et "Naive Bayes" comme outils d'apprentissage superivisés.
 
 Dans le cadre de l'intelligence artificielle et de l'apprentissage supervisé,
-la compréhension et la classification précises des données revêtent une importance capitale.
-Parmi les diverses méthodologies existantes, la Régression Logistique et "Naive Bayes"
+la compréhension et la classification précises des données revêtent une importance capitale. 
+Parmi les diverses méthodologies existantes, la Régression Logistique et "Naive Bayes" 
 se distinguent par leur efficacité et leur applicabilité dans de nombreux contextes.
 Ce document se propose d'étudier ces deux techniques, en mettant l'accent sur leur mise en œuvre pratique, et leur efficacité comparative dans divers scénarios.
 
+
 ## 1.1 -- Régression Logistique
 
-En statistiques, la régression logistique, s'inscrit dans le cadre des modèles de régression pour les variables binaires.
+En statistiques, la régression logistique, s'inscrit dans le cadre des modèles de régression pour les variables binaires. 
 Bien qu'elle soit quasiment exclusivement utilisée en tant que méthode de classification.  
 En effet, c'est l'ajout d'un seuil, à la probabilité continue donnée par le model de regression qui nous permet de l'utiliser pour la classification.
 
@@ -36,7 +37,7 @@ qui représente la présence ou l'absence d'une caractéristique spécifique,
 à l'aide d'un ensemble conséquent de données réelles et d'un modèle mathématique.
 
 Autrement dit, il s'agit de relier une variable aléatoire de Bernoulli,
-généralement notée $y$, aussi appelé "label" à un vecteur constitué de plusieurs variables aléatoires, $(x_1, \ldots, x_K)$, aussi appelés "features". \cite{RegressionLogistique2023}.
+généralement notée $y$, aussi appelé "label" à un vecteur constitué de plusieurs variables aléatoires, $(x_1, \ldots, x_K)$, aussi appelés "features". \cite{RegressionLogistique2023}.  
 
 La régression logistique s'appuie sur un classifeur linéaire \cite{ClassifieurLineaire2022}
 i.e. un classifieur dont la sortie (pour un vecteur de feature $x \in \R^n$) est donnée par:
@@ -44,7 +45,6 @@ i.e. un classifieur dont la sortie (pour un vecteur de feature $x \in \R^n$) est
 $$
 g(x) = f(\scalproduct{w}{x} + b)
 $$
-
 où $w \in \R^n$ est le vecteur de poids, $b \in \R$ le biais et $\scalproduct{.}{.}$ le produit scalair usuel.
 $f$ est une fonction dite de seuillage qui va séparer nos résultats. Un choix commun pour $f$ est la sigmoide ou la fonction signe \cite{ClassifieurLineaire2022}.
 
@@ -53,23 +53,23 @@ Par exemple, dans le cas de la regression logistique binaire, on suppose le mod�
 $$
 y_i \sim Bernoulli(p_i),\quad p_i = \sigma(\scalproduct{\w}{\x_i} + b),\quad \sigma(z) = \frac{1}{1 + e^{-z}}
 $$
-
-où $\x_i \in \R^K$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ features (aussi appelé un _sample_), et $y_i$ la variable aléatoire qui représente le label qui leur est associé.
+où $\x_i \in \R^K$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ features (aussi appelé un *sample*), et $y_i$ la variable aléatoire qui représente le label qui leur est associé.
 
 Cependant, dans notre dataset (voir \href{#choix-du-dataset-outils-utilisuxe9s}{section 2.0}) nous avons 3 classes (3 espèces d'iris),
-$y$ ne suit donc, évidemment, plus une loi de Bernoulli.
+$y$ ne suit donc, évidemment, plus une loi de Bernoulli.  
 
-**À modifier ?**
+__À modifier ?__
 La sigmoide étant continue, nous avons simplement modifié la manière dont nous lui appliquions le seuillage, pour distinguer 3 cas au lieu de 2.
 i.e. Au lieu de séparer le domaine en 2 ($\sigma(z) \leq 0.5,\ \sigma(z) > 0.5$), nous l'avons séparé en $N$ (ici $N = 3$).
 On a donc que $y_i = k \Leftrightarrow \frac{k}{N} \leq \sigma(z) < \frac{k + 1}{N}$,
 ce qui a donné des résultats plus que satisfaisants comme nous le verrons en \href{#ruxe9gression-logistique-1}{section 2.2}.
 
+
 ## 1.2 -- Naive Bayes
 
-"Naive Bayes" se présente comme une méthode de classification probabiliste basée sur le [théorème de Bayes](https://en.wikipedia.org/wiki/Bayes%27_theorem),
+"Naive Bayes" se présente comme une méthode de classification probabiliste basée sur le [théorème de Bayes](https://en.wikipedia.org/wiki/Bayes%27_theorem), 
 caractérisée par l'adoption d'une hypothèse d'indépendance forte entre les features (attributs), qualifiée de "naïve".  
-Plus simplement, le classifieur est classifié de "naïf" car il part du principe que chaque feature (attribut) est indépendante des autres et a un poid égal quant à la probabilité qu'un point appartienne à une classe.
+Plus simplement, le classifieur est classifié de "naïf" car il part du principe que chaque feature (attribut) est indépendante des autres et a un poid égal quant à la probabilité qu'un point appartienne à une classe. 
 
 Ce model est dit génératif contrairement à la regression logistique étant considéré comme "méthode discriminante" \cite{ClassifieurLineaire2022} et consiste à modéliser les probabilités conditionnelles $P(\x | classe)$ pour chaque classe $y$ et smaple $\x$ afin de trouver celle qui maximise cette probabilité.
 
@@ -79,7 +79,8 @@ $$
 \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | Y)}\  \right]
 $$
 
-# 2 -- Méthodologie
+
+# 2 -- Méthodologie  
 
 ## 2.0 -- Choix du dataset & outils utilisés
 
@@ -95,9 +96,10 @@ Pour la suite de ce projet les outils suivants ont été utilisés dans chaque p
 - [ucmilrepo](https://github.com/uci-ml-repo/ucimlrepo)
 - [pytest](https://docs.pytest.org/en/stable/)
 
-Le package `ucmilrepo` a été utilisé pour charger les données de notre dataset depuis la base de donnée du [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/ml/index).
 
-Le dataset que nous avons choisi est le fameux dataset "Iris" \cite{r.a.fisherIris1936}, un des plus anciens et connus dataset de classification. Il contient 150 observations de 3 espèces différentes d'iris (Iris setosa, Iris virginica et Iris versicolor) avec $K = 4$ features (longueur et largeur des sépales et pétales).
+Le package `ucmilrepo` a été utilisé pour charger les données de notre dataset depuis la base de donnée du [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/ml/index).  
+
+Le dataset que nous avons choisi est le fameux dataset "Iris" \cite{r.a.fisherIris1936}, un des plus anciens et connus dataset de classification. Il contient 150 observations de 3 espèces différentes d'iris (Iris setosa, Iris virginica et Iris versicolor) avec $K = 4$ features (longueur et largeur des sépales et pétales).  
 
 Voici un aperçu des points-clés du dataset:
 
@@ -112,18 +114,18 @@ Le label que nous allons prédire sera donc _class_, i.e. l'espèce de l'iris.
 
 \newpage
 
+
 ## 2.1 -- Gradient Descent
 
-Dans cette section, une implémentation de la "descente en gradient" a été réalisée. La fonction a la signature suivante
+Dans cette section, une implémentation de la "descente en gradient" a été réalisée. La fonction a la signature suivante 
 
 \begin{lstlisting}
-def gradient_descent(df, params: NDArray, alpha: float, num_iters: int) -> NDArray:  
+  def gradient_descent(df, params: NDArray, alpha: float, num_iters: int) -> NDArray:  
 \end{lstlisting}
 
 Elle calcule de manière itérative le(s) paramètre(s) \code{params} qui minimisent la fonction dont `df` est le gradient avec un "taux de convergence" \code{alpha}.
 
-La fonction a été testé avec la fonction \code{scipy.optimize.fmin} \cite{ScipyOptimizeFmin} de la librairie `scipy` sur la fonction suivante:
-
+La fonction a été testé avec la fonction \code{scipy.optimize.fmin} \cite{ScipyOptimizeFmin} de la librairie `scipy` sur la fonction suivante: 
 $$
 f(x) = x * \cos(\pi  (x + 1))
 $$
@@ -132,9 +134,10 @@ avec différents $x_0 \in \{-\pi, 0, \pi\}$ (valeur initiale de \code{params}, i
 
 Les minimas locaux trouvés par les deux fonctions sont les suivants:
 
-![minimas locaux_gradient descent](../res/3.1_gradient_descent_minima.png){width=100%}
+![minimas locaux_gradient descent](../res/3.1_gradient_descent_minima.png){width=100%} 
 
-Ce résultat illustre bien 2 choses: la première est que l'implémentation de la descente en gradient fonctionne correctement puisque pour chaque points trouvé par notre fonction est confondu avec celui trouvé par la fonction de scipy (c'est ce qui donne cette teinte "grise"). La deuxième est que la "qualité" du minima local (i.e. la distance avec le minima globale)
+
+Ce résultat illustre bien 2 choses: la première est que l'implémentation de la descente en gradient fonctionne correctement puisque pour chaque points trouvé par notre fonction est confondu avec celui trouvé par la fonction de scipy (c'est ce qui donne cette teinte "grise"). La deuxième est que la "qualité" du minima local (i.e. la distance avec le minima globale) 
 dépend fortement de la valeur initiale et ce pour les deux fonctions.
 
 \newpage{}
@@ -159,7 +162,7 @@ Soit $Y \in \{0, 1\}$ les différents labels que peut prendre l'élément que l'
 Soit $\theta$ le vecteur des poids des covariables, indiquant à quel point les covariables influencent sur la décision du label. On a donc:
 
 $$P(Y = 1 | X) = \frac{1}{1 + e^{-(X_1 * w_1 + X_2*w_2 + \dots + b)}}$$
-et
+et 
 $$P(Y = 0 | X) = 1 - \frac{1}{1 + e^{-(X_1 * w_1 + \dots + b)}}$$
 
 Pour plus de simplicité, on va considérer que le biais est compris dans les poids: au lieu d'écrire $z = wX + b$, on écrit $z = \hat{X}\theta$ avec $\hat{X} = \begin{bmatrix} X & 1 \end{bmatrix}$ modifié ou on a ajouté une colonne avec que des $1$ à la fin de la matrice $X$ et $\theta = \begin{bmatrix} w & b \end{bmatrix}$ afin d'avoir une bonne cohérence avec le rapport et le code. (On a trouvé cela plus facile d'avoir pour chaque labels les poids et bias sur une ligne, donc d'avoir $\theta_1$ pour le label $1$ etc...)
@@ -276,18 +279,18 @@ $$\text{(NB: On considère que Y = k, tous les autres termes étant annulés car
 $$=\frac{\partial}{\partial \theta_{j}} f(Y, k)log(P(Y = k | X))$$
 $$=\frac{\partial}{\partial \theta_{j}} \left(X \theta_{k}^T - log\left(\sum_i^K e^{X \theta_i^T}\right)\right) $$
 Supposons que j = k.
-$$=X - \frac{\partial}{\partial \theta*{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) $$
-$$=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}\sum*i^K e^{X \theta_i^T} $$
-$$=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}e^{X \theta_j^T}$$
+$$=X - \frac{\partial}{\partial \theta_{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) $$
+$$=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{X \theta_i^T} $$
+$$=X - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}e^{X \theta_j^T}$$
 $$=X - \frac{X e^{X \theta_j^T}}{\sum_i^K e^{X \theta_i^T}}$$
 $$=X - X P(Y = j | X)$$
 $$=X (1 - P(Y = j | X))$$
 Supposons que $j \neq k$.
 
 $$\frac{\partial}{\partial \theta_{j}} \left(X \theta_{k}^T - log\left(\sum_i^K e^{X \theta_i^T}\right)\right) $$
-$$= - \frac{\partial}{\partial \theta*{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) $$
-$$= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}\sum*i^K e^{X \theta_i^T} $$
-$$= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta*{j}}e^{X \theta_j^T} $$
+$$= - \frac{\partial}{\partial \theta_{j}}log\left(\sum_i^K e^{X \theta_i^T}\right) $$
+$$= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}\sum_i^K e^{X \theta_i^T} $$
+$$= - \frac{1}{\sum_i^K e^{X \theta_i^T}} \frac{\partial}{\partial \theta_{j}}e^{X \theta_j^T} $$
 $$= - \frac{Xe^{X \theta_j^T}}{\sum_i^K e^{X \theta_i^T}} $$
 $$= -X P(Y = j | X)$$
 
@@ -309,18 +312,19 @@ Ce que l'on va réaliser à l'aide de la descente en gradient. C'est le processu
 
 En effet, lors de l'apprentissage, on va chercher de manière itérative les $\w$ et $b$ qui respectent les critères mentionnés ci-dessus en calculant le gradient de la fonction de coût à chaque itérations et en allant dans la direction opposé.
 
+
 Concrètement cela revient à appliquer l'algorithme suivant:
 
 \begin{algorithm}
-\caption{gradient descent}\label{alg:grad*desc}
+\caption{gradient descent}\label{alg:grad_desc}
 \begin{algorithmic}
-\Function {GradientDescent}{$f, \w*{init}, b*0, \alpha, \text{num_iters}$}
-\State $\w \gets \w*{init}$
+\Function {GradientDescent}{$f, \w_{init}, b_0, \alpha, \text{num\_iters}$}
+\State $\w \gets \w_{init}$
 \State $b \gets b_0$
-\For{1 to num_iters}
-\State $\mathbf{dw}, db \gets \nabla{f(w, b)} $
+\For{1 to num\_iters}
+    \State $\mathbf{dw}, db \gets \nabla{f(w, b)} $
     \State $\w \gets \w - \alpha*\mathbf{dw}$
-\State $b \gets b - \alpha*db$
+    \State $b \gets b - \alpha*db$
 \EndFor
 \State \Return $w, b$
 \EndFunction
@@ -330,33 +334,35 @@ Concrètement cela revient à appliquer l'algorithme suivant:
 En pratique, il est plus simple de passer directement la function qui calcul le gradient en argument, que d'essayer de le calculer dynamiquement, c'est pourquoi la signature de notre implémentation prend un `df` en argument plutôt que la fonction de coût elle même.  
 Où le calcul des dérivées partielles a été definit comme ci-dessous.
 
+
 Soit $\nabla C(\w,b) = (\frac{\partial C(\w,b)}{\partial \w}, \frac{\partial C(\w,b)}{\partial b} )$, pour un sample $\x_i$ et sa classe $y_i$, on obtient:
 \begin{align*}
-\frac{\partial \log(y*i|\x*i ; \w, b)}{\partial b}
-&= y_i - \sigma(z_i)
+\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} 
+&= y_i - \sigma(z_i) 
 = y_i - \sigma(\w^T X_i + b)\\
 %
-\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial w_j}
-&= x*{ij}* ( y*i - \sigma(z*i))
-= (y_i - \sigma(\w^T X_i + b)) \* x*{ij}
-\end{align\*}
-Or le `db` dans l'algorithme ci-dessus se refert à la moyenne (pour tout i) de ces valeurs (i.e. distance moyenne \_classes prédites* -- *"vrai" classes\_).
+\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial w_j} 
+&= x_{ij}* ( y_i - \sigma(z_i)) 
+= (y_i - \sigma(\w^T X_i + b)) * x_{ij}
+\end{align*}
+Or le `db` dans l'algorithme ci-dessus se refert à la moyenne (pour tout i) de ces valeurs (i.e. distance moyenne _classes prédites_ -- _"vrai" classes_).
 
 On l'obtient donc comme suit: (la somme des dérivées est la dérivée de la somme, linéarité de la dérivée)
 $$\nabla_b\, {C} =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(\w^T X_i + b)}}$$
 
 De même pour `dw`:
 \begin{align*}
-\nabla*{\mathbf{w}} C & = \frac{1}{N} \sum*{i = 1}^{N}(x*{ij}(y*i - p_i))*{1 \leq j \leq k}
-= \frac{1}{N} \sum\_{i=1}^N(y_i - \sigma(z_i))\cdot (x*{ij})*{1 \leq j\leq k} \\
+  \nabla_{\mathbf{w}} C & = \frac{1}{N} \sum_{i = 1}^{N}(x_{ij}(y_i - p_i))_{1 \leq j \leq k} 
+  = \frac{1}{N} \sum_{i=1}^N(y_i - \sigma(z_i))\cdot (x_{ij})_{1 \leq j\leq k} \\
 %
-& =\frac{1}{N}\sum*{i = 1}^N (y_i - \sigma(\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
+& =\frac{1}{N}\sum_{i = 1}^N (y_i - \sigma(\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
 \end{align*}
 
-On retrouve ainsi, le calcul effectué dans la fonction \code{grad} de \code{log_reg.py} de signature suivante:
+
+On retrouve ainsi, le calcul effectué dans la fonction \code{grad} de \code{log\_reg.py} de signature suivante: 
 
 \begin{lstlisting}
-def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
+    def grad(X: NDArray, y: NDArray, w: NDArray, b: float) -> tuple:
 \end{lstlisting}
 
 Etant donné que pour le calcul du gradient il est nécessaire d'avoir un matrice de feature $X$ et vecteur de label $y$, une version "modifiée" de la descente en gradient a été implementé.
@@ -372,10 +378,10 @@ Cette fonction se comporte exactement de la même manière que celle décrite en
 Pour la prédiction, nous avons utilisé la fonction suivante:
 
 \begin{lstlisting}
-def predict_log_reg(X: NDArray, w: NDArray, b):
+   def predict_log_reg(X: NDArray, w: NDArray, b):
 \end{lstlisting}
 
-qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de manière à retourner un nombre entre 0 et 2 (avec les poids et bais entraînés).
+qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de manière à retourner un nombre entre 0 et 2 (avec les poids et bais entraînés). 
 
 \newpage{}
 
@@ -383,15 +389,15 @@ qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de mani�
 
 Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 \begin{align*}
-w &= [0.53452349, 0.36463584, 1.16132476, 1.08204578]\\
-b &= 0.45146791
+    w &= [0.53452349, 0.36463584, 1.16132476, 1.08204578]\\
+    b &= 0.45146791
 \end{align*}
 
-> N.B.:  
-> L'apprentissage peut être ré-effectué de manière efficace si besoin à l'aide du jupyter notebook [training_test.ipynb](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) disponible sur la branche [gpu-training](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) du repository github.
-> Le code de l'entraînement (uniquement sur cette branche) à été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev) \cite{NumPySciPyGPU}.  
-> A noter qu'il utilise des fonctions des sklearn alors que nous devions les implémenter nous mêmes, (telles que les metrics f1-score...).
-> Ces fonctions ont bien été implenté mais pour une raison de simplicité, elle n'ont pas été utilisée pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.
+> N.B.:   
+L'apprentissage peut être ré-effectué de manière efficient si besoine est à l'aide du jupyter notebook [training\_test.ipynb](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) disponible sur la branche [gpu-training](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) du repository github.
+Le code de l'entraînement (uniquement sur cette branche) à été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev) \cite{NumPySciPyGPU}.  
+A noter qu'il utilise des fonctions des sklearn alors que nous devions les implémenter nous mêmes, (telles que les metrics f1-score...).
+Ces fonctions ont bien été implenté mais pour une raison de simplicité, elle n'ont pas été utilisée pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.  
 
 \vspace{0.3cm}
 
@@ -399,7 +405,7 @@ Comme dit en section 1.1, ces paramètres sont, en effet, plus que satisfaisants
 comme on peut le voir sur l'output de `pytest` suivant:
 
 \begin{lstlisting}
-src/log_reg.py::test_log_reg_f1score
+src/log_reg.py::test_log_reg_f1score 
 weights & biases: [0.53452349, 0.36463584, 1.16132476, 1.08204578], 0.45146791  
 { 'accuracy': 1.0, 'f1_score': 1.0, 'precision': 1.0, 'recall': 1.0 }
 PASSED
@@ -409,10 +415,10 @@ src/naive_bayes.py::test_predict_bayes_f1score_all
 PASSED
 \end{lstlisting}
 
-NB: pour reproduire cette output, lancer \code{make test_model}.
+NB: pour reproduire cette output, lancer \code{make test\_model}.
 
-Ce résultat a été obtenu avec une séparation 70/30 de training/test data.
-Lorsque l'on essaye de changer la portion qui est prise aléatoirement dans chaque catégorie,
+Ce résultat a été obtenu avec une séparation 70/30 de training/test data. 
+Lorsque l'on essaye de changer la portion qui est prise aléatoirement dans chaque catégorie, 
 on obtient un F1-score qui varie entre 0.93 et 1.0 (avec, dans de rares exceptions 0.91 ou 0.89).
 
 De plus, l'on voit que les performances que nous avons obtenus rentrent tout à fait dans le cadre de celles annoncées par le UCI ML Repository:
@@ -421,20 +427,20 @@ De plus, l'on voit que les performances que nous avons obtenus rentrent tout à 
 
 Ce résultat illustre bien que notre démarche est correcte et que nos 2 modèles sont efficaces, avec un penchant pour la régression logistique qui semble être plus efficace que Naive Bayes.
 
+
 <!-- --- -->
 
 \newpage{}
 
 ## 2.3 -- Naive Bayes
 
-Dans cette section, une implémentation d'un classifieur linéaire bayesien (naive bayes) a été réalisée.
+Dans cette section, une implémentation d'un classifieur linéaire bayesien (naive bayes) a été réalisée. 
 
 ### 2.3.1 -- Extraction des distributions
 
 Dans cette implémentation, étant données que toutes nos features sont continues, nous avons considéré que _sepal length_, _sepal width_, _petal length_ et _petal width_ seront représenté comme 4 variables aléatoires $X_0, \cdots, X_3$ suivant 4 lois normales normales de paramètre $(\mu_k, \sigma_k)$.
 
 C'est à dire:
-
 $$
 X_k \sim \mathcal{N}( \mu_k, \sigma_k) \qquad \qquad k \in \iitv{0, 3}
 $$
@@ -447,6 +453,7 @@ def get_distrib_parameters(features: DataFrame, labels) -> dict[Any, list[tuple[
 
 qui va retourner un dict mappant chaque classe à une liste contenant les paramètres des distributions conditionnelles (normales) des features pour cette classe.
 
+
 ### 2.3.2 -- Prédictions
 
 Deux fonctions de prédictions ont été implémenté,
@@ -457,14 +464,14 @@ Deux fonctions de prédictions ont été implémenté,
 Elles ont les signatures suivantes:
 
 \begin{lstlisting}
-def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
-def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> list[Any]:
+    def predict_bayes(x, params_by_class: dict[Any, list[tuple[fl, fl]]]) -> Any:
+    def predict_bayes_all(X: DataFrame, params_by_class: dict[Any, list[tuple[fl, fl]]] | None = None) -> list[Any]:
 \end{lstlisting}
 
 Comme dit précédemment, pour pouvoir prédire la classe d'un sample, il faut calculer les probabilité conditionnelle $P(\x | classe)$
 pour chaque classe $y$ et sample $\x$ et prendre la classe qui maximise cette dernière.
 
-Cela revient à chercher le $\tilde{y}$ défini en \href{#naive-bayes}{section 1.2},
+Cela revient à chercher le $\tilde{y}$ défini en \href{#naive-bayes}{section 1.2}, 
 développons le calcul qui nous amené à cette formule:
 
 $$
@@ -472,12 +479,10 @@ $$
 $$
 
 Or
-
-$$
+$$ 
 P(\x | y) = P(x_1 | y) \prod_{i = 2}^{n}{P(x_i | x_{i-1}, \ldots, x_1, y)}
 $$
-
-Avec l'hypothèse que les $\{X_i\}_{i \leq n}$ sont indépendants, on obtient que:
+Avec l'hypothèse que les $\{X_i\}_{i \leq n}$ sont indépendants, on obtient que: 
 
 $$P(x_i | x_{i-1}, \ldots, x_1, y) = P(x_i | y)$$
 
@@ -485,27 +490,27 @@ Donc
 $$P(\x|y) = P(x_1 | y) \prod_{k = 2}^{K}{P(x_k | y)} = \prod_{k=1}^K{P(x_k | y)}$$
 
 En conclusion:
-$$ \tilde{y} = \text{arg}\max*{y \in \mathcal{Y}} \left[\ P(y) \prod*{k = 1}^K{P(x_k | y)}\ \right] $$
+$$ \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | y)}\  \right] $$ 
 (où $K$ reste le nombre de features.)
 
-Où au début on cherche à maximiser $P(y | x)$ car idéalement on voudrait savoir la probabilité que $y$ soit le bon label pour n'importe quel sample $\x$.
-Cependant, on aimerait pouvoir effectuer cette prédictions pour des $\x$
+Où au début on cherche à maximiser $P(y | x)$ car idéalement on voudrait savoir la probabilité que $y$ soit le bon label pour n'importe quel sample $\x$. 
+Cependant, on aimerait pouvoir effectuer cette prédictions pour des $\x$ 
 qui n'appartiennent pas à notre dataset d'apprentissage, i.e. on ne doit pas avoir besoin
 d'avoir déjà vu exactement ce sample. On a donc besoin d'une généralisation, c'est ainsi que l'on fini par retomber sur
-
-$$ \tilde{y} = \text{arg}\max*{y \in \mathcal{Y}} \left[\ P(y) \prod*{k = 1}^K{P(x_k | y)}\ \right] $$
+ 
+$$ \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | y)}\  \right] $$ 
 
 qui est ce que calculent les fonctions dont on a donné la signature ci-dessus.
 
 ### 2.3.3 -- Résultats
 
-Dans cette section, nous allons simplement reprendre ce qui a été fait dit dans la
+Dans cette section, nous allons simplement reprendre ce qui a été fait dit dans la 
 \href{#ruxe9sultats}{section 2.2.4} et remontrer les mêmes tests.
 
 Voici l'output du test `pytest` pour les rapports de performances du model bayesien:
 
 \begin{lstlisting}
-src/log_reg.py::test_log_reg_f1score
+src/log_reg.py::test_log_reg_f1score 
 weights & biases: [0.53452349, 0.36463584, 1.16132476, 1.08204578], 0.45146791  
 { 'accuracy': 1.0, 'f1_score': 1.0, 'precision': 1.0, 'recall': 1.0 }
 PASSED
@@ -521,21 +526,22 @@ Cependant, un f1-score de $> 0.95$ reste excellent.
 
 \newpage{}
 
-# 3 -- Analyse
+# 3. -- Analyse
 
-Pour chaque classe y, on peut tracer les fonctions de distribution de probabilité pour chaque donnée $X_k$ sachant la classe y afin d'analyser la structure des données.
+Pour chaque classe y, on peut tracer les fonctions de distribution de probabilité pour chaque donnée $X_k$ sachant la classe y afin d'analyser la structure des données. 
 
 Pour la classe Y=0, on obtient le graphe suivant :
 
 ![graphe des fonctions de distribution sachant Y=0](../src/res/comp_normal_law_Y_0.png)
 
-On peut voir tout d'abord que pour cette classe, les pics des courbes bleue et rouge sont bien inférieurs aux pics des courbes vert et magenta. Ainsi, on en conclu que les variables $X_0$ et $X_1$ ont moins d'influence dans la prédiction de cette classe. Alors que le pic de la courbe magenta est bien supérieur aux autres, indiquant que la variable $X_3$ a une forte influence sur la prédiction de cette classe. De plus, on observe que seul les courbent bleu et rouge ont un chevauchement perceptible mais quand même assez petit, on en conclu que les variables sont pour cette classe très peu indépendante les unes des autres.
+On peut voir tout d'abord que pour cette classe, les pics des courbes bleue et rouge sont bien inférieurs aux pics des courbes vert et magenta. Ainsi, on en conclu que les variables $X_0$ et $X_1$ ont moins d'influence dans la prédiction de cette classe. Alors que le pic de la courbe magenta est bien supérieur aux autres, indiquant que la variable $X_3$ a une forte influence sur la prédiction de cette classe. De plus, on observe que seul les courbent bleu et rouge ont un chevauchement perceptible mais quand même assez petit, on en conclu que les variables sont pour cette classe très peu indépendante les unes des autres. 
 
 \newpage{}
 
 Pour la classe Y=1, on obtient le graphe suivant :
 
 ![graphe des fonctions de distribution sachant Y=1](../src/res/comp_normal_law_Y_1.png)
+
 
 On peut voir tout d'abord que pour cette classe, les pics des courbes bleus et verte sont bien inférieurs aux pics des courbes rouge et magenta. Ainsi, on en conclu que les variables $X_0$ et $X_2$ ont moins d'influence dans la prédiction de cette classe. Alors que le pic de la courbe magenta est bien supérieur aux autres, indiquant que la variable $X_3$ a une forte influence sur la prédiction de cette classe. De plus, on observe que les courbes rouge et magenta ont un faible chevauchement indiquant une faible interdépence entre $X_3$ et $X_1$ alors que les courbes rouge et verte ainsi que verte et bleue ont un chevauchement assez élevé montrant une certaine interdépendance entre les variables $X_1$ et $X_2$ ainsi qu'entre les variables $X_0$ et $X_2$.
 
@@ -545,110 +551,17 @@ Enfin pour la classe Y=2, on obtient le graphe suivant :
 
 ![graphe des fonctions de distribution sachant Y=2](../src/res/comp_normal_law_Y_2.png)
 
-On observe que les pics des courbes rouge et magenta sont presque deux fois plus grand que ceux des courbes bleue et verte, de plus les courbes rouge se chevauchent fortement. Ainsi les variables $X_3$ et $X_1$ ont une très forte influence sur cette classe et sont assez interdépendant alors que les variables $X_0$ et $X_2$ ont très peu d'impacte sur la prédiction de cette classe. Les courbes bleue et verte se chevauchent aussi énormément montrant aussi une forte interdépendance entre les variables $X_0$ et $X_2$.
 
-Ainsi on peut remarquer que globalement la variable $X_3$ a une forte influence sur la classification alors que la variable $X_0$ a une plus faible.
-De plus, les variables indépendantes ne sont pas séparables les unes des autres.
+On observe que les pics des courbes rouge et magenta sont presque deux fois plus grand que ceux des courbes bleue et verte, de plus les courbes rouge  se chevauchent fortement. Ainsi les variables $X_3$ et $X_1$ ont une très forte influence sur cette classe et sont assez interdépendant alors que les variables $X_0$ et $X_2$ ont très peu d'impacte sur la prédiction de cette classe. Les courbes bleue et verte se chevauchent aussi énormément montrant aussi une forte interdépendance entre les variables $X_0$ et $X_2$. 
 
-# 4 -- Comparaisons
 
-## 4.1 - Vraisemblance et classification des échantillons
+Ainsi on peut remarquer que globalement la variable $X_3$ a une forte influence sur la classification alors que la variable $X_0$ a une plus faible. 
+De plus, les variables indépendantes ne sont pas séparables les unes des autres.  
 
-Une fois que les paramètres des classes sont obtenus en supposant l'indépendance des variables, on échantillone de nouvelles données afin de comparer les résultats obtenus avec les données d'origine.
 
-L'échantillonage est fait dans le fichier `sampling.py`.
 
-On fait 50 échantillons pour chaque classe, à partir des paramètres des distributions obtenus dans la section précédente.
-
-On obtient les résultats suivants (la moyenne et l'écart-type sont donnés pour chaque classe et chaque variable):
-
-- Pour la classe 0:
-  - Mean:
-    - réelle: 4.964516, 3.3612902, 1.467742, 0.2451613
-    - échantillon: 5.04191904, 3.33580458, 1.46340112, 0.23831319
-  - Ecart-type:
-    - réel: 0.34014544, 0.37654343, 0.18508933, 0.112067565
-    - échantillon: 0.32847194, 0.35161457, 0.16439592, 0.10696828
-
-![Comparaison des distributions réelles et échantillonées pour la classe 0](../res/sample_compare_Y_0.png)
-
-- Pour la classe 1:
-  - Mean:
-    - réelle: 5.862162, 2.7243242, 4.2108107, 1.3027027
-    - échantillon: 5.89406553, 2.70037139, 4.28611674, 1.3473438
-  - Ecart-type:
-    - réel: 0.531952, 0.29944894, 0.49597478, 0.20613708
-    - échantillon: 0.51264886, 0.25024787, 0.40643571, 0.19599569
-
-![Comparaison des distributions réelles et échantillonées pour la classe 1](../res/sample_compare_Y_1.png)
-
-- Pour la classe 2:
-  - Mean:
-    - réelle: 6.5594597, 2.9864864, 5.545946, 2.0054054
-    - échantillon: 6.52999239, 3.0324595, 5.57314614 2.00670609
-  - Ecart-type:
-    - réel: 0.65889615, 0.31460926, 0.54446435, 0.29715872
-    - échantillon: 0.63336966, 0.32560175, 0.68418903, 0.30524206
-
-![Comparaison des distributions réelles et échantillonées pour la classe 2](../res/sample_compare_Y_2.png)
-
-Les nombres et les graphiques montrent que les échantillons sont très proches des données réelles, donc on a bien la vraisemblance.
-
-## 4.2 - Comparaison avec SKLearn
-
-### 4.2.1 - Naïve Bayes
-
-Notre implémentation de Naïve Bayes a été comparée avec celle de SKLearn dans le fichier `sampling.py`, avec un split des données échantillonnées en 70\% training et 30\% test.
-
-On obtient les résultats suivants:
-
-Notre Naive Bayes
-
-- Precision: 0.9761904761904763
-- Recall: 0.9743589743589745
-- Accuracy: 0.9777777777777777
-- F1_score: 0.9752738654147106
-
-Sklearn Naive Bayes
-
-- precision: 0.9761904761904763
-- recall: 0.9743589743589745
-- accuracy: 0.9777777777777777
-- f1_score: 0.9752738654147106
-
-### 4.2.2 - Régression Logistique
-
-Notre implémentation de Régression Logistique a été comparée avec celle de SKLearn dans le fichier `sampling.py`, avec un split des données échantillonnées en 70\% training et 30\% test.
-
-Pour SKLearn, le modèle utilisé est `lr = LogisticRegression(multi_class="multinomial")`, car on a 3 classes et donc il nous faut un modèle multinomial. \cite{sklearnLogReg}
-
-Notre Logistic Regression
-
-- Precision: 0.8505050505050505
-- Recall: 0.8461538461538461
-- Accuracy: 0.8666666666666667
-- F1_score: 0.848323868840447
-
-Sklearn Logistic Regression
-
-- Precision: 0.9761904761904763
-- Recall: 0.9743589743589745
-- Accuracy: 0.9777777777777777
-- F1_score: 0.9752738654147106
-
-## 4.3 - Conclusion sur les comparaisons
-
-On a vu qu'on avait la vraisemblance, puisque les échantillons sont très proches des données réelles, comme le montrent les graphiques.
-
-En ce qui concerne SKLearn, on peut voir que les métriques pour Naïve Bayes sont identiques car les 2 implémentations sont simplement une application du théorème de Bayes, donc on espère avoir les mêmes résultats.
-
-Pour le logistic regression, SKLearn fournit de meilleurs métriques car il est certainement plus optimisé que notre implémentation.
-Malgré cela, notre implémentation donne quand même des très bons résultats, avec chaque métrique tournant autour de 85\%.
-
-On a donc aussi la classification.
-
-On peut donc conclure que les deux implémentations arrivent à bien classifier les données IRIS.
 
 <!-- \newpage{} -->
 
 \printbibliography[heading=bibintoc, title={Références}]
+
