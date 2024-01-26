@@ -6,19 +6,16 @@
 \documentclass[
 ]{article}
 \usepackage{amsmath,amssymb}
+\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -37,6 +34,54 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -64,16 +109,6 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\usepackage{bookmark}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  colorlinks=true,
-  linkcolor={Blue},
-  filecolor={Maroon},
-  citecolor={Blue},
-  urlcolor={Blue},
-  pdfcreator={LaTeX via pandoc}}
 
 \author{}
 \date{}
@@ -82,8 +117,9 @@
 
 \intro{}
 
+\hypertarget{introduction-rappels-thuxe9oriques}{%
 \section{1 -- Introduction \& Rappels
-théoriques}\label{introduction-rappels-thuxe9oriques}
+théoriques}\label{introduction-rappels-thuxe9oriques}}
 
 Dans ce document, nous approfondirons des techniques de regression
 logistique et ``Naive Bayes'' comme outils d'apprentissage superivisés.
@@ -97,8 +133,9 @@ document se propose d'étudier ces deux techniques, en mettant l'accent
 sur leur mise en œuvre pratique, et leur efficacité comparative dans
 divers scénarios.
 
+\hypertarget{ruxe9gression-logistique}{%
 \subsection{1.1 -- Régression
-Logistique}\label{ruxe9gression-logistique}
+Logistique}\label{ruxe9gression-logistique}}
 
 En statistiques, la régression logistique, s'inscrit dans le cadre des
 modèles de régression pour les variables binaires. Bien qu'elle soit
@@ -154,7 +191,8 @@ distinguer 3 cas au lieu de 2. i.e.~Au lieu de séparer le domaine en 2
 ce qui a donné des résultats plus que satisfaisants comme nous le
 verrons en \href{#ruxe9gression-logistique-1}{section 2.2}.
 
-\subsection{1.2 -- Naive Bayes}\label{naive-bayes}
+\hypertarget{naive-bayes}{%
+\subsection{1.2 -- Naive Bayes}\label{naive-bayes}}
 
 ``Naive Bayes'' se présente comme une méthode de classification
 probabiliste basée sur le
@@ -180,10 +218,12 @@ En d'autres termes, le problème revient à trouver, pour des attributs
 \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | Y)}\  \right]
 \]
 
-\section{2 -- Méthodologie}\label{muxe9thodologie}
+\hypertarget{muxe9thodologie}{%
+\section{2 -- Méthodologie}\label{muxe9thodologie}}
 
+\hypertarget{choix-du-dataset-outils-utilisuxe9s}{%
 \subsection{2.0 -- Choix du dataset \& outils
-utilisés}\label{choix-du-dataset-outils-utilisuxe9s}
+utilisés}\label{choix-du-dataset-outils-utilisuxe9s}}
 
 Pour la suite de ce projet les outils suivants ont été utilisés dans
 chaque parties:
@@ -235,7 +275,8 @@ de l'iris.
 
 \newpage
 
-\subsection{2.1 -- Gradient Descent}\label{gradient-descent}
+\hypertarget{gradient-descent}{%
+\subsection{2.1 -- Gradient Descent}\label{gradient-descent}}
 
 Dans cette section, une implémentation de la ``descente en gradient'' a
 été réalisée. La fonction a la signature suivante
@@ -275,11 +316,13 @@ deux fonctions.
 
 \newpage{}
 
+\hypertarget{ruxe9gression-logistique-1}{%
 \subsection{2.2 -- Régression
-Logistique}\label{ruxe9gression-logistique-1}
+Logistique}\label{ruxe9gression-logistique-1}}
 
+\hypertarget{fonction-de-couxfbt-pour-la-ruxe9gression-logistique}{%
 \subsubsection{2.2.1 -- Fonction de coût pour la régression
-logistique}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique}
+logistique}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique}}
 
 Afin d'entraîner les paramètres de la régression logistique, il faut
 pouvoir comparer les résultats obtenus par la régression avec les
@@ -327,7 +370,8 @@ Notre régression logistique binaire peut donc s'écrire comme:
 \[P(Y = 1 | X) = \frac{1}{1 + e^{X \theta^T}} = \sigma(X \theta^T)\] et
 \[P(Y = 0 | X) = 1 - \sigma(X \theta^T)\]
 
-\paragraph{2.2.1.1 -- Généralisation}\label{guxe9nuxe9ralisation}
+\hypertarget{guxe9nuxe9ralisation}{%
+\paragraph{2.2.1.1 -- Généralisation}\label{guxe9nuxe9ralisation}}
 
 On désire donc trouver une nouvelle distribution \(\phi(z)\) tel que:
 \[\phi(z) \in [0, 1]\ \forall z\] est une généralisation de la fonction
@@ -386,7 +430,8 @@ plusieurs labels.
 
 Cette fonction est courramment appelée fonction \texttt{softmax}.
 
-\paragraph{2.2.1.2 -- Fonction de coût}\label{fonction-de-couxfbt}
+\hypertarget{fonction-de-couxfbt}{%
+\paragraph{2.2.1.2 -- Fonction de coût}\label{fonction-de-couxfbt}}
 
 Notre objectif est donc de trouver une fonction de coût pour pouvoir
 entraîner les paramètres de la régression multinomiale. On cherche à
@@ -427,8 +472,9 @@ Cela nous donne une fonction de coût comme suit:
 On peut minimiser cette fonction de coût grâce à une descente en
 gradient.
 
+\hypertarget{duxe9rivuxe9e-de-la-fonction-de-couxfbt}{%
 \paragraph{2.2.1.3 -- Dérivée de la fonction de
-coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt}
+coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt}}
 
 On va calculer la dérivée de la fonction de coût.
 
@@ -469,7 +515,8 @@ Donc pour \(n\) données, cela nous donne:
 Maintenant, on est prêt pour entraîner notre régression logistique
 multinomiale !
 
-\subsubsection{2.2.2 -- Apprentissage}\label{apprentissage}
+\hypertarget{apprentissage}{%
+\subsubsection{2.2.2 -- Apprentissage}\label{apprentissage}}
 
 Maitenant que nous avons une fonction de coût permettant de quantifier
 (en moyenne) à quel point un set de \(N\) prédiction est
@@ -555,7 +602,8 @@ et \texttt{y} à la fonction \texttt{df} (dans notre cas \texttt{df} est
 toujours la fonction \texttt{grad}), i.e.~on a
 \code{df(features, labels, w, b)} au lieu de \code{df(params)}.
 
-\subsubsection{2.2.3 -- Prédictions}\label{pruxe9dictions}
+\hypertarget{pruxe9dictions}{%
+\subsubsection{2.2.3 -- Prédictions}\label{pruxe9dictions}}
 
 Pour la prédiction, nous avons utilisé la fonction suivante:
 
@@ -569,7 +617,8 @@ et bais entraînés).
 
 \newpage{}
 
-\subsubsection{2.2.4 -- Résultats}\label{ruxe9sultats}
+\hypertarget{ruxe9sultats}{%
+\subsubsection{2.2.4 -- Résultats}\label{ruxe9sultats}}
 
 Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 \begin{align*}
@@ -634,13 +683,15 @@ qui semble être plus efficace que Naive Bayes.
 
 \newpage{}
 
-\subsection{2.3 -- Naive Bayes}\label{naive-bayes-1}
+\hypertarget{naive-bayes-1}{%
+\subsection{2.3 -- Naive Bayes}\label{naive-bayes-1}}
 
 Dans cette section, une implémentation d'un classifieur linéaire
 bayesien (naive bayes) a été réalisée.
 
+\hypertarget{extraction-des-distributions}{%
 \subsubsection{2.3.1 -- Extraction des
-distributions}\label{extraction-des-distributions}
+distributions}\label{extraction-des-distributions}}
 
 Dans cette implémentation, étant données que toutes nos features sont
 continues, nous avons considéré que \emph{sepal length}, \emph{sepal
@@ -662,7 +713,8 @@ qui va retourner un dict mappant chaque classe à une liste contenant les
 paramètres des distributions conditionnelles (normales) des features
 pour cette classe.
 
-\subsubsection{2.3.2 -- Prédictions}\label{pruxe9dictions-1}
+\hypertarget{pruxe9dictions-1}{%
+\subsubsection{2.3.2 -- Prédictions}\label{pruxe9dictions-1}}
 
 Deux fonctions de prédictions ont été implémenté,
 
@@ -723,7 +775,8 @@ généralisation, c'est ainsi que l'on fini par retomber sur
 qui est ce que calculent les fonctions dont on a donné la signature
 ci-dessus.
 
-\subsubsection{2.3.3 -- Résultats}\label{ruxe9sultats-1}
+\hypertarget{ruxe9sultats-1}{%
+\subsubsection{2.3.3 -- Résultats}\label{ruxe9sultats-1}}
 
 Dans cette section, nous allons simplement reprendre ce qui a été fait
 dit dans la \href{#ruxe9sultats}{section 2.2.4} et remontrer les mêmes
@@ -752,7 +805,8 @@ Cependant, un f1-score de \(> 0.95\) reste excellent.
 
 \newpage{}
 
-\section{3. -- Analyse}\label{analyse}
+\hypertarget{analyse}{%
+\section{3. -- Analyse}\label{analyse}}
 
 Pour chaque classe y, on peut tracer les fonctions de distribution de
 probabilité pour chaque donnée \(X_k\) sachant la classe y afin
@@ -824,12 +878,206 @@ influence sur la classification alors que la variable \(X_0\) a une plus
 faible. De plus, les variables indépendantes ne sont pas séparables les
 unes des autres.
 
+\hypertarget{phuxe9nomuxe8ne-de-sur-apprentissage}{%
+\subsection{3.1 -- Phénomène de
+sur-apprentissage}\label{phuxe9nomuxe8ne-de-sur-apprentissage}}
+
+Dans cette partie, nous allons voir les problèmes de sur-apprentissage
+du modèle de régression logistique multinomial.
+
+Le phénomène de sur-apprentissage est lorsque le modèle entraîné
+s'adapte trop bien aux données d'apprentissage, si bien qu'il s'adapte
+au bruit des données d'apprentissage. Cela a pour conséquences de
+produire de moins bonnes prédictions pour des données de test. En effet,
+le modèle est ``trompé'' par le bruit des données d'apprentissage et
+prédira ainsi de mauvais résultats.
+
+Dans l'énoncé, on nous propose d'utiliser un volume de données réduit
+afin de montrer le phénomène de sur-apprentissage. Nous étions alors
+perplexe et nous nous posions cette simple question: pourquoi utiliser
+moins de données pour montrer le phénomène engendré lorsqu'on entraîne
+trop un modèle ? À cette question, nous n'avons hélas pas encore trouvé
+de réponse qui tranche. En effet, peut-être qu'il faut montrer qu'avec
+moins de données, le modèle entraîné peut avoir de bonnes performances
+sur les données d'apprentissage, mais pas sur les données de test. Mais
+cela ne serait-il pas plutôt un phénomène de sous-apprentissage ? Ou
+alors faut-il essayer d'entrainer un maximum notre paramètre \(\theta\)
+sur les données d'apprentissage en espérant que notre modèle s'adaptera
+trop bien aux données d'apprentissage en donnant de mauvaises
+prédictions pour des données de test ? Ou encore doit-on ajouter
+beaucoup de bruit dans les données d'apprentissage pour que le modèle
+s'entraine sur le bruit des données d'apprentissage et donne de moins
+bonnes prédictions pour des données de test ? Bref, ne sachant pas trop
+quelle voie explorer, nous avons décidé d'en explorer plusieurs.
+
+Tout d'abord, nous avons testé et entrainé les modèles pour un volume de
+données réduit.
+
+Voici 2 graphes montrant les résultats obtenus avec la régression
+logistique multinomiale et l'approche naive bayes. Notez que nous avons
+tenté de faire une courbe approximant les données obtenues afin de mieux
+visualiser ce qu'il se passe. Cette courbe est obtenue, en faisant un
+peu de bricolage, par le code suivant:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a, b }\OperatorTok{=}\NormalTok{ np.polyfit(x, log(y), }\DecValTok{1}\NormalTok{)}
+\NormalTok{plt.plot(x, a }\OperatorTok{*}\NormalTok{ log(y) }\OperatorTok{+}\NormalTok{ b)}
+\end{Highlighting}
+\end{Shaded}
+
+Ce qui est une sorte de régression linéaire ``adaptée'' pour une courbe
+logarithmique.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.67\textwidth,height=\textheight]{../res/overfitting_naive.png}
+\caption{Naive bayes}
+\end{figure}
+
+\newpage
+
+Sur le graphique donné par Naive Bayes, nous pouvons constater que les
+f1 scores varient beaucoup, aussi bien pour les données d'entrainement
+que pour les données de test. Cependant, on peut remarquer que pour un
+volume faible de données, la courbe verte, correspondant au f1 score
+obtenu avec les données d'entrainement, est légèrement au dessus de la
+courbe rouge, représentant le f1 score des données de test. Cela
+signifie que lorsqu'on n'a pas assez de données d'entrainement, le
+modèle entrainé fera ne fera pas de bonnes prédictions sur les données
+de test, car celui-ci n'a pas été suffisamment entraîner pour bien
+ajuster ses paramètres: ses paramètres sont uniquement ajustés pour les
+données d'entrainement.
+
+Cependant, nous pouvons constater que les f1 scores obtenus par Naive
+Bayes ne convergent pas\ldots{} C'est pourquoi, afin de montrer les
+phénomènes de sur-apprentissage, nous allons utiliser la régression
+logistique qui possède des f1 scores convergeant, comme nous pouvons
+l'observer sur le graphique.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.67\textwidth,height=\textheight]{../res/overfitting_reg.png}
+\caption{Logistic regression}
+\end{figure}
+
+Sur le graphique donné par la régression logistique, nous pouvons
+observer que les f1 scores sont très variés pour un volume faible de
+données, mais que ceux-ci convergent lorsque le volume de données
+augmente (On suppose que la même chose se produit avec Naive Bayes, mais
+qu'on n'a pas assez de données pour le remarquer\ldots). C'est pour
+cette raison que nous allons préférer utiliser la régression logistique
+plutôt que Naive Bayes pour montrer les phénomènes de sur-apprentissage.
+
+Nous pouvons également constater que les performances sur les données
+d'entrainement sont meilleures que les performances sur les données de
+test. Cela montre un ``sur-ajustement'' du modèle sur les données
+d'entrainement. En effet, comme le volume de données est faible, les
+paramètres de la régression logistique sont bien entraînés pour les
+données d'entrainement, mais pas pour les données de test.
+
+Cependant, lorsque le volume de données augmente, on voit que les
+paramètres de la régression logistique s'ajustent correctement, et on a
+des performances sur les données de test qui deviennent meilleures que
+les performances sur les données d'entrainement.
+
+Donc plus on a des données, mieux on pourra ajuster notre modèle. Dans
+notre cas, on ne peut pas tester ce que trop de données peuvent faire,
+car on n'a hélas pas un stock de données illimité.
+
+Mais nous pouvons nous demander à quel point le bruit peut influencer la
+performance de notre modèle.
+
+Afin d'éclaircir ce point, nous allons vous épargner la visualisation du
+graphique obtenu par Naive Bayes car celui-ci est très éparse: aucune
+donnée ne converge. Mais nous allons vous montrer le graphique obtenu
+par la régression logistique.
+
+Tout d'abord, pour ajouter du bruit aux données, nous indiquons un
+pourcentage des données qu'on veut bruiter. Ensuite, nous prenons d'une
+manière aléatoire le pourcentage donné de données, et pour ces données
+sélectionnées, nous attribuons un label aléatoire parmi la liste de
+labels initiaux des données. Cela entraine forcément qu'une donnée qu'on
+voulait bruiter a repris le même label qu'elle avait, et n'est donc pas
+bruité. Donc le bruitage est approximatif.
+
+Voici le graphique obtenu pour la régression logistique:
+
+\begin{figure}
+\centering
+\includegraphics{../res/overfitting_reg_2.png}
+\caption{Logistic regression: noise added}
+\end{figure}
+
+Nous pouvons constater que pour des données pas très bruitées, le modèle
+possède de bonnes performances. Mais plus le bruit introduit dans les
+données augmente, plus on obtient des résultats éparpillés et
+décroissant dans l'ensemble. Enfin, on peut observer pour 80 à 100\% des
+données bruitées que le modèle possède de très mauvaises performances
+sur les données de test, qui sont moins bonnes que les performances
+obtenues sur les données d'entrainement. Cela est causé par le bruit
+introduit dans les données: il y a suffisamment de bruit dans les
+données pour que le modèle soit entrainné au bruit des données
+d'apprentissage, ce qui cause de mauvaises performances sur des données
+de test.
+
+Donc trop de bruit dans les données d'apprentissage d'un modèle peut
+rendre un modèle avec de mauvaises performances, car trop entrainé au
+bruit des données d'apprentissages.
+
+Enfin, nous avons tenté de faire varier le nombre d'itérations lors de
+la descente en gradient de la régression logistique et ajouté du bruit
+aux données pour que les paramètres de la régression logistique soient
+perturbés par le bruit des données. Nous avons mis 50\% de bruit dans
+les données d'apprentissage, ce qui nous a donné le graphe suivant:
+
+\begin{figure}
+\centering
+\includegraphics{../res/overfitting_test.png}
+\caption{Logistic regression: varying number of iterations}
+\end{figure}
+
+Les résultats nous plaisent car ils montrent que pour un faible nombre
+d'itérations, les performances du modèle sont bonnes, mais moins bonnes
+que pour un nombre moyen d'itérations, et pour un nombre trop grand
+d'itérations, les performances du modèle sont moins bonnes.
+
+Cela signifie que si la descente en gradient est trop précise, on aura
+un modèle bien entrainé pour les données d'apprentissage, mais pas pour
+les données de test, car la performance du modèle sur les données de
+test diminue lorsqu'on a un nombre d'itérations élevé, tandis que la
+performance du modèle reste à peu près constante pour les données
+d'entrainement.
+
+Ainsi, il faut également ajuster la précision de la descente en gradient
+afin d'obtenir non pas les paramètres optimaux pour les données
+d'apprentissage, mais pour obtenir des paramètres à la fois généraux et
+précis, permettant de donner des performances optimales sur des données
+de test.
+
+Nous pouvons conclure que le sur-apprentissage ou sur-ajustement peut
+causer des problèmes dans les performances d'un modèle de
+classification, comme la régression logistique, car le modèle peut soit
+s'entrainer trop au bruit des données d'apprentissages, entrainant de
+mauvais résultats de test, soit ne pas avoir suffisamment de données
+d'apprentissage pour bien ajuster ses paramètres, soit trop s'entrainer
+aux données d'apprentissage, ce qui entraine une baisse de performance
+sur les données de tests, car le modèle est également entrainé au bruit
+des données d'apprentissage.
+
+Enfin, il faut toujours s'assurer que le modèle donne les meilleures
+performances possibles sur les données de test, car les performances sur
+les données de test comptent plus que les performances sur les données
+d'apprentissage\ldots{}
+
 \newpage{}
 
-\section{4 -- Comparaisons}\label{comparaisons}
+\hypertarget{comparaisons}{%
+\section{4 -- Comparaisons}\label{comparaisons}}
 
+\hypertarget{vraisemblance-et-classification-des-uxe9chantillons}{%
 \subsection{4.1 - Vraisemblance et classification des
-échantillons}\label{vraisemblance-et-classification-des-uxe9chantillons}
+échantillons}\label{vraisemblance-et-classification-des-uxe9chantillons}}
 
 Une fois que les paramètres des classes sont obtenus en supposant
 l'indépendance des variables, on échantillone de nouvelles données afin
@@ -932,10 +1180,12 @@ donnés pour chaque classe et chaque variable):
 Les nombres et les graphiques montrent que les échantillons sont très
 proches des données réelles, donc on a bien la vraisemblance.
 
+\hypertarget{comparaison-avec-sklearn}{%
 \subsection{4.2 - Comparaison avec
-SKLearn}\label{comparaison-avec-sklearn}
+SKLearn}\label{comparaison-avec-sklearn}}
 
-\subsubsection{4.2.1 - Naïve Bayes}\label{nauxefve-bayes}
+\hypertarget{nauxefve-bayes}{%
+\subsubsection{4.2.1 - Naïve Bayes}\label{nauxefve-bayes}}
 
 Notre implémentation de Naïve Bayes a été comparée avec celle de SKLearn
 dans le fichier \texttt{sampling.py}, avec un split des données
@@ -969,8 +1219,9 @@ Sklearn Naive Bayes
   f1\_score: 0.9752738654147106
 \end{itemize}
 
+\hypertarget{ruxe9gression-logistique-2}{%
 \subsubsection{4.2.2 - Régression
-Logistique}\label{ruxe9gression-logistique-2}
+Logistique}\label{ruxe9gression-logistique-2}}
 
 Notre implémentation de Régression Logistique a été comparée avec celle
 de SKLearn dans le fichier \texttt{sampling.py}, avec un split des
@@ -1007,8 +1258,9 @@ Sklearn Logistic Regression
   F1\_score: 0.9752738654147106
 \end{itemize}
 
+\hypertarget{conclusion-sur-les-comparaisons}{%
 \subsection{4.3 - Conclusion sur les
-comparaisons}\label{conclusion-sur-les-comparaisons}
+comparaisons}\label{conclusion-sur-les-comparaisons}}
 
 On a vu qu'on avait la vraisemblance, puisque les échantillons sont très
 proches des données réelles, comme le montrent les graphiques.
