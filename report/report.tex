@@ -886,7 +886,7 @@ performances suivantes:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{python3 softmax.py}
+\NormalTok{python3 main.py}
 
 \NormalTok{Results:}
 
@@ -910,8 +910,8 @@ initialiser le vecteur avec des valeurs comprises par exemple entre 1 et
 nécessaire (à cause du faible nombre d'itérations), ce qui n'est pas
 l'objectif de l'initialisation aléatoire de la matrice \(\theta\).
 
-Afin de reproduire ces résultats, il suffit d'exécuter le code
-\code{softmax.py}.
+Afin de reproduire ces résultats, il suffit de décommenter la ligne
+\texttt{\#softmax.main()} dans \code{main.py}
 
 Ici, sur la matrice theta, nous avons chaque ligne qui représente les
 poids et biais pour chaque label, avec à chaque fois le dernier élément
@@ -1334,7 +1334,8 @@ préalable, ``mélangées'' aléatoirement.
 
 Les graphiques ont été obtenus grâce aux autres fonctions définies dans
 \code{overfitting.py}. On peut les exécuter en décommentant les lignes
-suivantes de la toute fin de \code{overfitting.py}:
+suivantes de la toute fin de \code{overfitting.py} et en décommentant la
+ligne \texttt{overfitting.main()} de main:
 
 \begin{Shaded}
 \begin{Highlighting}[]

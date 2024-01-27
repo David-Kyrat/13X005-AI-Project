@@ -210,6 +210,7 @@ def test_log_reg_f1score():
     print("\n\nMetrics obtained:")
     print(predict_compute_metrics(FEAT_test, LABELS_test, theta))
 
-if __name__ == "__main__":
+def main():    
     # test_log_reg_with_dataset_values()
     test_log_reg_f1score()
+    return

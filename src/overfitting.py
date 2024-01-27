@@ -382,9 +382,8 @@ def overfitting(feat, labels, feat_test, labels_test):
 
 
 
-if __name__ == "__main__":
+def main():
     #overfitting_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)
     #overfitting_log_reg(FEAT, LABELS, FEAT_test, LABELS_test)
     #overfitting(FEAT, LABELS, FEAT_test, LABELS_test)
-    None
-
+    return

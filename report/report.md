@@ -576,7 +576,7 @@ Ce résultat illustre bien que notre démarche est correcte et que nos 2 modèle
 Suite à l'apprentissage du modèle multinomiale, on obtien les performances suivantes:
 
 ```shell
-python3 softmax.py
+python3 main.py
 
 Results:
 
@@ -594,7 +594,7 @@ On peut être très satisfait de ces résultats.
 Pour les obtenir, nous avons fait le choix de ne pas initialiser aléatoirement la matrice $\theta$, mais de l'initialiser à zéros.
 En effet, comme on n'utilise que $1000$ itérations et un `learning_rate` de $10^{-4}$, initialiser le vecteur avec des valeurs comprises par exemple entre 1 et 10 fera que la descente en gradient optimisera moins bien les paramètres nécessaire (à cause du faible nombre d'itérations), ce qui n'est pas l'objectif de l'initialisation aléatoire de la matrice $\theta$.
 
-Afin de reproduire ces résultats, il suffit d'exécuter le code \code{softmax.py}.
+Afin de reproduire ces résultats, il suffit de décommenter la ligne `#softmax.main()` dans \code{main.py}
 
 Ici, sur la matrice theta, nous avons chaque ligne qui représente les poids et biais pour chaque label, avec à chaque fois le dernier élément de la ligne qui est le biais et le reste qui est le poids.
 <!-- --- -->
@@ -836,7 +836,7 @@ Pour prendre seulement un pourçentage des données, une autre fonction a été 
 Cette fonction prend un pourcentage des données qui ont été, au préalable, "mélangées" aléatoirement.
 
 Les graphiques ont été obtenus grâce aux autres fonctions définies dans \code{overfitting.py}.
-On peut les exécuter en décommentant les lignes suivantes de la toute fin de \code{overfitting.py}:
+On peut les exécuter en décommentant les lignes suivantes de la toute fin de \code{overfitting.py} et en décommentant la ligne `overfitting.main()` de main:
 
 ```python
 #overfitting_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)

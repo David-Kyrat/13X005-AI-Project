@@ -45,6 +45,7 @@ LABELS_test: NDArray = np.array([LAB_VAL_IDX[class_value] for class_value in y_t
 
 if __name__ == "__main__":
     import naive_bayes, log_reg, metrics  # noqa: F401
+    import softmax, overfitting
     import feature_analyse_plot as fap
 
     # test_gradient_descent()
@@ -57,4 +58,6 @@ if __name__ == "__main__":
     #print(metrics.f1_score(LABELS_test, predicted_val_logreg))
     # log_reg.main()
     # pass
+    # softmax.main()
+    # overfitting.main()
     fap.plot_compairaison()
