@@ -17,17 +17,17 @@ linkcolor: Blue
 
 # 1 -- Introduction \& Rappels théoriques
 
-Dans ce document, nous approfondirons des techniques de regression logistique et "Naive Bayes" comme outils d'apprentissage superivisés.
+Dans ce document, nous approfondirons les techniques de "Régression logistique" et "Naive Bayes" comme outils d'apprentissage supervisés.
 
 Dans le cadre de l'intelligence artificielle et de l'apprentissage supervisé,
-la compréhension et la classification précises des données revêtent une importance capitale. 
-Parmi les diverses méthodologies existantes, la Régression Logistique et "Naive Bayes" 
+la compréhension et la classification précise des données revêtent une importance capitale. 
+Parmi les diverses méthodologies existantes, la "Régression Logistique" et "Naive Bayes" 
 se distinguent par leur efficacité et leur applicabilité dans de nombreux contextes.
-Ce document se propose d'étudier ces deux techniques, en mettant l'accent sur leur mise en œuvre pratique, et leur efficacité comparative dans divers scénarios.
+Ce document se propose d'étudier ces deux techniques, en mettant l'accent sur leur mise en œuvre pratique et leur efficacité comparative dans divers scénarios.
 
 
 ## 1.1 -- Régression Logistique
-
+### ?
 En statistiques, la régression logistique, s'inscrit dans le cadre des modèles de régression pour les variables binaires. 
 Bien qu'elle soit quasiment exclusivement utilisée en tant que méthode de classification.  
 En effet, c'est l'ajout d'un seuil, à la probabilité continue donnée par le model de regression qui nous permet de l'utiliser pour la classification.
@@ -45,7 +45,7 @@ i.e. un classifieur dont la sortie (pour un vecteur de feature $x \in \R^n$) est
 $$
 g(x) = f(\scalproduct{w}{x} + b)
 $$
-où $w \in \R^n$ est le vecteur de poids, $b \in \R$ le biais et $\scalproduct{.}{.}$ le produit scalair usuel.
+où $w \in \R^n$ est le vecteur de poids, $b \in \R$ le biais et $\scalproduct{.}{.}$ le produit scalaire usuel.
 $f$ est une fonction dite de seuillage qui va séparer nos résultats. Un choix commun pour $f$ est la sigmoide ou la fonction signe \cite{ClassifieurLineaire2022}.
 
 Par exemple, dans le cas de la regression logistique binaire, on suppose le modèle suivant:
@@ -58,20 +58,25 @@ où $\x_i \in \R^K$ représente un vecteur (ligne) de $K$ valeurs pour les $K$ f
 Cependant, dans notre dataset (voir \href{#choix-du-dataset-outils-utilisuxe9s}{section 2.0}) nous avons 3 classes (3 espèces d'iris),
 $y$ ne suit donc, évidemment, plus une loi de Bernoulli.  
 
-__À modifier ?__
-La sigmoide étant continue, nous avons simplement modifié la manière dont nous lui appliquions le seuillage, pour distinguer 3 cas au lieu de 2.
+La sigmoide étant continue, nous avons testé 2 méthodes de prédiction:
+
+- La première consistait simplement à modifier la manière dont nous appliquions le seuillage sur la fonction sigmoide, pour distinguer 3 cas au lieu de 2.
 i.e. Au lieu de séparer le domaine en 2 ($\sigma(z) \leq 0.5,\ \sigma(z) > 0.5$), nous l'avons séparé en $N$ (ici $N = 3$).
 On a donc que $y_i = k \Leftrightarrow \frac{k}{N} \leq \sigma(z) < \frac{k + 1}{N}$,
-ce qui a donné des résultats plus que satisfaisants comme nous le verrons en \href{#ruxe9gression-logistique-1}{section 2.2}.
+ce qui a donné des résultats assez satisfaisants comme nous le verrons en \href{#ruxe9gression-logistique-1}{section 2.2}.
+- La deuxième consistait évidement en l'application non pas de la régression logistique binaire, mais de la régression logistique multinomiale, fonctionnant avec plusieurs labels.
+Le principe de la régression logistique multinomiale est simplement de faire plusieurs régressions logistiques binaires.
+On possède donc un vecteur de poids et un biais par label, et on calcule à chaque fois la probabilité que l'élément appartienne à une certaine classe.
+La prédiction retournera la classe pour laquelle la probabilité que l'élément appartienne à la classe est la plus élevée.
 
 
 ## 1.2 -- Naive Bayes
 
 "Naive Bayes" se présente comme une méthode de classification probabiliste basée sur le [théorème de Bayes](https://en.wikipedia.org/wiki/Bayes%27_theorem), 
 caractérisée par l'adoption d'une hypothèse d'indépendance forte entre les features (attributs), qualifiée de "naïve".  
-Plus simplement, le classifieur est classifié de "naïf" car il part du principe que chaque feature (attribut) est indépendante des autres et a un poid égal quant à la probabilité qu'un point appartienne à une classe. 
+Plus simplement, le classifieur est considéré comme "naïf" car il part du principe que chaque feature (attribut) est indépendante des autres et a un poid égal quant à la probabilité qu'un point appartienne à une classe. 
 
-Ce model est dit génératif contrairement à la regression logistique étant considéré comme "méthode discriminante" \cite{ClassifieurLineaire2022} et consiste à modéliser les probabilités conditionnelles $P(\x | classe)$ pour chaque classe $y$ et smaple $\x$ afin de trouver celle qui maximise cette probabilité.
+Ce modèle est dit génératif contrairement à la régression logistique, étant considéré comme "méthode discriminante" \cite{ClassifieurLineaire2022}, et consiste à modéliser les probabilités conditionnelles $P(\x | classe)$ pour chaque classe $y$ et smaple $\x$ afin de trouver celle qui maximise cette probabilité.
 
 En d'autres termes, le problème revient à trouver, pour des attributs $x_1, \ldots, x_k$, la classe $\tilde{y}$ telle que:
 
@@ -79,6 +84,7 @@ $$
 \tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} \left[\  P(y) \prod_{k = 1}^K{P(x_k | Y)}\  \right]
 $$
 
+\newpage
 
 # 2 -- Méthodologie  
 
@@ -137,14 +143,118 @@ Les minimas locaux trouvés par les deux fonctions sont les suivants:
 ![minimas locaux_gradient descent](../res/3.1_gradient_descent_minima.png){width=100%} 
 
 
-Ce résultat illustre bien 2 choses: la première est que l'implémentation de la descente en gradient fonctionne correctement puisque pour chaque points trouvé par notre fonction est confondu avec celui trouvé par la fonction de scipy (c'est ce qui donne cette teinte "grise"). La deuxième est que la "qualité" du minima local (i.e. la distance avec le minima globale) 
+Ce résultat illustre bien 2 choses: la première est que l'implémentation de la descente en gradient fonctionne correctement puisque chaque points trouvé par notre fonction est confondu avec celui trouvé par la fonction de scipy (c'est ce qui donne cette teinte "grise"). La deuxième est que la "qualité" du minima local (i.e. la distance avec le minima globale) 
 dépend fortement de la valeur initiale et ce pour les deux fonctions.
 
 \newpage{}
 
 ## 2.2 -- Régression Logistique
 
-### 2.2.1 -- Fonction de coût pour la régression logistique
+### 2.2.1 -- Fonction de coût pour la régression logistique binaire
+
+#### 2.2.1.1 -- Fonction de coût
+
+Reprennons le modèle décrit dans la section 1.1.
+Nous avons donc:
+$$y_i \sim Bernoulli(p_i), p_i = \sigma(w^T x_i + b), \sigma(z) = \frac{1}{1+e^{-z}}$$
+
+Notre but est de calculer $p(y_i | x_i)$, puis de seuiller le résultat obtenu afin de prédire si l'élément possédant les caractéristiques $x_i$ appartient ou pas à la classe $y_i$.
+On cherche donc à trouver les paramètres de poids $w$ et de biais $b$ optimaux permettant la meilleure prédiction possible.
+On peut trouver la notation $p(y_i|x_i;w, b)$ indiquant que nous ne connaissons pas encore le vecteur poids $w$ et le biais $b$.
+
+La densité de probabilité de cette fonction peut donc s'exprimer comme
+
+$$p(y_i|x_i; w, b) = p_i^{y_i}(1 - p_i)^{1 - y_i}$$
+
+Notre but est donc de maximiser cette fonction.
+Cependant, nous préférons une fonction à minimiser plutôt qu'à maximiser, car la descente en gradient permet de trouver un minimum et non pas un maximum...
+
+Une solution habituelle est donc d'inverser la fonction, transformant ainsi le problème de maximisation en problème de minimisation, et de prendre le logarithme de l'inverse de cette fonction afin d'éviter des valeurs extrêmes lors de notre minimisation.
+L'application de la fonction logarithme sur l'inverse de la fonction est correcte car la fonction logarithme est strictement croissante, donc elle n'aura pas d'impact sur la convexité de la fonction.
+Cette solution est communément appelée `Negative Logarithm Likelihood`.
+
+Donc on cherchera à minimiser la fonction:
+$$log\left(\frac{1}{p(y_i|x_i;w,b)}\right) = log(1) - log(p(y_i|x_i;w,b)) = -log(p(y_i|x_i; w, b)$$
+Pour $n$ données, cette fonction peut s'écrire:
+$$-\sum_i^n log(p(y_i|x_i;w,b))$$
+
+#### 2.2.1.2 -- Dérivée de la fonction de coût
+
+Comme nous voulons utiliser la descente en gradient, nous devons trouver la dérivée de la fonction à minimiser, donc de notre fonction de coût.
+
+Tout d'abord, remarquons que nous pouvons écrire:
+$$log(p(y_i|x_i; w, b))$$
+$$= log(p_i^{y_i}(1 - p_i)^{1 - y_i})$$
+$$= log(p_i^{y_i}) + log((1 - p_i)^{1 - y_i})$$
+$$= y_i log(p_i) + (1 - y_i)log(1 - p_i)$$
+
+De plus, voici ce que nous donne la dérivée de la fonction sigmoide: 
+$$\frac{d\sigma(z)}{dz}$$
+$$= ((1 + e^{-z})^{-1})'$$
+$$= -1 \times - e ^{-z} \times (1 + e^{-z})^{-2}$$
+$$=\frac{e^{-z}}{(1 + e^{-z})^2}$$
+$$=\frac{1}{1 + e^{-z}}\frac{e^{-z}}{1 + e^{-z}}$$
+$$= \sigma (z) \frac{e^{-z}}{1 + e^{-z}}$$
+$$= \sigma (z) \frac{1 + e^{-z} - 1}{1 + e^{-z}}$$
+$$= \sigma (z) (\frac{1 + e^{-z}}{1 + e^{-z}} - \frac{1}{1 + e^{-z}})$$
+$$= \sigma (z) (1 - \frac{1}{1 + e^{-z}})$$
+$$= \sigma (z) (1 - \sigma (z))$$
+
+Donc nous pouvons facilement calculer la dérivée par rapport au poid $w$ et par rapport au biais de notre fonction de coût.
+
+Voici ce que nous donne la dérivée partielle par rapport au poids $\frac{\partial}{\partial w_j}$:
+
+$$\frac{\partial}{\partial w_j}log(p(y_i|x_i;w,b))$$
+
+$$=\frac{\partial}{\partial w_j} (y_i log(p_i) + (1 - y_i)log(1 - p_i))$$
+$$=y_i \frac{\partial}{\partial w_j}log(p_i) + (1 - y_i)\frac{\partial}{\partial w_j}log(1 - p_i)$$
+$$=y_i \frac{\partial}{\partial w_j}log(\sigma (z)) + (1 - y_i)\frac{\partial}{\partial w_j}log(1 - \sigma (z)),\ z = w^T x_i + b$$
+$$=y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial w_j}\sigma (z) + (1 - y_i)\frac{1}{1 - \sigma (z)}\frac{\partial}{\partial w_j}(1 - \sigma (z))$$
+
+Or on a:
+$$\frac{\partial}{\partial w_j} z = \frac{\partial}{\partial w_j}(w^T x_i + b) \Leftrightarrow \frac{dz}{\partial w_j} = x_{ij} \Leftrightarrow \frac{\partial}{\partial w_j} = \frac{d}{dz}x_{ij}$$
+
+Donc:
+$$y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial w_j}\sigma (z) + (1 - y_i)\frac{1}{1 - \sigma (z)}\frac{\partial}{\partial w_j}(1 - \sigma (z))$$
+
+$$=y_i \frac{1}{\sigma (z)}\frac{d}{dz}\sigma (z)x_{ij} + (1 - y_i)\frac{1}{1 - \sigma (z)}\left(-\frac{d}{dz} \sigma (z)x_{ij}\right)$$
+$$=y_i \frac{1}{\sigma (z)}\sigma (z) (1 - \sigma (z)) x_{ij} + (1 - y_i)\frac{1}{1 - \sigma (z)}(- \sigma (z))(1 - \sigma(z))x_{ij}$$
+$$=y_i (1 - \sigma (z)) x_{ij} - (1 - y_i)\sigma (z)x_{ij}$$
+$$=y_i x_{ij} - y_i \sigma (z) x_{ij} + (y_i - 1)\sigma (z)x_{ij}$$
+$$=y_i x_{ij} + (y_i - 1 - y_i)\sigma (z)x_{ij}$$
+$$=(y_i - \sigma(z))x_{ij}$$
+
+Voici ce que nous donne la dérivée partielle par rapport au biais $\frac{\partial}{\partial b}$:
+
+$$\frac{\partial}{\partial b}log(p(yi|xi;w,b))$$
+
+$$=\frac{\partial}{\partial b}(y_i log(p_i) + (1 - y_i)log(1 - p_i))$$
+$$=y_i \frac{\partial}{\partial b}log(p_i) + (1 - y_i)\frac{\partial}{\partial b}log(1 - p_i)$$
+$$=y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial b} \sigma(z) + (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{\partial}{\partial b}(1 - \sigma (z)),\ z = w^T x_i + b$$
+
+On a:
+
+$$\frac{\partial}{\partial b} z = \frac{\partial}{\partial b}(w^T x_i + b) \Leftrightarrow \frac{dz}{db} = 1 \Leftrightarrow \frac{\partial}{\partial b} = \frac{d}{dz}$$
+
+Donc:
+$$y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial b} \sigma(z) + (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{\partial}{\partial b}(1 - \sigma (z))$$
+$$=y_i \frac{1}{\sigma (z)}\frac{d}{dz} \sigma(z) + (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{d}{dz}(1 - \sigma (z))$$
+$$=y_i \frac{1}{\sigma (z)}\frac{d}{dz} \sigma(z) - (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{d}{dz}\sigma (z)$$
+$$=y_i \frac{1}{\sigma (z)}\sigma(z) (1 - \sigma (z)) - (1 - y_i) \frac{1}{1 - \sigma (z)} \sigma (z)(1 - \sigma (z))$$
+$$=y_i (1 - \sigma (z)) - (1 - y_i)\sigma (z)$$
+$$=y_i - y_i \sigma (z) + (y_i - 1)\sigma (z)$$
+$$=y_i + (y_i - 1 - y_i)\sigma (z)$$
+$$=y_i - \sigma (z)$$
+
+Donc on a:
+
+$$\frac{\partial}{\partial w_j}log(p(y_i|x_i;w,b)) = (y_i - \sigma(z))x_{ij}$$
+
+et:
+
+$$\frac{\partial}{\partial b}log(p(yi|xi;w,b)) = y_i - \sigma (z)$$
+
+### 2.2.2 -- Fonction de coût pour la régression logistique multinomiale
 
 Afin d'entraîner les paramètres de la régression logistique, il faut pouvoir comparer les résultats obtenus par la régression avec les résultats attendus.
 
@@ -178,7 +288,7 @@ $$P(Y = 1 | X) = \frac{1}{1 + e^{X \theta^T}} = \sigma(X \theta^T)$$
 et
 $$P(Y = 0 | X) = 1 - \sigma(X \theta^T)$$
 
-#### 2.2.1.1 -- Généralisation
+#### 2.2.2.1 -- Généralisation de la régression logistique binaire
 
 On désire donc trouver une nouvelle distribution $\phi(z)$ tel que:
 $$\phi(z) \in [0, 1]\ \forall z$$
@@ -233,7 +343,7 @@ Donc la fonction $\phi(z)$ est bien une fonction de distribution de probabilité
 
 Cette fonction est courramment appelée fonction `softmax`.
 
-#### 2.2.1.2 -- Fonction de coût
+#### 2.2.2.2 -- Fonction de coût
 
 Notre objectif est donc de trouver une fonction de coût pour pouvoir entraîner les paramètres de la régression multinomiale.
 On cherche à maximiser la vraisemblance des données.
@@ -263,7 +373,7 @@ $$-\sum_i^n \sum_k^K f(Y, k)\log(P(Y_i = k | X_i))$$
 
 On peut minimiser cette fonction de coût grâce à une descente en gradient.
 
-#### 2.2.1.3 -- Dérivée de la fonction de coût
+#### 2.2.2.3 -- Dérivée de la fonction de coût
 
 On va calculer la dérivée de la fonction de coût.
 
@@ -304,7 +414,7 @@ $$\frac{\partial}{\partial \theta_{j}} \sum_m^n \sum_i^K f(Y_m, i)log(P(Y_m = i 
 
 Maintenant, on est prêt pour entraîner notre régression logistique multinomiale !
 
-### 2.2.2 -- Apprentissage
+### 2.2.3 -- Apprentissage
 
 Maitenant que nous avons une fonction de coût permettant de quantifier (en moyenne) à quel point un set de $N$ prédiction est correct/incorrect à un point de l'apprentissage donné.
 Il ne reste plus qu'à chercher les paramètres optimaux qui minimisent cette fonction de coût.
@@ -373,7 +483,7 @@ def grad_desc_ml(features: NDArray, labels: NDArray, df, w: NDArray, b: float, a
 
 Cette fonction se comporte exactement de la même manière que celle décrite en \href{#gradient-descent}{section 2.1}. La seule différence est qu'elle passe `features` et `labels` comme `X` et `y` à la fonction `df` (dans notre cas `df` est toujours la fonction `grad`), i.e. on a \code{df(features, labels, w, b)} au lieu de \code{df(params)}.
 
-### 2.2.3 -- Prédictions
+### 2.2.4 -- Prédictions
 
 Pour la prédiction, nous avons utilisé la fonction suivante:
 
@@ -385,7 +495,7 @@ qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de mani�
 
 \newpage{}
 
-### 2.2.4 -- Résultats
+### 2.2.5 -- Résultats
 
 Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 \begin{align*}
