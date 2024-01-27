@@ -204,55 +204,55 @@ Donc nous pouvons facilement calculer la dérivée par rapport au poid $w$ et pa
 
 Voici ce que nous donne la dérivée partielle par rapport au poids $\frac{\partial}{\partial w_j}$:
 
-$$\frac{\partial}{\partial w_j}log(p(y_i|x_i;w,b))$$
+$$\frac{\partial}{\partial w_j}\left(-log(p(y_i|x_i;w,b))\right)$$
 
-$$=\frac{\partial}{\partial w_j} (y_i log(p_i) + (1 - y_i)log(1 - p_i))$$
-$$=y_i \frac{\partial}{\partial w_j}log(p_i) + (1 - y_i)\frac{\partial}{\partial w_j}log(1 - p_i)$$
-$$=y_i \frac{\partial}{\partial w_j}log(\sigma (z)) + (1 - y_i)\frac{\partial}{\partial w_j}log(1 - \sigma (z)),\ z = w^T x_i + b$$
-$$=y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial w_j}\sigma (z) + (1 - y_i)\frac{1}{1 - \sigma (z)}\frac{\partial}{\partial w_j}(1 - \sigma (z))$$
+$$=-\frac{\partial}{\partial w_j} (y_i log(p_i) - (1 - y_i)log(1 - p_i))$$
+$$=-y_i \frac{\partial}{\partial w_j}log(p_i) - (1 - y_i)\frac{\partial}{\partial w_j}log(1 - p_i)$$
+$$=-y_i \frac{\partial}{\partial w_j}log(\sigma (z)) - (1 - y_i)\frac{\partial}{\partial w_j}log(1 - \sigma (z)),\ z = w^T x_i + b$$
+$$=-y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial w_j}\sigma (z) - (1 - y_i)\frac{1}{1 - \sigma (z)}\frac{\partial}{\partial w_j}(1 - \sigma (z))$$
 
 Or on a:
 $$\frac{\partial}{\partial w_j} z = \frac{\partial}{\partial w_j}(w^T x_i + b) \Leftrightarrow \frac{dz}{\partial w_j} = x_{ij} \Leftrightarrow \frac{\partial}{\partial w_j} = \frac{d}{dz}x_{ij}$$
 
 Donc:
-$$y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial w_j}\sigma (z) + (1 - y_i)\frac{1}{1 - \sigma (z)}\frac{\partial}{\partial w_j}(1 - \sigma (z))$$
+$$-y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial w_j}\sigma (z) - (1 - y_i)\frac{1}{1 - \sigma (z)}\frac{\partial}{\partial w_j}(1 - \sigma (z))$$
 
-$$=y_i \frac{1}{\sigma (z)}\frac{d}{dz}\sigma (z)x_{ij} + (1 - y_i)\frac{1}{1 - \sigma (z)}\left(-\frac{d}{dz} \sigma (z)x_{ij}\right)$$
-$$=y_i \frac{1}{\sigma (z)}\sigma (z) (1 - \sigma (z)) x_{ij} + (1 - y_i)\frac{1}{1 - \sigma (z)}(- \sigma (z))(1 - \sigma(z))x_{ij}$$
-$$=y_i (1 - \sigma (z)) x_{ij} - (1 - y_i)\sigma (z)x_{ij}$$
-$$=y_i x_{ij} - y_i \sigma (z) x_{ij} + (y_i - 1)\sigma (z)x_{ij}$$
-$$=y_i x_{ij} + (y_i - 1 - y_i)\sigma (z)x_{ij}$$
-$$=(y_i - \sigma(z))x_{ij}$$
+$$=-y_i \frac{1}{\sigma (z)}\frac{d}{dz}\sigma (z)x_{ij} - (1 - y_i)\frac{1}{1 - \sigma (z)}\left(-\frac{d}{dz} \sigma (z)x_{ij}\right)$$
+$$=-y_i \frac{1}{\sigma (z)}\sigma (z) (1 - \sigma (z)) x_{ij} - (1 - y_i)\frac{1}{1 - \sigma (z)}(- \sigma (z))(1 - \sigma(z))x_{ij}$$
+$$=-y_i (1 - \sigma (z)) x_{ij} + (1 - y_i)\sigma (z)x_{ij}$$
+$$=-y_i x_{ij} + y_i \sigma (z) x_{ij} + (1 - y_i)\sigma (z)x_{ij}$$
+$$=-y_i x_{ij} + (y_i + 1 - y_i)\sigma (z)x_{ij}$$
+$$=(\sigma(z) - y_i)x_{ij}$$
 
 Voici ce que nous donne la dérivée partielle par rapport au biais $\frac{\partial}{\partial b}$:
 
-$$\frac{\partial}{\partial b}log(p(yi|xi;w,b))$$
+$$\frac{\partial}{\partial b}\left(-log(p(yi|xi;w,b))\right)$$
 
-$$=\frac{\partial}{\partial b}(y_i log(p_i) + (1 - y_i)log(1 - p_i))$$
-$$=y_i \frac{\partial}{\partial b}log(p_i) + (1 - y_i)\frac{\partial}{\partial b}log(1 - p_i)$$
-$$=y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial b} \sigma(z) + (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{\partial}{\partial b}(1 - \sigma (z)),\ z = w^T x_i + b$$
+$$=-\frac{\partial}{\partial b}(y_i log(p_i) + (1 - y_i)log(1 - p_i))$$
+$$=-y_i \frac{\partial}{\partial b}log(p_i) - (1 - y_i)\frac{\partial}{\partial b}log(1 - p_i)$$
+$$=-y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial b} \sigma(z) - (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{\partial}{\partial b}(1 - \sigma (z)),\ z = w^T x_i + b$$
 
 On a:
 
 $$\frac{\partial}{\partial b} z = \frac{\partial}{\partial b}(w^T x_i + b) \Leftrightarrow \frac{dz}{db} = 1 \Leftrightarrow \frac{\partial}{\partial b} = \frac{d}{dz}$$
 
 Donc:
-$$y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial b} \sigma(z) + (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{\partial}{\partial b}(1 - \sigma (z))$$
-$$=y_i \frac{1}{\sigma (z)}\frac{d}{dz} \sigma(z) + (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{d}{dz}(1 - \sigma (z))$$
-$$=y_i \frac{1}{\sigma (z)}\frac{d}{dz} \sigma(z) - (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{d}{dz}\sigma (z)$$
-$$=y_i \frac{1}{\sigma (z)}\sigma(z) (1 - \sigma (z)) - (1 - y_i) \frac{1}{1 - \sigma (z)} \sigma (z)(1 - \sigma (z))$$
-$$=y_i (1 - \sigma (z)) - (1 - y_i)\sigma (z)$$
-$$=y_i - y_i \sigma (z) + (y_i - 1)\sigma (z)$$
-$$=y_i + (y_i - 1 - y_i)\sigma (z)$$
-$$=y_i - \sigma (z)$$
+$$-y_i \frac{1}{\sigma (z)}\frac{\partial}{\partial b} \sigma(z) - (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{\partial}{\partial b}(1 - \sigma (z))$$
+$$=-y_i \frac{1}{\sigma (z)}\frac{d}{dz} \sigma(z) - (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{d}{dz}(1 - \sigma (z))$$
+$$=-y_i \frac{1}{\sigma (z)}\frac{d}{dz} \sigma(z) + (1 - y_i) \frac{1}{1 - \sigma (z)} \frac{d}{dz}\sigma (z)$$
+$$=-y_i \frac{1}{\sigma (z)}\sigma(z) (1 - \sigma (z)) + (1 - y_i) \frac{1}{1 - \sigma (z)} \sigma (z)(1 - \sigma (z))$$
+$$=-y_i (1 - \sigma (z)) + (1 - y_i)\sigma (z)$$
+$$=-y_i + y_i \sigma (z) + (1 - y_i)\sigma (z)$$
+$$=-y_i + (y_i + 1 - y_i)\sigma (z)$$
+$$=\sigma (z) - y_i$$
 
-Donc on a:
+Donc pour $n$ données, la dérivée de la fonction de coût par rapport au poids et au bias nous donne:
 
-$$\frac{\partial}{\partial w_j}log(p(y_i|x_i;w,b)) = (y_i - \sigma(z))x_{ij}$$
+$$\frac{\partial}{\partial w_j}\left( - \sum_i^n log(p(y_i|x_i;w,b))\right) = \sum_i^n(\sigma(z) - y_i)x_{ij}$$
 
 et:
 
-$$\frac{\partial}{\partial b}log(p(yi|xi;w,b)) = y_i - \sigma (z)$$
+$$\frac{\partial}{\partial b}\left(- \sum_i^n log(p(yi|xi;w,b))\right) = \sum_i^n (\sigma (z) - y_i)$$
 
 ### 2.2.2 -- Fonction de coût pour la régression logistique multinomiale
 
@@ -409,18 +409,20 @@ $$\frac{\partial}{\partial \theta_{j}} \sum_i^K f(Y, i)log(P(Y = i | X)) = X(f(Y
 
 car $f(Y, k)$ est égal à 1 si $Y = k$ et 0 sinon.
 
-Donc pour $n$ données, cela nous donne:
-$$\frac{\partial}{\partial \theta_{j}} \sum_m^n \sum_i^K f(Y_m, i)log(P(Y_m = i | X_m)) = \sum_m^n X_m(f(Y_m, j) - P(Y_m = j|X_m))$$
+Donc pour $n$ données, la dérivée de notre fonction de coût nous donne:
+$$\frac{\partial}{\partial \theta_{j}} \left( - \sum_m^n \sum_i^K f(Y_m, i)log(P(Y_m = i | X_m))\right) = - \sum_m^n X_m(f(Y_m, j) - P(Y_m = j|X_m))$$
 
 Maintenant, on est prêt pour entraîner notre régression logistique multinomiale !
 
+\newpage
+
 ### 2.2.3 -- Apprentissage
 
-Maitenant que nous avons une fonction de coût permettant de quantifier (en moyenne) à quel point un set de $N$ prédiction est correct/incorrect à un point de l'apprentissage donné.
-Il ne reste plus qu'à chercher les paramètres optimaux qui minimisent cette fonction de coût.
+Maitenant que nous avons une fonction de coût permettant de quantifier (en moyenne) à quel point un set de $N$ prédiction est correct/incorrect à un point de l'apprentissage donné,
+il ne reste plus qu'à chercher les paramètres optimaux qui minimisent cette fonction de coût.
 Ce que l'on va réaliser à l'aide de la descente en gradient. C'est le processus d'apprentissage.
 
-En effet, lors de l'apprentissage, on va chercher de manière itérative les $\w$ et $b$ qui respectent les critères mentionnés ci-dessus en calculant le gradient de la fonction de coût à chaque itérations et en allant dans la direction opposé.
+En effet, lors de l'apprentissage, on va chercher de manière itérative les $\w$ et $b$ (ou le $\theta$) qui respectent les critères mentionnés ci-dessus en calculant le gradient de la fonction de coût à chaque itérations et en allant dans la direction opposé.
 
 
 Concrètement cela revient à appliquer l'algorithme suivant:
@@ -441,31 +443,31 @@ Concrètement cela revient à appliquer l'algorithme suivant:
 \end{algorithmic}
 \end{algorithm}
 
-En pratique, il est plus simple de passer directement la function qui calcul le gradient en argument, que d'essayer de le calculer dynamiquement, c'est pourquoi la signature de notre implémentation prend un `df` en argument plutôt que la fonction de coût elle même.  
-Où le calcul des dérivées partielles a été definit comme ci-dessous.
+En pratique, il est plus simple de passer directement la fonction qui calcule le gradient en argument, que d'essayer de le calculer dynamiquement, c'est pourquoi la signature de notre implémentation prend un `df` en argument plutôt que la fonction de coût elle même.  
+Où le calcul des dérivées partielles a été definit comme ci-dessous (plus de détails de calculs sont présents dans le point 2.2.1).
 
 
 Soit $\nabla C(\w,b) = (\frac{\partial C(\w,b)}{\partial \w}, \frac{\partial C(\w,b)}{\partial b} )$, pour un sample $\x_i$ et sa classe $y_i$, on obtient:
 \begin{align*}
-\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} 
-&= y_i - \sigma(z_i) 
-= y_i - \sigma(\w^T X_i + b)\\
+-\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} 
+&= \sigma(z_i) - y_i
+= \sigma(\w^T X_i + b) - y_i\\
 %
-\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial w_j} 
-&= x_{ij}* ( y_i - \sigma(z_i)) 
-= (y_i - \sigma(\w^T X_i + b)) * x_{ij}
+-\frac{\partial \log(y_i|\x_i ; \w, b)}{\partial w_j} 
+&= x_{ij}* ( \sigma(z_i) - y_i) 
+= (\sigma(\w^T X_i + b) - y_i) * x_{ij}
 \end{align*}
-Or le `db` dans l'algorithme ci-dessus se refert à la moyenne (pour tout i) de ces valeurs (i.e. distance moyenne _classes prédites_ -- _"vrai" classes_).
+Or le `db` dans l'algorithme ci-dessus se réfère à la moyenne (pour tout i) de ces valeurs (i.e. distance moyenne _classes prédites_ -- _"vrai" classes_).
 
 On l'obtient donc comme suit: (la somme des dérivées est la dérivée de la somme, linéarité de la dérivée)
-$$\nabla_b\, {C} =\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{y_i - \sigma(\w^T X_i + b)}}$$
+$$\nabla_b\, {C} =-\frac{1}{N} \sum_{i = 1}^{N}{ \frac{\partial \log(y_i|\x_i ; \w, b)}{\partial b} =  \frac{1}{N} \sum_{i=1}^N{\sigma(\w^T X_i + b) - y_i}}$$
 
 De même pour `dw`:
 \begin{align*}
-  \nabla_{\mathbf{w}} C & = \frac{1}{N} \sum_{i = 1}^{N}(x_{ij}(y_i - p_i))_{1 \leq j \leq k} 
-  = \frac{1}{N} \sum_{i=1}^N(y_i - \sigma(z_i))\cdot (x_{ij})_{1 \leq j\leq k} \\
+  \nabla_{\mathbf{w}} C & = -\frac{1}{N} \sum_{i = 1}^{N}(x_{ij}(y_i - p_i))_{1 \leq j \leq k} 
+  = \frac{1}{N} \sum_{i=1}^N(\sigma(z_i) - y_i)\cdot (x_{ij})_{1 \leq j\leq k} \\
 %
-& =\frac{1}{N}\sum_{i = 1}^N (y_i - \sigma(\mathbf{w}^T\mathbf{x_i} + b))\ \mathbf{x_i}
+& =\frac{1}{N}\sum_{i = 1}^N (\sigma(\mathbf{w}^T\mathbf{x_i} + b) - y_i)\ \mathbf{x_i}
 \end{align*}
 
 
@@ -483,7 +485,25 @@ def grad_desc_ml(features: NDArray, labels: NDArray, df, w: NDArray, b: float, a
 
 Cette fonction se comporte exactement de la même manière que celle décrite en \href{#gradient-descent}{section 2.1}. La seule différence est qu'elle passe `features` et `labels` comme `X` et `y` à la fonction `df` (dans notre cas `df` est toujours la fonction `grad`), i.e. on a \code{df(features, labels, w, b)} au lieu de \code{df(params)}.
 
+
+La régression logistique multinomiale est entraîné de manière similaire à la régression logistique binaire.
+Cependant, comme expliqué précédement, on utilise la matrice de poids et biais $\theta$ et la matrice $\hat{X}$ qui est la matrice $X$ avec une colonne de 1 ajoutée.
+
+Le calcul du gradient (plus de détails dans la section 2.2.2) est effectué par la fonction \code{gradient\_cost\_function} de \code{softmax.py} de signature suivante:
+
+\begin{lstlisting}
+    def gradient_cost_function(X: np.ndarray, theta: np.ndarray, Y: np.ndarray) -> np.ndarray
+\end{lstlisting}
+
+La descente en gradient aura de nouveau dû être modifiée pour être fonctionnelle: on a besoin de pouvoir passer les paramètres $\hat{X}$, $\theta$ et $Y$ à la fonction \code{gradient\_cost\_function}. Ainsi, la signature de la fonction \code{gradient\_descent\_softmax} définie dans \code{softmax.py} est donnée par:
+
+\begin{lstlisting}
+    def gradient_descent_softmax(df, X: np.ndarray, Y: np.ndarray, theta: np.ndarray, alpha: float, num_iters: int) -> np.ndarray:
+\end{lstlisting}
+
 ### 2.2.4 -- Prédictions
+
+#### 2.2.4.1 -- Régression logistique binaire
 
 Pour la prédiction, nous avons utilisé la fonction suivante:
 
@@ -491,11 +511,25 @@ Pour la prédiction, nous avons utilisé la fonction suivante:
    def predict_log_reg(X: NDArray, w: NDArray, b):
 \end{lstlisting}
 
-qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de manière à retourner un nombre entre 0 et 2 (avec les poids et bais entraînés). 
+qui prend simplement $\sigma(w^T X + b)$ et seuil la sortie du sigmoide de manière à retourner un nombre entre 0 et 2 (avec les poids et bais entraînés).
+
+#### 2.2.4.2 -- Régression logistique multinomiale
+
+Pour la prédiction de la régression logistique multinomiale, nous avons utilisé la fonction suivante:
+
+\begin{lstlisting}
+   def predict_log_reg_2(X: NDArray, theta: NDArray):
+\end{lstlisting}
+
+qui est définie également dans \code{softmax.py}.
+
+Cette fonction applique softmax sur les données d'entrée, puis retourne le label qui contient la valeur maximale obtenue par softmax.
 
 \newpage{}
 
 ### 2.2.5 -- Résultats
+
+#### 2.2.5.1 -- Résultats obtenus par la régression logistique avec la fonction sigmoïde
 
 Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 \begin{align*}
@@ -504,14 +538,14 @@ Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 \end{align*}
 
 > N.B.:   
-L'apprentissage peut être ré-effectué de manière efficient si besoine est à l'aide du jupyter notebook [training\_test.ipynb](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) disponible sur la branche [gpu-training](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) du repository github.
-Le code de l'entraînement (uniquement sur cette branche) à été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev) \cite{NumPySciPyGPU}.  
-A noter qu'il utilise des fonctions des sklearn alors que nous devions les implémenter nous mêmes, (telles que les metrics f1-score...).
-Ces fonctions ont bien été implenté mais pour une raison de simplicité, elle n'ont pas été utilisée pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.  
+L'apprentissage peut être ré-effectué de manière efficiente si besoin et à l'aide du jupyter notebook [training\_test.ipynb](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) disponible sur la branche [gpu-training](https://github.com/David-Kyrat/13X005-AI-Project/blob/gpu-training/training_test.ipynb) du repository github.
+Le code de l'entraînement (uniquement sur cette branche) a été "porté" sur cuda / gpgpu à l'aide de la librairie [cupy](https://cupy.dev) \cite{NumPySciPyGPU}.  
+A noter qu'il utilise des fonctions de sklearn alors que nous devions les implémenter nous mêmes, (telles que les metrics f1-score...).
+Ces fonctions ont bien été implentées mais pour une raison de simplicité, elles n'ont pas été utilisées pour l'entrainement. Le code de cette branche ne fera donc pas partie du rendu mais reste publiquement accessible sur github.  
 
 \vspace{0.3cm}
 
-Comme dit en section 1.1, ces paramètres sont, en effet, plus que satisfaisants,
+Comme dit en section 1.1, ces paramètres sont, en effet, très satisfaisant,
 comme on peut le voir sur l'output de `pytest` suivant:
 
 \begin{lstlisting}
@@ -537,7 +571,32 @@ De plus, l'on voit que les performances que nous avons obtenus rentrent tout à 
 
 Ce résultat illustre bien que notre démarche est correcte et que nos 2 modèles sont efficaces, avec un penchant pour la régression logistique qui semble être plus efficace que Naive Bayes.
 
+#### 2.2.5.2 Résultats obtenus pour la régression logistique multinomiale
 
+Suite à l'apprentissage du modèle multinomiale, on obtien les performances suivantes:
+
+```shell
+python3 softmax.py
+
+Results:
+
+Found theta (bias are last column and weights are the rest):
+[[ 0.32626066  0.83466238 -1.21626121 -0.55348121  0.17005888]
+ [ 0.20948959 -0.28684921  0.15659967 -0.18787991  0.11458452]
+ [-0.53575025 -0.54781317  1.05966154  0.74136112 -0.2846434 ]]
+
+
+Metrics obtained:
+{'precision': 1.0, 'recall': 1.0, 'accuracy': 1.0, 'f1_score': 1.0}
+```
+
+On peut être très satisfait de ces résultats.
+Pour les obtenir, nous avons fait le choix de ne pas initialiser aléatoirement la matrice $\theta$, mais de l'initialiser à zéros.
+En effet, comme on n'utilise que $1000$ itérations et un `learning_rate` de $10^{-4}$, initialiser le vecteur avec des valeurs comprises par exemple entre 1 et 10 fera que la descente en gradient optimisera moins bien les paramètres nécessaire (à cause du faible nombre d'itérations), ce qui n'est pas l'objectif de l'initialisation aléatoire de la matrice $\theta$.
+
+Afin de reproduire ces résultats, il suffit d'exécuter le code \code{softmax.py}.
+
+Ici, sur la matrice theta, nous avons chaque ligne qui représente les poids et biais pour chaque label, avec à chaque fois le dernier élément de la ligne qui est le biais et le reste qui est le poids.
 <!-- --- -->
 
 \newpage{}
@@ -757,6 +816,37 @@ Ainsi, il faut également ajuster la précision de la descente en gradient afin 
 Nous pouvons conclure que le sur-apprentissage ou sur-ajustement peut causer des problèmes dans les performances d'un modèle de classification, comme la régression logistique, car le modèle peut soit s'entrainer trop au bruit des données d'apprentissages, entrainant de mauvais résultats de test, soit ne pas avoir suffisamment de données d'apprentissage pour bien ajuster ses paramètres, soit trop s'entrainer aux données d'apprentissage, ce qui entraine une baisse de performance sur les données de tests, car le modèle est également entrainé au bruit des données d'apprentissage.
 
 Enfin, il faut toujours s'assurer que le modèle donne les meilleures performances possibles sur les données de test, car les performances sur les données de test comptent plus que les performances sur les données d'apprentissage...
+
+### 3.1.1 -- Fonctions et signatures
+
+Pour bruiter les données, une fonction a été créée dans \code{overfitting.py}. Cette fonction possède la signature suivante:
+
+\begin{lstlisting}
+    def add_noise_to_data(labels: np.ndarray, percentage: int) -> np.ndarray:
+\end{lstlisting}
+
+Elle prend des données aléatoirement et les bruite en réatribuant le label correspondant aux caractéristiques.
+On peut avoir le label qui est défini d'une manière aléatoire à sa valeur initiale.
+
+Pour prendre seulement un pourçentage des données, une autre fonction a été créée dans \code{overfitting.py}. Cette fonction possède la signature suivante:
+\begin{lstlisting}
+    def get_percentage_of_data(feat: np.ndarray, labels: np.ndarray, percentage: int) -> np.ndarray:
+\end{lstlisting}
+
+Cette fonction prend un pourcentage des données qui ont été, au préalable, "mélangées" aléatoirement.
+
+Les graphiques ont été obtenus grâce aux autres fonctions définies dans \code{overfitting.py}.
+On peut les exécuter en décommentant les lignes suivantes de la toute fin de \code{overfitting.py}:
+
+```python
+#overfitting_naive_bayes(FEAT, LABELS, FEAT_test, LABELS_test)
+#overfitting_log_reg(FEAT, LABELS, FEAT_test, LABELS_test)
+#overfitting(FEAT, LABELS, FEAT_test, LABELS_test)
+```
+
+Le code peut cependant prendre du temps à l'exécution: il prennait environ 2 minutes à tourner sur la machine d'un des étudiants.
+
+
 
 \newpage{}
 

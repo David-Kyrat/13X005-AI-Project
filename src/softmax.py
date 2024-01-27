@@ -1,6 +1,7 @@
 import numpy as np
 import metrics
 
+
 def softmax(z: np.ndarray) -> np.ndarray:
     """
     This function is an implementation of the softmax function
@@ -20,9 +21,9 @@ def softmax(z: np.ndarray) -> np.ndarray:
     return np.exp(norm)/np.sum(np.exp(norm), axis = 1).reshape(-1, 1)
 
 
-def gradient(X: np.ndarray, theta: np.ndarray, Y: np.ndarray):
+def gradient_cost_function(X: np.ndarray, theta: np.ndarray, Y: np.ndarray) -> np.ndarray:
     """
-    This function is the gradient of the negative log likelihood of softmax
+    This function is the gradient_cost_function of the negative log likelihood of softmax
 
     Parameters
     ----------
@@ -32,6 +33,10 @@ def gradient(X: np.ndarray, theta: np.ndarray, Y: np.ndarray):
         Weights and bias
     Y: np.ndarray
         Array of known labels
+
+    Return value
+    ------------
+    Return the gradient of the cost function
     """
     if not isinstance(X, np.ndarray):
         X = np.asarray(X)
@@ -60,21 +65,21 @@ def gradient(X: np.ndarray, theta: np.ndarray, Y: np.ndarray):
         return result
 
     labels = np.arange(theta.shape[0])
-    gradient_result = np.zeros((theta.shape))
+    gradient_cost_function_result = np.zeros((theta.shape))
 
     tmp = f(labels, Y) - softmax(X_hat @ theta.T)
     for i in range(theta.shape[0]):
-        gradient_result[i] = np.sum(tmp[:, i].reshape(-1, 1) * X_hat, axis = 0)
-    gradient_result = -gradient_result
-    return gradient_result
+        gradient_cost_function_result[i] = np.sum(tmp[:, i].reshape(-1, 1) * X_hat, axis = 0)
+    gradient_cost_function_result = -gradient_cost_function_result
+    return gradient_cost_function_result
 
-def gradient_descent(df, X: np.ndarray, Y: np.ndarray, theta: np.ndarray, alpha: float, num_iters: int) -> np.ndarray:
-    """This function implements the gradient descent. It iteratively computes the optimal parameters that minimize the given function.
+def gradient_descent_softmax(df, X: np.ndarray, Y: np.ndarray, theta: np.ndarray, alpha: float, num_iters: int) -> np.ndarray:
+    """This function implements the gradient_cost_function descent. It iteratively computes the optimal parameters that minimize the given function.
 
     Parameters
     ----------
     `df`: function
-        derivative function (i.e. gradient)
+        derivative function (i.e. gradient_cost_function)
     `X`: np.ndarray
         Matrix of known parameters
     `Y`: np.ndarray
@@ -108,7 +113,7 @@ def train_log_reg_2(X: np.ndarray, Y: np.ndarray, theta: np.ndarray, num_iter: i
     num_iters: int
         Number of iterations
     learning_rate: float
-        Speed of convergence of the gradient descent
+        Speed of convergence of the gradient_cost_function descent
 
     Return value
     ------------
@@ -119,7 +124,7 @@ def train_log_reg_2(X: np.ndarray, Y: np.ndarray, theta: np.ndarray, num_iter: i
     if not isinstance(Y, np.ndarray):
         Y = np.asarray(Y)
 
-    return gradient_descent(gradient, X, Y, theta, learning_rate, num_iter)
+    return gradient_descent_softmax(gradient_cost_function, X, Y, theta, learning_rate, num_iter)
 
 def predict_log_reg_2(X: np.ndarray, theta: np.ndarray) -> np.ndarray:
     """
@@ -185,7 +190,7 @@ def test_log_reg_with_dataset_values():
     n_it, lr = 1000, 1e-4
 
     theta = train_log_reg_2(X, LABELS, theta, n_it, lr)
-    print("\n\nFound weights and bias:")
+    print("\n\nFound theta (bias are last column and weights are the rest):")
     print(theta)
     print()
 
@@ -200,8 +205,11 @@ def test_log_reg_f1score():
     theta = np.zeros((np.unique(LABELS).shape[0], X.shape[1] + 1))
     n_it, lr = 1000, 1e-4
     theta = train_log_reg_2(X, LABELS, theta, n_it, lr)
+    print("\n\nFound theta (bias are last column and weights are the rest):")
+    print(theta)
+    print("\n\nMetrics obtained:")
     print(predict_compute_metrics(FEAT_test, LABELS_test, theta))
 
 if __name__ == "__main__":
-    test_log_reg_with_dataset_values()
+    # test_log_reg_with_dataset_values()
     test_log_reg_f1score()
