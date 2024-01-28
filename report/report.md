@@ -27,10 +27,10 @@ Ce document se propose d'étudier ces deux techniques, en mettant l'accent sur l
 
 
 ## 1.1 -- Régression Logistique
-### ?
-En statistiques, la régression logistique, s'inscrit dans le cadre des modèles de régression pour les variables binaires. 
+
+En statistiques, la régression logistique s'inscrit dans le cadre des modèles de régression pour les variables binaires.
 Bien qu'elle soit quasiment exclusivement utilisée en tant que méthode de classification.  
-En effet, c'est l'ajout d'un seuil, à la probabilité continue donnée par le model de regression qui nous permet de l'utiliser pour la classification.
+En effet, c'est l'ajout d'un seuil à la probabilité continue donnée par le modèle de régression qui nous permet de l'utiliser pour la classification.
 
 Ce type de modèle vise à expliquer de manière optimale une variable binaire,
 qui représente la présence ou l'absence d'une caractéristique spécifique,
@@ -1030,6 +1030,49 @@ On a donc aussi la classification.
 On peut donc conclure que les deux implémentations arrivent à bien classifier les données IRIS.
 
 \newpage{}
+
+# 5 -- Contributions
+
+## Noah Munz
+
+- Mise en place du repos github
+- Mise en place du code
+- Mise en place du dataset
+- Implémentation de \code{naive\_bayes.py} et de \code{log\_reg.py}
+- Auteur des sections:
+    - 1
+    - 2.0
+    - 2.1
+    - 2.2.3
+    - 2.2.4.1
+    - 2.2.5.1
+    - 2.3
+
+## Gregory Sedyhk
+
+- Implémentation de \code{sampling.py}
+- Auteur de la section 4
+
+## Noah Petershmitt
+
+- Implémentation de \code{plot\_util.py} ?
+- Auteur de la section 3 (jusqu'à 3.1)
+
+## Léandre Catogni
+
+- Implémentation de \code{metrics.py}
+
+## Michel Donnet
+
+- Implémentation de \code{softmax.py}, de \code{gradient\_descent.py} et de \code{overfitting.py}
+- Auteur des sections
+    - 2.2.1
+    - 2.2.2
+    - 2.2.4.2
+    - 2.2.5.2
+    - 3.1
+
+\newpage
 
 \printbibliography[heading=bibintoc, title={Références}]
 
