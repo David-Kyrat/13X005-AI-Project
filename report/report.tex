@@ -6,16 +6,19 @@
 \documentclass[
 ]{article}
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -34,16 +37,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  colorlinks=true,
-  linkcolor={Blue},
-  filecolor={Maroon},
-  citecolor={Blue},
-  urlcolor={Blue},
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -109,6 +102,16 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
 
 \author{}
 \date{}
@@ -117,9 +120,8 @@
 
 \intro{}
 
-\hypertarget{introduction-rappels-thuxe9oriques}{%
 \section{1 -- Introduction \& Rappels
-théoriques}\label{introduction-rappels-thuxe9oriques}}
+théoriques}\label{introduction-rappels-thuxe9oriques}
 
 Dans ce document, nous approfondirons les techniques de ``Régression
 logistique'' et ``Naive Bayes'' comme outils d'apprentissage supervisés.
@@ -133,9 +135,8 @@ contextes. Ce document se propose d'étudier ces deux techniques, en
 mettant l'accent sur leur mise en œuvre pratique et leur efficacité
 comparative dans divers scénarios.
 
-\hypertarget{ruxe9gression-logistique}{%
 \subsection{1.1 -- Régression
-Logistique}\label{ruxe9gression-logistique}}
+Logistique}\label{ruxe9gression-logistique}
 
 En statistiques, la régression logistique s'inscrit dans le cadre des
 modèles de régression pour les variables binaires. Bien qu'elle soit
@@ -207,8 +208,7 @@ La sigmoide étant continue, nous avons testé 2 méthodes de prédiction:
   classe est la plus élevée.
 \end{itemize}
 
-\hypertarget{naive-bayes}{%
-\subsection{1.2 -- Naive Bayes}\label{naive-bayes}}
+\subsection{1.2 -- Naive Bayes}\label{naive-bayes}
 
 ``Naive Bayes'' se présente comme une méthode de classification
 probabiliste basée sur le
@@ -236,12 +236,10 @@ En d'autres termes, le problème revient à trouver, pour des attributs
 
 \newpage
 
-\hypertarget{muxe9thodologie}{%
-\section{2 -- Méthodologie}\label{muxe9thodologie}}
+\section{2 -- Méthodologie}\label{muxe9thodologie}
 
-\hypertarget{choix-du-dataset-outils-utilisuxe9s}{%
 \subsection{2.0 -- Choix du dataset \& outils
-utilisés}\label{choix-du-dataset-outils-utilisuxe9s}}
+utilisés}\label{choix-du-dataset-outils-utilisuxe9s}
 
 Pour la suite de ce projet les outils suivants ont été utilisés dans
 chaque parties:
@@ -293,8 +291,7 @@ de l'iris.
 
 \newpage
 
-\hypertarget{gradient-descent}{%
-\subsection{2.1 -- Gradient Descent}\label{gradient-descent}}
+\subsection{2.1 -- Gradient Descent}\label{gradient-descent}
 
 Dans cette section, une implémentation de la ``descente en gradient'' a
 été réalisée. La fonction a la signature suivante
@@ -334,16 +331,13 @@ fonctions.
 
 \newpage{}
 
-\hypertarget{ruxe9gression-logistique-1}{%
 \subsection{2.2 -- Régression
-Logistique}\label{ruxe9gression-logistique-1}}
+Logistique}\label{ruxe9gression-logistique-1}
 
-\hypertarget{fonction-de-couxfbt-pour-la-ruxe9gression-logistique-binaire}{%
 \subsubsection{2.2.1 -- Fonction de coût pour la régression logistique
-binaire}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique-binaire}}
+binaire}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique-binaire}
 
-\hypertarget{fonction-de-couxfbt}{%
-\paragraph{2.2.1.1 -- Fonction de coût}\label{fonction-de-couxfbt}}
+\paragraph{2.2.1.1 -- Fonction de coût}\label{fonction-de-couxfbt}
 
 Reprennons le modèle décrit dans la section 1.1. Nous avons donc:
 \[y_i \sim Bernoulli(p_i), p_i = \sigma(w^T x_i + b), \sigma(z) = \frac{1}{1+e^{-z}}\]
@@ -379,9 +373,8 @@ Donc on cherchera à minimiser la fonction:
 Pour \(n\) données, cette fonction peut s'écrire:
 \[-\sum_i^n log(p(y_i|x_i;w,b))\]
 
-\hypertarget{duxe9rivuxe9e-de-la-fonction-de-couxfbt}{%
 \paragraph{2.2.1.2 -- Dérivée de la fonction de
-coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt}}
+coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt}
 
 Comme nous voulons utiliser la descente en gradient, nous devons trouver
 la dérivée de la fonction à minimiser, donc de notre fonction de coût.
@@ -459,9 +452,8 @@ et:
 
 \[\frac{\partial}{\partial b}\left(- \sum_i^n log(p(yi|xi;w,b))\right) = \sum_i^n (\sigma (z) - y_i)\]
 
-\hypertarget{fonction-de-couxfbt-pour-la-ruxe9gression-logistique-multinomiale}{%
 \subsubsection{2.2.2 -- Fonction de coût pour la régression logistique
-multinomiale}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique-multinomiale}}
+multinomiale}\label{fonction-de-couxfbt-pour-la-ruxe9gression-logistique-multinomiale}
 
 Afin d'entraîner les paramètres de la régression logistique, il faut
 pouvoir comparer les résultats obtenus par la régression avec les
@@ -509,9 +501,8 @@ Notre régression logistique binaire peut donc s'écrire comme:
 \[P(Y = 1 | X) = \frac{1}{1 + e^{X \theta^T}} = \sigma(X \theta^T)\] et
 \[P(Y = 0 | X) = 1 - \sigma(X \theta^T)\]
 
-\hypertarget{guxe9nuxe9ralisation-de-la-ruxe9gression-logistique-binaire}{%
 \paragraph{2.2.2.1 -- Généralisation de la régression logistique
-binaire}\label{guxe9nuxe9ralisation-de-la-ruxe9gression-logistique-binaire}}
+binaire}\label{guxe9nuxe9ralisation-de-la-ruxe9gression-logistique-binaire}
 
 On désire donc trouver une nouvelle distribution \(\phi(z)\) tel que:
 \[\phi(z) \in [0, 1]\ \forall z\] est une généralisation de la fonction
@@ -570,8 +561,7 @@ plusieurs labels.
 
 Cette fonction est courramment appelée fonction \texttt{softmax}.
 
-\hypertarget{fonction-de-couxfbt-1}{%
-\paragraph{2.2.2.2 -- Fonction de coût}\label{fonction-de-couxfbt-1}}
+\paragraph{2.2.2.2 -- Fonction de coût}\label{fonction-de-couxfbt-1}
 
 Notre objectif est donc de trouver une fonction de coût pour pouvoir
 entraîner les paramètres de la régression multinomiale. On cherche à
@@ -612,9 +602,8 @@ Cela nous donne une fonction de coût comme suit:
 On peut minimiser cette fonction de coût grâce à une descente en
 gradient.
 
-\hypertarget{duxe9rivuxe9e-de-la-fonction-de-couxfbt-1}{%
 \paragraph{2.2.2.3 -- Dérivée de la fonction de
-coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt-1}}
+coût}\label{duxe9rivuxe9e-de-la-fonction-de-couxfbt-1}
 
 On va calculer la dérivée de la fonction de coût.
 
@@ -658,8 +647,7 @@ multinomiale !
 
 \newpage
 
-\hypertarget{apprentissage}{%
-\subsubsection{2.2.3 -- Apprentissage}\label{apprentissage}}
+\subsubsection{2.2.3 -- Apprentissage}\label{apprentissage}
 
 Maitenant que nous avons une fonction de coût permettant de quantifier
 (en moyenne) à quel point un set de \(N\) prédiction est
@@ -770,12 +758,10 @@ définie dans \code{softmax.py} est donnée par:
     def gradient_descent_softmax(df, X: np.ndarray, Y: np.ndarray, theta: np.ndarray, alpha: float, num_iters: int) -> np.ndarray:
 \end{lstlisting}
 
-\hypertarget{pruxe9dictions}{%
-\subsubsection{2.2.4 -- Prédictions}\label{pruxe9dictions}}
+\subsubsection{2.2.4 -- Prédictions}\label{pruxe9dictions}
 
-\hypertarget{ruxe9gression-logistique-binaire}{%
 \paragraph{2.2.4.1 -- Régression logistique
-binaire}\label{ruxe9gression-logistique-binaire}}
+binaire}\label{ruxe9gression-logistique-binaire}
 
 Pour la prédiction, nous avons utilisé la fonction suivante:
 
@@ -787,9 +773,8 @@ qui prend simplement \(\sigma(w^T X + b)\) et seuil la sortie du
 sigmoide de manière à retourner un nombre entre 0 et 2 (avec les poids
 et bais entraînés).
 
-\hypertarget{ruxe9gression-logistique-multinomiale}{%
 \paragraph{2.2.4.2 -- Régression logistique
-multinomiale}\label{ruxe9gression-logistique-multinomiale}}
+multinomiale}\label{ruxe9gression-logistique-multinomiale}
 
 Pour la prédiction de la régression logistique multinomiale, nous avons
 utilisé la fonction suivante:
@@ -805,13 +790,11 @@ le label qui contient la valeur maximale obtenue par softmax.
 
 \newpage{}
 
-\hypertarget{ruxe9sultats}{%
-\subsubsection{2.2.5 -- Résultats}\label{ruxe9sultats}}
+\subsubsection{2.2.5 -- Résultats}\label{ruxe9sultats}
 
-\hypertarget{ruxe9sultats-obtenus-par-la-ruxe9gression-logistique-avec-la-fonction-sigmouxefde}{%
 \paragraph{2.2.5.1 -- Résultats obtenus par la régression logistique
 avec la fonction
-sigmoïde}\label{ruxe9sultats-obtenus-par-la-ruxe9gression-logistique-avec-la-fonction-sigmouxefde}}
+sigmoïde}\label{ruxe9sultats-obtenus-par-la-ruxe9gression-logistique-avec-la-fonction-sigmouxefde}
 
 Suite à l'apprentissage , nous avons obtenu les résultats suivants:
 \begin{align*}
@@ -874,9 +857,8 @@ Ce résultat illustre bien que notre démarche est correcte et que nos 2
 modèles sont efficaces, avec un penchant pour la régression logistique
 qui semble être plus efficace que Naive Bayes.
 
-\hypertarget{ruxe9sultats-obtenus-pour-la-ruxe9gression-logistique-multinomiale}{%
 \paragraph{2.2.5.2 Résultats obtenus pour la régression logistique
-multinomiale}\label{ruxe9sultats-obtenus-pour-la-ruxe9gression-logistique-multinomiale}}
+multinomiale}\label{ruxe9sultats-obtenus-pour-la-ruxe9gression-logistique-multinomiale}
 
 Suite à l'apprentissage du modèle multinomiale, on obtien les
 performances suivantes:
@@ -916,15 +898,13 @@ de la ligne qui est le biais et le reste qui est le poids.
 
 \newpage{}
 
-\hypertarget{naive-bayes-1}{%
-\subsection{2.3 -- Naive Bayes}\label{naive-bayes-1}}
+\subsection{2.3 -- Naive Bayes}\label{naive-bayes-1}
 
 Dans cette section, une implémentation d'un classifieur linéaire
 bayesien (naive bayes) a été réalisée.
 
-\hypertarget{extraction-des-distributions}{%
 \subsubsection{2.3.1 -- Extraction des
-distributions}\label{extraction-des-distributions}}
+distributions}\label{extraction-des-distributions}
 
 Dans cette implémentation, étant données que toutes nos features sont
 continues, nous avons considéré que \emph{sepal length}, \emph{sepal
@@ -946,8 +926,7 @@ qui va retourner un dict mappant chaque classe à une liste contenant les
 paramètres des distributions conditionnelles (normales) des features
 pour cette classe.
 
-\hypertarget{pruxe9dictions-1}{%
-\subsubsection{2.3.2 -- Prédictions}\label{pruxe9dictions-1}}
+\subsubsection{2.3.2 -- Prédictions}\label{pruxe9dictions-1}
 
 Deux fonctions de prédictions ont été implémenté,
 
@@ -1008,8 +987,7 @@ généralisation, c'est ainsi que l'on fini par retomber sur
 qui est ce que calculent les fonctions dont on a donné la signature
 ci-dessus.
 
-\hypertarget{ruxe9sultats-1}{%
-\subsubsection{2.3.3 -- Résultats}\label{ruxe9sultats-1}}
+\subsubsection{2.3.3 -- Résultats}\label{ruxe9sultats-1}
 
 Dans cette section, nous allons simplement reprendre ce qui a été fait
 dit dans la \href{#ruxe9sultats}{section 2.2.4} et remontrer les mêmes
@@ -1038,8 +1016,7 @@ Cependant, un f1-score de \(> 0.95\) reste excellent.
 
 \newpage{}
 
-\hypertarget{analyse}{%
-\section{3. -- Analyse}\label{analyse}}
+\section{3. -- Analyse}\label{analyse}
 
 Pour chaque classe y, on peut tracer les fonctions de distribution de
 probabilité pour chaque donnée \(X_k\) sachant la classe y afin
@@ -1111,9 +1088,8 @@ influence sur la classification alors que la variable \(X_0\) a une plus
 faible. De plus, les variables indépendantes ne sont pas séparables les
 unes des autres.
 
-\hypertarget{phuxe9nomuxe8ne-de-sur-apprentissage}{%
 \subsection{3.1 -- Phénomène de
-sur-apprentissage}\label{phuxe9nomuxe8ne-de-sur-apprentissage}}
+sur-apprentissage}\label{phuxe9nomuxe8ne-de-sur-apprentissage}
 
 Dans cette partie, nous allons voir les problèmes de sur-apprentissage
 du modèle de régression logistique multinomial.
@@ -1303,9 +1279,8 @@ performances possibles sur les données de test, car les performances sur
 les données de test comptent plus que les performances sur les données
 d'apprentissage\ldots{}
 
-\hypertarget{fonctions-et-signatures}{%
 \subsubsection{3.1.1 -- Fonctions et
-signatures}\label{fonctions-et-signatures}}
+signatures}\label{fonctions-et-signatures}
 
 Pour bruiter les données, une fonction a été créée dans
 \code{overfitting.py}. Cette fonction possède la signature suivante:
@@ -1347,12 +1322,10 @@ environ 2 minutes à tourner sur la machine d'un des étudiants.
 
 \newpage{}
 
-\hypertarget{comparaisons}{%
-\section{4 -- Comparaisons}\label{comparaisons}}
+\section{4 -- Comparaisons}\label{comparaisons}
 
-\hypertarget{vraisemblance-et-classification-des-uxe9chantillons}{%
 \subsection{4.1 - Vraisemblance et classification des
-échantillons}\label{vraisemblance-et-classification-des-uxe9chantillons}}
+échantillons}\label{vraisemblance-et-classification-des-uxe9chantillons}
 
 Une fois que les paramètres des classes sont obtenus en supposant
 l'indépendance des variables, on échantillone de nouvelles données afin
@@ -1455,12 +1428,10 @@ donnés pour chaque classe et chaque variable):
 Les nombres et les graphiques montrent que les échantillons sont très
 proches des données réelles, donc on a bien la vraisemblance.
 
-\hypertarget{comparaison-avec-sklearn}{%
 \subsection{4.2 - Comparaison avec
-SKLearn}\label{comparaison-avec-sklearn}}
+SKLearn}\label{comparaison-avec-sklearn}
 
-\hypertarget{nauxefve-bayes}{%
-\subsubsection{4.2.1 - Naïve Bayes}\label{nauxefve-bayes}}
+\subsubsection{4.2.1 - Naïve Bayes}\label{nauxefve-bayes}
 
 Notre implémentation de Naïve Bayes a été comparée avec celle de SKLearn
 dans le fichier \texttt{sampling.py}, avec un split des données
@@ -1494,9 +1465,8 @@ Sklearn Naive Bayes
   f1\_score: 0.9752738654147106
 \end{itemize}
 
-\hypertarget{ruxe9gression-logistique-2}{%
 \subsubsection{4.2.2 - Régression
-Logistique}\label{ruxe9gression-logistique-2}}
+Logistique}\label{ruxe9gression-logistique-2}
 
 Notre implémentation de Régression Logistique a été comparée avec celle
 de SKLearn dans le fichier \texttt{sampling.py}, avec un split des
@@ -1533,9 +1503,8 @@ Sklearn Logistic Regression
   F1\_score: 0.9752738654147106
 \end{itemize}
 
-\hypertarget{conclusion-sur-les-comparaisons}{%
 \subsection{4.3 - Conclusion sur les
-comparaisons}\label{conclusion-sur-les-comparaisons}}
+comparaisons}\label{conclusion-sur-les-comparaisons}
 
 On a vu qu'on avait la vraisemblance, puisque les échantillons sont très
 proches des données réelles, comme le montrent les graphiques.
@@ -1558,11 +1527,9 @@ classifier les données IRIS.
 
 \newpage{}
 
-\hypertarget{contributions}{%
-\section{5 -- Contributions}\label{contributions}}
+\section{5 -- Contributions}\label{contributions}
 
-\hypertarget{noah-munz}{%
-\subsection{Noah Munz}\label{noah-munz}}
+\subsection{Noah Munz}\label{noah-munz}
 
 \begin{itemize}
 \tightlist
@@ -1596,8 +1563,7 @@ classifier les données IRIS.
   \end{itemize}
 \end{itemize}
 
-\hypertarget{gregory-sedyhk}{%
-\subsection{Gregory Sedyhk}\label{gregory-sedyhk}}
+\subsection{Gregory Sedykh}\label{gregory-sedykh}
 
 \begin{itemize}
 \tightlist
@@ -1607,8 +1573,7 @@ classifier les données IRIS.
   Auteur de la section 4
 \end{itemize}
 
-\hypertarget{noah-petershmitt}{%
-\subsection{Noah Petershmitt}\label{noah-petershmitt}}
+\subsection{Noah Petershmitt}\label{noah-petershmitt}
 
 \begin{itemize}
 \tightlist
@@ -1618,8 +1583,7 @@ classifier les données IRIS.
   Auteur de la section 3 (jusqu'à 3.1)
 \end{itemize}
 
-\hypertarget{luxe9andre-catogni}{%
-\subsection{Léandre Catogni}\label{luxe9andre-catogni}}
+\subsection{Léandre Catogni}\label{luxe9andre-catogni}
 
 \begin{itemize}
 \tightlist
@@ -1627,8 +1591,7 @@ classifier les données IRIS.
   Implémentation de \code{metrics.py}
 \end{itemize}
 
-\hypertarget{michel-donnet}{%
-\subsection{Michel Donnet}\label{michel-donnet}}
+\subsection{Michel Donnet}\label{michel-donnet}
 
 \begin{itemize}
 \tightlist

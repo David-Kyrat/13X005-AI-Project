@@ -1048,7 +1048,7 @@ On peut donc conclure que les deux implémentations arrivent à bien classifier 
     - 2.2.5.1
     - 2.3
 
-## Gregory Sedyhk
+## Gregory Sedykh
 
 - Implémentation de \code{sampling.py}
 - Auteur de la section 4
