@@ -1,5 +1,4 @@
 
-#TODO : Implémenter l'évolution pour les autres métriques
 
 import numpy as np
 from numpy.typing import NDArray
