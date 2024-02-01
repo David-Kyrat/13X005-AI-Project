@@ -12,7 +12,7 @@
   let idx = basename.substr(basename.length - 2, basename.length)
 </script>
 
-<PresMd filepaths={[`/presentation/q01.md`]}>
+<PresMd filepaths={[`/presentation/feature_analyse_NAP.md`]}>
   <Slide>
     <div class="title-slide">
       <h2>Intelligence Artificielle<br /> Projet - Examen Oral</h2>
