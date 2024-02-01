@@ -1,3 +1,7 @@
+# Overfitting 
+
+---
+
 # Sur-apprentissage
 
 On ne veut pas apprendre le bruit des données d'apprentissage !

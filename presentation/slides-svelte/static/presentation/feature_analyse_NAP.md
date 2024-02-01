@@ -1,5 +1,9 @@
 # Analyse des features
 
+---
+
+## Analyse des features
+
 <div style="display: flex; align-items: center;">
     <img src="../src/res/comp_normal_law_Y_0.png" alt="Texte alternatif" style="width: 400px; height:600px; float: left;">
     <div style="margin-left: 10px;">
@@ -27,8 +31,8 @@
     </div>
 ---
 
-plot_util.py : modification de la fonction plot_vs afin de pouvoir comparer jusqu'à 4 fonctions. 
+`plot_util.py` : modification de la fonction plot_vs afin de pouvoir comparer jusqu'à 4 fonctions. 
 
-feature_analyse_plot.py : affichage pour chaque classe  les courbes des normal PDF de chaque données.
+`feature_analyse_plot.py` : affichage pour chaque classe  les courbes des normal PDF de chaque données.
 
 
