@@ -48,7 +48,7 @@ def accuracy(true_labels, predicted_labels):
     if not isinstance(true_labels, np.ndarray):
         true_labels = np.asarray(true_labels)
     if not isinstance(predicted_labels, np.ndarray):
-        predict_labels = np.asarray(predicted_labels)
+        predicted_labels = np.asarray(predicted_labels)
 
     correct_predictions = sum(true == pred for true, pred in zip(true_labels, predicted_labels))
     total_instances = len(true_labels)
