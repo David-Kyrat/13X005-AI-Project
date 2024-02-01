@@ -16,12 +16,11 @@
   <Slide>
     <div class="title-slide">
       <h2>Intelligence Artificielle<br /> Projet - Examen Oral</h2>
-      <h3>Regression Logistique <br /> & Naive Bayes</h3>
-
-      <p class="text-blue-900">Question {idx}</p>
-
-      <p class="author">Noah Munz (19-815-489)</p>
-      <p class="date text-slate-600">January 30th 2024</p>
+      <h3 class="text-blue-900 text-6xl">Regression Logistique <br /> & Naive Bayes</h3>
+      <p class="author text-4xl">
+        Gregory Sedykh, Leandre Catogni,<br /> Noah Peterschmitt, Noah Munz, Michel Donnet
+      </p>
+      <p class="date text-slate-600 text-4xl">02 Fevrier 2024</p>
     </div>
   </Slide>
   <!--  Content from given Markdown files follows right after -->
