@@ -33,6 +33,7 @@
     "postcss": "^8.4.23",
     "postcss-load-config": "^4.0.1",
     "prettier-plugin-svelte": "^2.8.1",
+    "reveal.js-menu": "^2.1.0",
     "smui-theme": "^7.0.0-beta.16",
     "svelte": "^3.54.0",
     "svelte-check": "^3.0.1",
