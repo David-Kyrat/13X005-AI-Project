@@ -41,21 +41,32 @@
 
 - $P(cause | \text{effet}) = \frac{P(\text{effet} | cause) P(cause)}{P(\text{effet})}$
 
-- $P(class | \text{donnée}) = \frac{P(\text{donnée} | class) P(class)}{P(\text{donnée})}$
+- $P(class | \text{donnée}) = \frac{P(\text{donnée} | class) P(class)}{P(\text{donnée})} = \frac{P(\mathbf{x} | y) P(y)}{P(\mathbf{x})}$
 
 - On aimerait (intuitivement): Calculer les probabilités que notre label ait telle ou telle classe connaissant notre sample, et prendre le max 
 $\tilde{y}$ i.e. $$\tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} P(y | \mathbf{x})$$
 
 - Ici on part du principe qu'on connaît $\mathbf{x}\ \Rightarrow$ perd principe de la prédiction puisque ça impose le fait que l'on doit avoir déjà observé <u>*exactement*</u> ce $\mathbf{x}$.
 
-- Prédire la classe d'un sample $\Rightarrow$ Calculer 
+- On utilise que, le $y$ qui maximise la formule du théorème de bayes est aussi le $y$ qui maximise $P(\mathbf{x}|y)P(y)$, (car $P(y|x) \propto P(x)P(y)$)
 
+---
 
+## Naive Bayes - Conclusion
 
+- $\tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} P(y | \mathbf{x})$
 
+- $P(y|x) \propto P(x)P(y)$
 
+- $\tilde{y} = P(\mathbf{x}|y)P(y)$
+- Sepal length $\perp$ sepal width $\perp$ petal length $\perp$ petal width (Hypthèse d'indépendence naïve)
+- $$
+P(\mathbf{x} | y) = P(x_1 | y) \prod_{k=2}^K P(x_k | x_{k-1}, \cdots, x-1, y) = 
+P(x_1 | y) \prod_{k=2}^K P(x_k | y) = \prod_{k=1}^K P(x_k | y)
+$$
+- En on conclut donc que $$\boxed{\tilde{y} = 
+\text{arg}\max_{y \in \mathcal{Y}}\left[ \prod_{k=1}^K P(x_k | y) \right]}
+$$
 
-
-
-
+- On prédit la classe $\tilde{y}$ d'un sample $\mathbf{x}$, en calculant le maximum de la probabilité conditionnelle $P(\mathbf{x} | classe)$ pour chaque classe.
 
