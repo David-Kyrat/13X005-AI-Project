@@ -1,16 +1,36 @@
+<!--
+<div class="r-hstack flex justify-between">
+<div class="r-vstack text-left">
+
+
+
+</div>
+
+
+<div class="r-vstack">
+
+
+
+</div>
+</div>
+-->
+
+
 # Régression Logistique
 
 ---
 
 # Régression logistique binaire: principe
 
-![](../res/decision.png)
+
+<img width="80%" src="../res/decision2.png" />
+
 
 ---
 
 ## Régression logistique binaire: idée
 
-![](../res/pomme.png){width=80%}
+<img src="../res/pomme.png" />{width=80%}
 
 ---
 
@@ -32,7 +52,7 @@ Idée:
 
 ## Entraînement du modèle
 
-But:
+**But:**
 
 - maximiser la probabilité $P(Y = y | X)$ pour $y$ la valeur d'entrainement du label.
 
@@ -46,7 +66,7 @@ $\Rightarrow$ `Negative Logarithm Likelihood`
 
 # Régression logistique multinomiale: principe
 
-![](../res/directions.png)
+<img src="../res/directions2.jpg" />
 
 ---
 

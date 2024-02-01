@@ -15,9 +15,11 @@
 
   import "$lib/app.postcss"
   export let filepaths = ["/example.md"]
-  export let clas = "text-xl overflow-y-auto overflow-x-auto no-scrollbar prez"
+  export let clas = ""
+  $: _clas = `text-xl overflow-y-auto overflow-x-auto no-scrollbar prez ${clas}`
 </script>
 
+<!-- <div class="flex items-baseline justify-between"> -->
 <div class="flex items-baseline justify-between">
   <!-- <IconButton class="material-icons z-50" on:click={switchOpen}>menu</IconButton> -->
   <HomeBtn />
@@ -27,7 +29,7 @@
 <Slides>
   <slot />
   {#each filepaths as subpres}
-    <Markdown name={subpres} external {clas} />
+    <Markdown name={subpres} external clas={_clas} />
   {/each}
   <!-- <section data-markdown={name} class={clas} /> -->
 </Slides>

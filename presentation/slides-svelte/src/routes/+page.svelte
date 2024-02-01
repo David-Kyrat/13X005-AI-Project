@@ -21,6 +21,7 @@
     `/presentation/feature_analyse_NAP.md`,
     `/presentation/sampling_GS.md`,
   ]}
+  clas=""
 >
   <Slide>
     <div class="title-slide">
