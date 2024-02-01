@@ -11,6 +11,14 @@ Assignement Pdf:
 
 <br />
 
+For this project, a website for the presentation's slides was made:
+
+-   [https://unige-ai.vercel.app](https://unige-ai.vercel.app)
+
+---
+
+<br />
+
 **DataSet Used:**
 
 <div align="center">
