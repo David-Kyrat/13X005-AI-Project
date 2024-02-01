@@ -38,3 +38,24 @@
 ---
 
 ## Naive Bayes - Formellement
+
+- $P(cause | \text{effet}) = \frac{P(\text{effet} | cause) P(cause)}{P(\text{effet})}$
+
+- $P(class | \text{donnée}) = \frac{P(\text{donnée} | class) P(class)}{P(\text{donnée})}$
+
+- On aimerait (intuitivement): Calculer les probabilités que notre label ait telle ou telle classe connaissant notre sample, et prendre le max 
+$\tilde{y}$ i.e. $$\tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} P(y | \mathbf{x})$$
+
+- Ici on part du principe qu'on connaît $\mathbf{x}\ \Rightarrow$ perd principe de la prédiction puisque ça impose le fait que l'on doit avoir déjà observé <u>*exactement*</u> ce $\mathbf{x}$.
+
+- Prédire la classe d'un sample $\Rightarrow$ Calculer 
+
+
+
+
+
+
+
+
+
+
