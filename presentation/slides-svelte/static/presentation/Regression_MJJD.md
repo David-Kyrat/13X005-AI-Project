@@ -1,5 +1,5 @@
 <!--
-<div class="r-hstack flex justify-between">
+<div class="r-hstack">
 <div class="r-vstack text-left">
 
 
@@ -23,14 +23,17 @@
 # Régression logistique binaire: principe
 
 
-<img width="80%" src="../res/decision2.png" />
-
+<div class="r-hstack">
+    <img width="80%" src="../res/decision2.png" />
+</div>
 
 ---
 
 ## Régression logistique binaire: idée
 
-<img src="../res/pomme.png" />{width=80%}
+<div class="r-hstack">
+<img width="60%" src="../res/pomme.png" />
+</div>
 
 ---
 
@@ -66,7 +69,9 @@ $\Rightarrow$ `Negative Logarithm Likelihood`
 
 # Régression logistique multinomiale: principe
 
-<img src="../res/directions2.jpg" />
+<div class="r-hstack">
+<img width="85%" src="../res/directions2.jpg" />
+</div>
 
 ---
 
