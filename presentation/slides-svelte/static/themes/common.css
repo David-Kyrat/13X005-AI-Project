@@ -1,0 +1,25 @@
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+
+.prez h2, .prez h1, .prez h3 {
+    word-spacing: 6px;
+}
+
+.title-slide h2, .title-slide h1 {
+    word-spacing: 20px;
+}
+.title-slide h3 {
+    word-spacing: 14px;
+}
+.prez h1 {
+    font-size: 4rem;
+}

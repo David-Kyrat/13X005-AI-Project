@@ -1,12 +1,43 @@
+<!--
+<div class="r-hstack">
+<div class="r-vstack text-left">
+
+
+
+</div>
+
+
+<div class="r-vstack">
+
+
+
+</div>
+</div>
+-->
+
+
+# Régression Logistique
+
+---
+
 # Régression logistique binaire: principe
 
-![](../res/decision.png)
 
-# Régression logistique binaire: idée
+<div class="r-hstack">
+    <img width="80%" src="../res/decision2.png" />
+</div>
 
-\center ![](../res/pomme.png){width=80%}
+---
 
-# Régression logistique: fonction d'estimation
+## Régression logistique binaire: idée
+
+<div class="r-hstack">
+<img width="60%" src="../res/pomme.png" />
+</div>
+
+---
+
+## Régression logistique: fonction d'estimation
 
 Fonction sigmoïde
 $$\sigma(z) = \frac{1}{1 + e^{-z}}$$
@@ -20,9 +51,11 @@ Idée:
 
 - établir un seuil afin de prédire le label $Y$
 
-# Entraînement du modèle
+---
 
-But:
+## Entraînement du modèle
+
+**But:**
 
 - maximiser la probabilité $P(Y = y | X)$ pour $y$ la valeur d'entrainement du label.
 
@@ -32,17 +65,23 @@ $\Rightarrow$ transformer le problème en problème de minimisation !
 
 $\Rightarrow$ `Negative Logarithm Likelihood`
 
+---
+
 # Régression logistique multinomiale: principe
 
-![](../res/directions.png)
+<div class="r-hstack">
+<img width="85%" src="../res/directions2.jpg" />
+</div>
 
-# Généralisation de la fonction sigmoïde en fonction softmax
+---
+
+## Généralisation de la fonction sigmoïde en fonction softmax
 
 $$P(Y = k | X) = \frac{1}{1 + e{-X \theta^T}}\ \rightarrow \ \frac{e^{X \theta_k^T}}{\sum_i^N e^{X \theta_i^T}}$$
+
+---
 
 # Entraînement du modèle
 
 Même principe que pour la régression logistique binaire
-
-
 

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+svelte_template=./src/routes/q01/+page.svelte
+
+for i in {2..21}; do
+	if [ $i -lt 10 ]; then
+		i="0$i"
+	fi
+	mkdir -p ./src/routes/q$i
+	# cat $svelte_template | sed "s/q01/q$i/g" > ./src/routes/q$i/+page.svelte
+	# cat $svelte_template > ./src/routes/q$i/+page.svelte
+    # cat ./static/md/q01.md > ./static/md/q$i.md
+done
