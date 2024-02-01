@@ -14,8 +14,7 @@ TEX_ARGS = -halt-on-error $(REPORT).tex | grep '^!.*' -A200
 TEX_AUTOGEN = *.aux *.log *.out *.bbl *.blg *blx.bib *.fls *.fdb_latexmk *.synctex.gz *.synctex *.run.xml
 PRES_DIR := presentation
 SLIDES_WEB_DIR := $(PRES_DIR)/slides-svelte
-SLIDES_WEB_RESOURCES := $(SLIDES_WEB_DIR)/static/presentation
-
+SLIDES_WEB_RESOURCES := $(SLIDES_WEB_DIR)/static
 all: run
 
 run: check_dep 
@@ -42,8 +41,8 @@ check_dep:
 # echo "Please make sure you've run 'pip install poetry'."; 
 
 slides:
-	cp -r $(PRES_DIR)/*.md $(SLIDES_WEB_RESOURCES)
-	
+	cp -r $(PRES_DIR)/*.md $(SLIDES_WEB_RESOURCES)/presentation && \
+	cp -rf $(RES)/* $(SLIDES_WEB_RESOURCES)/res
 
 
 # ZIP project for submission
