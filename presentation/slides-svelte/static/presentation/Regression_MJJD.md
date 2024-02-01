@@ -1,9 +1,3 @@
----
-title: Régression logistique
-author: Michel Donnet
----
-
-
 # Régression logistique binaire: principe
 
 ![](../res/decision.png)

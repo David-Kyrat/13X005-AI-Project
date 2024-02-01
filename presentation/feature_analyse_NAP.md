@@ -1,8 +1,4 @@
----
-title: Analyse des données
-author: Noah Aviel Peterschmitt
----
-
+# Analyse des features
 
 <div style="display: flex; align-items: center;">
     <img src="../src/res/comp_normal_law_Y_0.png" alt="Texte alternatif" style="width: 400px; height:600px; float: left;">

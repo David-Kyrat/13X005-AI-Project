@@ -1,11 +1,3 @@
----
-title: Échantillonage
-author: Gregory Sedykh
----
-
-
----
-
 # Sampling
 
 Une fois que les paramètres des classes sont obtenus en supposant l'indépendance des variables, on échantillone de nouvelles données afin de comparer les résultats obtenus avec les données d'origine.

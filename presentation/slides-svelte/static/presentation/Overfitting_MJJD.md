@@ -1,9 +1,3 @@
----
-title: Phénomène de sur-apprentissage
-author: Michel Jean Joseph Donnet
----
-
-
 # Sur-apprentissage
 
 On ne veut pas apprendre le bruit des données d'apprentissage !
