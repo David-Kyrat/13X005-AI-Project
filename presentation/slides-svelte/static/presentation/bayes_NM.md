@@ -19,12 +19,11 @@
 
 ---
 
-## Naive Bayes
+### Naive Bayes
 
 - Classification probabiliste conditionnelle: théorème de Bayes : $P(Y|X) = \frac{P(X|Y)P(Y)}{P(X)}$
     - Features $X_0, \cdots, X_{K-1}$,  Classes $Y_0, \cdots, Y_{C-1}\qquad$ (ici $C=3, K=3$)
 - Sepal length $\perp$ sepal width $\perp$ petal length $\perp$ petal width (Hypthèse d'indépendence naïve)
-
 - Calculer la distribution empirique des features indépendemment des autres
     - $X_i$ continue $\Rightarrow$ $X_i \sim \mathcal{N}(\mu_i, \sigma_i)$, i.e. pour notre colonne de data, on calcule, la moyenne et standard deviation $\Rightarrow$ on dit que ce sont les paramètres de la loi normale qui modélise comment les données de la colonne $i$ sont réparties
     - $X_i$ binaire $\Rightarrow$ $X_i \sim \mathcal{B}(p_i)$ 
@@ -58,7 +57,7 @@ $\tilde{y}$ i.e. $$\tilde{y} = \text{arg}\max_{y \in \mathcal{Y}} P(y | \mathbf{
 
 - $P(y|x) \propto P(x)P(y)$
 
-- $\tilde{y} = P(\mathbf{x}|y)P(y)$
+- Donc $\tilde{y} = P(\mathbf{x}|y)P(y)$
 - Sepal length $\perp$ sepal width $\perp$ petal length $\perp$ petal width (Hypthèse d'indépendence naïve)
 - $$
 P(\mathbf{x} | y) = P(x_1 | y) \prod_{k=2}^K P(x_k | x_{k-1}, \cdots, x-1, y) = 
