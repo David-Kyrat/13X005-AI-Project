@@ -12,7 +12,9 @@ REPORT := report
 TEX_ENGINE := pdflatex
 TEX_ARGS = -halt-on-error $(REPORT).tex | grep '^!.*' -A200
 TEX_AUTOGEN = *.aux *.log *.out *.bbl *.blg *blx.bib *.fls *.fdb_latexmk *.synctex.gz *.synctex *.run.xml
-
+PRES_DIR := presentation
+SLIDES_WEB_DIR := $(PRES_DIR)/slides-svelte
+SLIDES_WEB_RESOURCES := $(SLIDES_WEB_DIR)/static/presentation
 
 all: run
 
@@ -38,6 +40,11 @@ check_dep:
 	( echo "Dependencies not installed. Installing them..."; (./setup_poetry 1 || (exit 1) ))
 
 # echo "Please make sure you've run 'pip install poetry'."; 
+
+slides:
+	cp -r $(PRES_DIR)/*.md $(SLIDES_WEB_RESOURCES)
+	
+
 
 # ZIP project for submission
 package:
