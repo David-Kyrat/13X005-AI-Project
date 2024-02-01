@@ -1,30 +1,77 @@
+<!--
+<div class="r-hstack">
+<div class="r-vstack text-left">
+
+
+
+</div>
+
+
+<div class="r-vstack">
+
+
+
+</div>
+</div>
+-->
+
 # Sampling
 
 ---
 
+<div class="r-hstack">
+<div class="r-vstack text-left">
+
 ## Sampling
 
-Une fois que les paramètres des classes sont obtenus en supposant l'indépendance des variables, on échantillone de nouvelles données afin de comparer les résultats obtenus avec les données d'origine.
+- Une fois que les paramètres des classes sont obtenus en supposant l'indépendance des variables, on échantillone de nouvelles données afin de comparer les résultats obtenus avec les données d'origine.
 
-  
+- L'échantillonage est fait dans le fichier `sampling.py`.
 
-L'échantillonage est fait dans le fichier `sampling.py`.
+- On fait 50 échantillons pour chaque classe, à partir des paramètres des distributions obtenus dans la section précédente.
 
-  
+- On obtient les résultats suivants (la moyenne et l'écart-type sont donnés pour chaque classe et chaque variable):
 
-On fait 50 échantillons pour chaque classe, à partir des paramètres des distributions obtenus dans la section précédente.
+</div>
 
-  
 
-On obtient les résultats suivants (la moyenne et l'écart-type sont donnés pour chaque classe et chaque variable):
+<div class="r-vstack">
 
-![Comparaison des distributions réelles et échantillonées pour la classe 0](../res/sample_compare_Y_0.png)
-![Comparaison des distributions réelles et échantillonées pour la classe 1](../res/sample_compare_Y_1.png)
-![Comparaison des distributions réelles et échantillonées pour la classe 2](../res/sample_compare_Y_2.png)
+<img src="../res/sample_compare_Y_0.png" alt="Comparaison des distributions réelles et échantillonées pour la classe 0" width="800px" />
+
+<img src="../res/sample_compare_Y_1.png" alt="Comparaison des distributions réelles et échantillonées pour la classe 1" width="800px" />
+
+
+<img src="../res/sample_compare_Y_2.png" alt="Comparaison des distributions réelles et échantillonées pour la classe 2" width="800px" />
+
+</div>
+</div>
+
+---
+
+### Graphs par classe ($Y \in$ { $0,1,2$ })
+
+<div class="r-hstack">
+
+<img src="../res/sample_compare_Y_0.png" alt="Comparaison des distributions réelles et échantillonées pour la classe 0" width="1200px" />
+
+
+<img src="../res/sample_compare_Y_1.png" alt="Comparaison des distributions réelles et échantillonées pour la classe 1" width="1200px" />
+
+
+<img src="../res/sample_compare_Y_2.png" alt="Comparaison des distributions réelles et échantillonées pour la classe 2" width="1200px" />
+
+</div>
 
 ---
 
 # Résultats
+
+### Comparaison avec sklearn
+
+---
+
+
 ## Naive Bayes
 ### Notre Naive Bayes
 
@@ -47,6 +94,7 @@ On obtient les résultats suivants (la moyenne et l'écart-type sont donnés pou
 
 - F1 score: 0.975
 
+---
 
 ## Logistic Regression
 ### Notre Logistic Regression
