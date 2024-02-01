@@ -15,8 +15,10 @@
 <PresMd
   filepaths={[
     `/presentation/Regression_MJJD.md`,
+    `/presentation/bayes_NM.md`,
+    `/presentation/metrics_LC.md`,
+    `/presentation/Overfitting_MJJD.md`,
     `/presentation/feature_analyse_NAP.md`,
-    `/presentation/`
   ]}
 >
   <Slide>
