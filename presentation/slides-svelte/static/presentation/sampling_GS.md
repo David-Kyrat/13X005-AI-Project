@@ -66,6 +66,12 @@
 ---
 
 # Résultats
+
+### Comparaison avec sklearn
+
+---
+
+
 ## Naive Bayes
 ### Notre Naive Bayes
 
@@ -88,6 +94,7 @@
 
 - F1 score: 0.975
 
+---
 
 ## Logistic Regression
 ### Notre Logistic Regression
