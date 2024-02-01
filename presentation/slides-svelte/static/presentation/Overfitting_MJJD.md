@@ -1,14 +1,14 @@
 # Overfitting 
 
----
-
-# Sur-apprentissage
-
 On ne veut pas apprendre le bruit des données d'apprentissage !
 
-# Sur-apprentissage: exemple
+---
 
-![larevueia.fr](../res/overfitting_1.png){width=70%}
+## Sur-apprentissage: exemple
+
+<img src="../res/overfitting_1.png" alt="overfitting_1">
+
+---
 
 # Sur-apprentissage: graphique
 
@@ -36,12 +36,12 @@ Dans le projet, pour montrer le phénomène de sur-apprentissage:
 
 # Résultats obtenus
 
-\center ![](../res/overfitting.png){width=80%}
+![](../res/overfitting.png){width=80%}
 
 # Résultats obtenus
 
-\center ![](../res/overfitting_reg.png){width=80%}
+![](../res/overfitting_reg.png){width=80%}
 
 # Résultats obtenus
 
-\center ![](../res/overfitting_reg_2.png){width=80%}
+![](../res/overfitting_reg_2.png){width=80%}
