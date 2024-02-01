@@ -3,6 +3,9 @@ title: Échantillonage
 author: Gregory Sedykh
 ---
 
+
+---
+
 # Sampling
 
 Une fois que les paramètres des classes sont obtenus en supposant l'indépendance des variables, on échantillone de nouvelles données afin de comparer les résultats obtenus avec les données d'origine.
@@ -22,6 +25,8 @@ On obtient les résultats suivants (la moyenne et l'écart-type sont donnés pou
 ![Comparaison des distributions réelles et échantillonées pour la classe 0](../res/sample_compare_Y_0.png)
 ![Comparaison des distributions réelles et échantillonées pour la classe 1](../res/sample_compare_Y_1.png)
 ![Comparaison des distributions réelles et échantillonées pour la classe 2](../res/sample_compare_Y_2.png)
+
+---
 
 # Résultats
 ## Naive Bayes
@@ -69,5 +74,8 @@ On obtient les résultats suivants (la moyenne et l'écart-type sont donnés pou
 - Accuracy: 0.977
 
 - F1 score: 0.975
+
+
+---
 
 # Conclusion
