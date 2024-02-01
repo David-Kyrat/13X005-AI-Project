@@ -15,7 +15,7 @@
 <PresMd
   filepaths={[
     `/presentation/Regression_MJJD.md`,
-    // `/presentation/bayes_NM.md`,
+    `/presentation/bayes_NM.md`,
     `/presentation/metrics_evolution_LERC.md`,
     `/presentation/Overfitting_MJJD.md`,
     `/presentation/feature_analyse_NAP.md`,
