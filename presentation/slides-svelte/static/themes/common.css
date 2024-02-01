@@ -14,6 +14,10 @@
     word-spacing: 6px;
 }
 
+.title-slide h2, .title-slide h1, .title-slide h3 {
+    word-spacing: 20px;
+}
+
 .prez h1 {
     font-size: 4rem;
 }

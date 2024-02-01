@@ -9,13 +9,8 @@
 		href="https://fonts.googleapis.com/css2?family=Material+Icons&display=swap"
 		rel="stylesheet"
 	/>
-	<link rel="icon" href="https://fav.farm/🖼️" />
 	<link rel="icon" href="/unige-logo.svg" />
-	{#if $page.url.pathname != '/'}
-		<title>Presentation Q{idx.replace('/', '')}</title>
-	{:else}
-		<title>Choosing Presentation</title>
-	{/if}
+  <title>IA - Oral - Presentation</title>
 	<link rel="stylesheet" href="/themes/common.css" />
 	<!-- HINT: Theme chooser -->
 	{#if theme == 0}
