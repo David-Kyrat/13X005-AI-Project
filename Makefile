@@ -41,7 +41,7 @@ check_dep:
 # echo "Please make sure you've run 'pip install poetry'."; 
 
 slides:
-	cp -r $(PRES_DIR)/*.md $(SLIDES_WEB_RESOURCES)/presentation && \
+	cp -r $(PRES_DIR)/*.md $(SLIDES_WEB_RESOURCES)/presentation/new && \
 	cp -rf $(RES)/* $(SLIDES_WEB_RESOURCES)/res
 
 
