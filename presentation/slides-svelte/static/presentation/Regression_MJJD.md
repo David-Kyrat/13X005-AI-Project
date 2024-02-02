@@ -59,7 +59,7 @@ $\Rightarrow$ `Negative Logarithm Likelihood`
 
 ## Généralisation de la fonction sigmoïde en fonction softmax
 
-$$P(Y = k | X) = \frac{1}{1 + e{-X \theta^T}}\ \rightarrow \ \frac{e^{X \theta_k^T}}{\sum_i^N e^{X \theta_i^T}}$$
+$$P(Y = k | X) = \frac{1}{1 + e^{-X \theta^T}}\ \rightarrow \ \frac{e^{X \theta_k^T}}{\sum_i^N e^{X \theta_i^T}}$$
 
 ---
 
